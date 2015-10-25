@@ -89,7 +89,7 @@
     </dependencies>
 
     <build>
-        <finalName>applicant_testing</finalName>
+        <finalName>candidate_review</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
