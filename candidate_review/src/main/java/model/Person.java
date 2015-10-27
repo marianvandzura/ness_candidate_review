@@ -1,9 +1,6 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Person entity
@@ -12,12 +9,15 @@ import javax.persistence.Id;
 
 //@SequenceGenerator(name = "person_id", sequenceName = "person_id")
 @Entity
+@Table(name = "Person")
 public class Person {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(name="name")
     private String name;
 
     public Person(){

@@ -7,14 +7,18 @@ import javax.persistence.*;
  */
 
 @Entity
+@Table(name = "Categories")
 public class Categories {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(name="category_name")
     private String categoryName;
     @ManyToOne
+    @JoinColumn(name = "id")
     private Questions questionsId;
 
     public Categories(){

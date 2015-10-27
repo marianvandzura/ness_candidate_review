@@ -1,23 +1,27 @@
 package model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
  */
+@Entity
+@Table(name = "Tests")
 public class Tests {
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name = "id")
     private Users userId;
 
+    @Column(name="visible")
     private Boolean visible;
+    @Column(name="position")
     private String position;
+    @Column(name="info")
     private String info;
 
     public Integer getId() {

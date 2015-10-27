@@ -1,24 +1,27 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
  */
 
 @Entity
+@Table(name = "Users")
 public class Users {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(name="permissions")
     private Integer permissions;
+    @Column(name="account")
     private String account;
+    @Column(name="password")
     private String password;
+    @Column(name="email")
     private String email;
 
     public Users(){

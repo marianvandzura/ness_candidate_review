@@ -7,15 +7,20 @@ import javax.persistence.*;
  */
 
 @Entity
+@Table(name = "Options")
 public class Options {
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(name="option")
     private String option;
+    @Column(name="truth")
     private Boolean truth;
 
     @ManyToOne
+    @JoinColumn(name = "id")
     private Questions questionsId;
 
     public Options(){

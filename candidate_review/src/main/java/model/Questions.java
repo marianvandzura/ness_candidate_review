@@ -1,26 +1,32 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Entity
+@Table(name = "Questions")
 public class Questions {
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(name="type")
     private Integer type;
+    @Column(name="question")
     private String question;
+    @Column(name="level")
     private Integer level;
+    @Column(name="code")
     private String code;
+    @Column(name="iamge_url")
     private String imageUrl;
+    @Column(name="language")
+    private String language;
 
-    public Questions(){
+    public Questions() {
         //default
     }
 
@@ -71,4 +77,13 @@ public class Questions {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
 }

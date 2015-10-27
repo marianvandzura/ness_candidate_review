@@ -25,6 +25,14 @@
         <property name="annotatedClasses">
             <list>
                 <value>model.Person</value>
+                <value>model.Candidates</value>
+                <value>model.Categories</value>
+                <value>model.Options</value>
+                <value>model.QuestionResults</value>
+                <value>model.Questions</value>
+                <value>model.Settings</value>
+                <value>model.Tests</value>
+                <value>model.Users</value>
             </list>
         </property>
 
@@ -60,6 +68,38 @@
 
     <!-- register DAO-->
     <bean id="personDao" class="dao.PersonDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="candidatesDao" class="dao.CandidatesDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="categoriesDao" class="dao.CategoriesDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="optionsDao" class="dao.OptionsDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="questionResultsDao" class="dao.QuestionResultsDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="questionsDao" class="dao.QuestionsDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="settingsDao" class="dao.SettingsDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="testsDao" class="dao.TestsDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="usersDao" class="dao.UsersDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

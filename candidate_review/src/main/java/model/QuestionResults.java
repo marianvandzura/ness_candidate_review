@@ -6,13 +6,17 @@ import javax.persistence.*;
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Entity
+@Table(name = "QuestionResults")
 public class QuestionResults {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(name="time")
     private Integer time;
+    @Column(name="google_time")
     private Integer googleTime;
 
 //    @ManyToOne

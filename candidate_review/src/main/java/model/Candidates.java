@@ -1,9 +1,6 @@
 package model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -11,16 +8,23 @@ import java.util.Date;
  */
 
 @Entity
+@Table(name = "Candidates")
 public class Candidates {
 
     @Id
+    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
+    @Column(name="name")
     private String name;
+    @Column(name="surname")
     private String surname;
+    @Column(name="email")
     private String email;
+    @Column(name="timestamp")
     private Date timestamp;
+    @Column(name="total_time")
     private Integer totalTime;
 
     public Candidates(){

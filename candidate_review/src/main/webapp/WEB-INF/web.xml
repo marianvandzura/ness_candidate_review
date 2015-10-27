@@ -18,6 +18,7 @@
 		<!--<url-pattern>*.html</url-pattern>-->
 	</servlet-mapping>
 
+	<!-- application context file-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>WEB-INF/application_context.xml</param-value>
