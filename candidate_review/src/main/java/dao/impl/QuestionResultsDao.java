@@ -1,37 +1,35 @@
-package dao;
+package dao.impl;
 
-import model.Person;
+import dao.IQuestionResultsDao;
+import model.QuestionResults;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 
-
 import javax.transaction.Transactional;
 import java.util.List;
 
 /**
- * Created by Marian_Vandzura on 26.10.2015.
- * object to access Person table
+ * Created by Marian_Vandzura on 27.10.2015.
  */
-//this is used for able to use Transactions
 @Transactional
-public class PersonDao extends HibernateDaoSupport {
+public class QuestionResultsDao extends HibernateDaoSupport implements IQuestionResultsDao {
 
-    public void addPerson(Person person) {
+    public void addQuestionResults(QuestionResults questionResults) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(person);
+        session.saveOrUpdate(questionResults);
         transaction.commit();
     }
 
-    public List<Person> getAllPersons() {
+    public List<QuestionResults> getAllQuestionResults() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Person");
+        Query query = session.createQuery("from QuestionResults ");
 
-        List<Person> persons = query.list();
+        List<QuestionResults> questionResults = query.list();
         transaction.commit();
-        return persons;
+        return questionResults;
     }
 }

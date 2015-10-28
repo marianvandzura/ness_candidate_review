@@ -1,8 +1,7 @@
-package dao;
+package dao.impl;
 
-import model.Questions;
-import model.Settings;
-import model.Tests;
+import dao.IOptionsDao;
+import model.Options;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -15,22 +14,22 @@ import java.util.List;
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Transactional
-public class TestsDao extends HibernateDaoSupport {
+public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
 
-    public void addTests(Tests tests) {
+    public void addOptions(Options options) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(tests);
+        session.saveOrUpdate(options);
         transaction.commit();
     }
 
-    public List<Tests> getAllCategories() {
+    public List<Options> getAllOptiopns() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Tests ");
+        Query query = session.createQuery("from Options ");
 
-        List<Tests> tests = query.list();
+        List<Options> options = query.list();
         transaction.commit();
-        return tests;
+        return options;
     }
 }

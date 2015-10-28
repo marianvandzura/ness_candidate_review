@@ -1,7 +1,7 @@
-package dao;
+package dao.impl;
 
-import model.QuestionResults;
-import model.Questions;
+import dao.ISettingsDao;
+import model.Settings;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,22 +14,22 @@ import java.util.List;
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Transactional
-public class QuestionsDao extends HibernateDaoSupport {
+public class SettingsDao extends HibernateDaoSupport implements ISettingsDao {
 
-    public void addQuestions(Questions questions) {
+    public void addSettings(Settings settings) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(questions);
+        session.saveOrUpdate(settings);
         transaction.commit();
     }
 
-    public List<Questions> getAllCategories() {
+    public List<Settings> getAllSettings() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Questions ");
+        Query query = session.createQuery("from Settings ");
 
-        List<Questions> questions = query.list();
+        List<Settings> settings = query.list();
         transaction.commit();
-        return questions;
+        return settings;
     }
 }

@@ -1,7 +1,8 @@
-package dao;
+package dao.impl;
 
-import model.Tests;
-import model.Users;
+import dao.IQuestionsDao;
+import model.QuestionResults;
+import model.Questions;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,22 +15,22 @@ import java.util.List;
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Transactional
-public class UsersDao extends HibernateDaoSupport {
+public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
 
-    public void addTests(Users users) {
+    public void addQuestions(Questions questions) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(users);
+        session.saveOrUpdate(questions);
         transaction.commit();
     }
 
-    public List<Users> getAllCategories() {
+    public List<Questions> getAllQuestions() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Users ");
+        Query query = session.createQuery("from Questions ");
 
-        List<Users> users = query.list();
+        List<Questions> questions = query.list();
         transaction.commit();
-        return users;
+        return questions;
     }
 }

@@ -1,6 +1,7 @@
-package dao;
+package dao.impl;
 
-import model.Options;
+import dao.ICandidatesDao;
+import model.Candidates;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,22 +14,22 @@ import java.util.List;
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Transactional
-public class OptionsDao extends HibernateDaoSupport {
+public class CandidatesDao  extends HibernateDaoSupport implements ICandidatesDao {
 
-    public void addOptions(Options options) {
+    public void addCandidates(Candidates candidates) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(options);
+        session.saveOrUpdate(candidates);
         transaction.commit();
     }
 
-    public List<Options> getAllCategories() {
+    public List<Candidates> getAllCandidates() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Options ");
+        Query query = session.createQuery("from Candidates ");
 
-        List<Options> options = query.list();
+        List<Candidates> candidates = query.list();
         transaction.commit();
-        return options;
+        return candidates;
     }
 }

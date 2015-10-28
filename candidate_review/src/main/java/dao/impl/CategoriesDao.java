@@ -1,6 +1,7 @@
-package dao;
+package dao.impl;
 
-import model.Settings;
+import dao.ICategoriesDao;
+import model.Categories;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,22 +14,22 @@ import java.util.List;
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Transactional
-public class SettingsDao extends HibernateDaoSupport {
+public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao {
 
-    public void addQuestions(Settings settings) {
+    public void addCategories(Categories categories) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(settings);
+        session.saveOrUpdate(categories);
         transaction.commit();
     }
 
-    public List<Settings> getAllCategories() {
+    public List<Categories> getAllCategories() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Settings ");
+        Query query = session.createQuery("from Categories ");
 
-        List<Settings> settings = query.list();
+        List<Categories> categories = query.list();
         transaction.commit();
-        return settings;
+        return categories;
     }
 }

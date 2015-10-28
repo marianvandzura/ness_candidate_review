@@ -67,39 +67,39 @@
     </bean>
 
     <!-- register DAO-->
-    <bean id="personDao" class="dao.PersonDao">
+    <bean id="personDao" class="dao.impl.PersonDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="candidatesDao" class="dao.CandidatesDao">
+    <bean id="candidatesDao" class="dao.impl.CandidatesDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="categoriesDao" class="dao.CategoriesDao">
+    <bean id="categoriesDao" class="dao.impl.CategoriesDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="optionsDao" class="dao.OptionsDao">
+    <bean id="optionsDao" class="dao.impl.OptionsDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="questionResultsDao" class="dao.QuestionResultsDao">
+    <bean id="questionResultsDao" class="dao.impl.QuestionResultsDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="questionsDao" class="dao.QuestionsDao">
+    <bean id="questionsDao" class="dao.impl.QuestionsDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="settingsDao" class="dao.SettingsDao">
+    <bean id="settingsDao" class="dao.impl.SettingsDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="testsDao" class="dao.TestsDao">
+    <bean id="testsDao" class="dao.impl.TestsDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="usersDao" class="dao.UsersDao">
+    <bean id="usersDao" class="dao.impl.UsersDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
