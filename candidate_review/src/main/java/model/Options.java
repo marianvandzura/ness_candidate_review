@@ -7,10 +7,10 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "Options")
+@Table(name = "options")
 public class Options {
     @Id
-    @Column(name="id")
+    @Column(name="option_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
@@ -19,8 +19,8 @@ public class Options {
     @Column(name="truth")
     private Boolean truth;
 
-    @ManyToOne
-    @JoinColumn(name = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
     private Questions questionsId;
 
     public Options(){

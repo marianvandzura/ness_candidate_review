@@ -25,7 +25,7 @@ public class PersonDao extends HibernateDaoSupport implements IPersonDao {
         session.saveOrUpdate(person);
         transaction.commit();
     }
-
+//@ResponseBody ?
     public List<Person> getAllPersons() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();

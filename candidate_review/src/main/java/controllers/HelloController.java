@@ -1,6 +1,6 @@
 package controllers;
 
-import dao.impl.PersonDao;
+import dao.IPersonDao;
 import model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import java.util.List;
 public class HelloController {
 	//auto set from context
 	@Autowired
-	PersonDao personDao;
+	IPersonDao personDao;
 
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
 	public ModelAndView printWelcome() {

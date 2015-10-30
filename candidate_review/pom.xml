@@ -145,6 +145,13 @@
             <version>9.4-1204-jdbc42</version>
         </dependency>
 
+        <!-- ResponseBody JSON-->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.10</version>
+        </dependency>
+
     </dependencies>
 
     <build>

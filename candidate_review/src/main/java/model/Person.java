@@ -9,11 +9,11 @@ import javax.persistence.*;
 
 //@SequenceGenerator(name = "person_id", sequenceName = "person_id")
 @Entity
-@Table(name = "Person")
+@Table(name = "person")
 public class Person {
 
     @Id
-    @Column(name="id")
+    @Column(name="person_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 

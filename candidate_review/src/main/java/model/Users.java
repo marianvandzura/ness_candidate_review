@@ -7,11 +7,11 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class Users {
 
     @Id
-    @Column(name="id")
+    @Column(name="user_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 

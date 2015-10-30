@@ -1,27 +1,30 @@
 package model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
  */
 
 @Entity
-@Table(name = "Categories")
+@Table(name = "categories")
 public class Categories {
 
     @Id
-    @Column(name="id")
+    @Column(name = "category_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    @Column(name="category_name")
+    @Column(name = "category_name")
     private String categoryName;
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private Questions questionsId;
 
-    public Categories(){
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable
+    private Set<Questions> questions = new HashSet<Questions>(0);
+
+    public Categories() {
         //default
     }
 
@@ -41,11 +44,12 @@ public class Categories {
         this.categoryName = categoryName;
     }
 
-    public Questions getQuestionsId() {
-        return questionsId;
+    public Set<Questions> getQuestions() {
+        return questions;
     }
 
-    public void setQuestionsId(Questions questionsId) {
-        this.questionsId = questionsId;
+    public void setQuestions(Set<Questions> questions) {
+        this.questions = questions;
     }
+
 }
