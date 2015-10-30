@@ -152,6 +152,13 @@
             <version>1.9.10</version>
         </dependency>
 
+        <!-- reporting engine - for test results reports-->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.1.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
