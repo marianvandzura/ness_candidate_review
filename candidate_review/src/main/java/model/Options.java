@@ -10,29 +10,30 @@ import javax.persistence.*;
 @Table(name = "options")
 public class Options {
     @Id
-    @Column(name="option_id")
+    @Column(name = "option_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
-
-    @Column(name="option")
-    private String option;
-    @Column(name="truth")
-    private Boolean truth;
+    private Integer optionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Questions questionsId;
 
-    public Options(){
+    @Column(name = "option")
+    private String option;
+    @Column(name = "truth")
+    private Boolean truth;
+
+
+    public Options() {
         //default
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getOptionId() {
+        return optionId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setOptionId(Integer optionId) {
+        this.optionId = optionId;
     }
 
     public String getOption() {

@@ -16,10 +16,10 @@ import java.util.List;
 @Transactional
 public class QuestionResultsDao extends HibernateDaoSupport implements IQuestionResultsDao {
 
-    public void addQuestionResults(QuestionResults questionResults) {
+    public void addQuestionResult(QuestionResults questionResult) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(questionResults);
+        session.saveOrUpdate(questionResult);
         transaction.commit();
     }
 

@@ -11,29 +11,29 @@ import javax.persistence.*;
 public class Users {
 
     @Id
-    @Column(name="user_id")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Integer userId;
 
-    @Column(name="permissions")
+    @Column(name = "permissions")
     private Integer permissions;
-    @Column(name="account")
+    @Column(name = "account")
     private String account;
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    public Users(){
+    public Users() {
         //default
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getPermissions() {

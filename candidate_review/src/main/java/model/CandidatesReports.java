@@ -1,0 +1,123 @@
+package model;
+
+import javax.persistence.*;
+import java.util.Date;
+
+/**
+ * Created by Marian_Vandzura on 27.10.2015.
+ */
+
+@Entity
+@Table(name = "candidates_reports")
+public class CandidatesReports {
+
+    @Id
+    @Column(name = "report_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer reportId;
+
+    @Column(name = "candidate_name")
+    private String candidateName;
+    @Column(name = "candidate_surname")
+    private String candidateSurname;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "test_name")
+    private String testName;
+    @Column(name = "timestamp")
+    private Date timestamp;
+    @Column(name = "total_time")
+    private Integer totalTime;
+    @Column(name = "number_of_questions")
+    private Integer numberOfQuestions;
+    @Column(name = "test_result")
+    private String testResult;
+    @Column(name = "test_report")
+    private byte[] testReport;
+
+    public CandidatesReports() {
+        //default
+    }
+
+    public Integer getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(Integer reportId) {
+        this.reportId = reportId;
+    }
+
+    public String getCandidateName() {
+        return candidateName;
+    }
+
+    public void setCandidateName(String candidateName) {
+        this.candidateName = candidateName;
+    }
+
+    public String getCandidateSurname() {
+        return candidateSurname;
+    }
+
+    public void setCandidateSurname(String candidateSurname) {
+        this.candidateSurname = candidateSurname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Integer getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(Integer totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public Integer getNumberOfQuestions() {
+        return numberOfQuestions;
+    }
+
+    public void setNumberOfQuestions(Integer numberOfQuestions) {
+        this.numberOfQuestions = numberOfQuestions;
+    }
+
+    public String getTestResult() {
+        return testResult;
+    }
+
+    public void setTestResult(String testResult) {
+        this.testResult = testResult;
+    }
+
+    public byte[] getTestReport() {
+        return testReport;
+    }
+
+    public void setTestReport(byte[] testReport) {
+        this.testReport = testReport;
+    }
+
+
+}

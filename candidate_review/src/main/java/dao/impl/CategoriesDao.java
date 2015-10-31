@@ -16,10 +16,10 @@ import java.util.List;
 @Transactional
 public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao {
 
-    public void addCategories(Categories categories) {
+    public void addCategory(Categories category) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(categories);
+        session.saveOrUpdate(category);
         transaction.commit();
     }
 

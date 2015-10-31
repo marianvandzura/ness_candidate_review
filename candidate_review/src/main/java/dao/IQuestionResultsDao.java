@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface IQuestionResultsDao {
 
-    void addQuestionResults(QuestionResults questionResults);
+    void addQuestionResult(QuestionResults questionResult);
 
     List<QuestionResults> getAllQuestionResults();
 }

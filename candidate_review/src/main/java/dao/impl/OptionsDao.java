@@ -16,10 +16,10 @@ import java.util.List;
 @Transactional
 public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
 
-    public void addOptions(Options options) {
+    public void addOption(Options option) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(options);
+        session.saveOrUpdate(option);
         transaction.commit();
     }
 

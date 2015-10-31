@@ -16,10 +16,10 @@ import java.util.List;
 @Transactional
 public class SettingsDao extends HibernateDaoSupport implements ISettingsDao {
 
-    public void addSettings(Settings settings) {
+    public void addSetting(Settings setting) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(settings);
+        session.saveOrUpdate(setting);
         transaction.commit();
     }
 

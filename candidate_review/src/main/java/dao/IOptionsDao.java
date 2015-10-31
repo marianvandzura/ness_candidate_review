@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface IOptionsDao {
 
-    void addOptions(Options options);
+    void addOption(Options option);
 
     List<Options> getAllOptiopns();
 }

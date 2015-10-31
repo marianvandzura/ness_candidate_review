@@ -17,10 +17,10 @@ import java.util.List;
 @Transactional
 public class UsersDao extends HibernateDaoSupport implements IUsersDao {
 
-    public void addUsers(Users users) {
+    public void addUser(Users user) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(users);
+        session.saveOrUpdate(user);
         transaction.commit();
     }
 
