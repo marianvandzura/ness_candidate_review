@@ -1,9 +1,7 @@
 package dao.impl;
 
 import dao.ICategoriesDao;
-import dto.CategoryDto;
 import model.Categories;
-import model.Questions;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -21,11 +19,14 @@ import java.util.List;
 @Transactional
 public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao {
 
+/*<<<<<<< HEAD
     @Override
     public void addCategories(final Categories categories) {
+=======*/
+    public void addCategory(Categories category) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(categories);
+        session.saveOrUpdate(category);
         transaction.commit();
     }
 

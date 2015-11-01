@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ITestsDao {
 
-    void addTests(Tests tests);
+    void addTest(Tests test);
 
     List<Tests> getAllTests();
 }

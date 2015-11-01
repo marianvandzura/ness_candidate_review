@@ -1,7 +1,5 @@
 package assemblers;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import dao.ICandidatesDao;
 import dao.ICategoriesDao;
 import dto.CategoryDto;
 import dto.QuestionDto;
@@ -30,7 +28,7 @@ public class QuestionAssembler {
 
     public QuestionDto extractDtoFromDomain(final Questions domain) {
         QuestionDto dto = new QuestionDto();
-        dto.setId(domain.getId());
+        dto.setId(domain.getQuestionId());
         dto.setCode(domain.getCode());
         dto.setImageUrl(domain.getImageUrl());
         dto.setLanguage(domain.getLanguage());
@@ -47,7 +45,7 @@ public class QuestionAssembler {
 
     public Questions populateDomainFromDto(final QuestionDto dto) {
         Questions domain = new Questions();
-        domain.setId(dto.getId());
+        domain.setQuestionId(dto.getId());
         domain.setCode(dto.getCode());
         domain.setImageUrl(dto.getImageUrl());
         domain.setLanguage(dto.getLanguage());

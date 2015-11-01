@@ -10,19 +10,19 @@ import javax.persistence.*;
 public class Settings {
 
     @Id
-    @Column(name="setting_id")
+    @Column(name = "setting_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Integer settingId;
 
-    public Settings(){
+    public Settings() {
         //default
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getSettingId() {
+        return settingId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSettingId(Integer settingId) {
+        this.settingId = settingId;
     }
 }

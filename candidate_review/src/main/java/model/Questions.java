@@ -10,21 +10,21 @@ import java.util.Collection;
 @Table(name = "questions")
 public class Questions {
     @Id
-    @Column(name="question_id")
+    @Column(name = "question_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Integer questionId;
 
-    @Column(name="type")
+    @Column(name = "type")
     private Integer type;
-    @Column(name="question")
+    @Column(name = "question")
     private String question;
-    @Column(name="level")
+    @Column(name = "level")
     private Integer level;
-    @Column(name="code")
+    @Column(name = "code")
     private String code;
-    @Column(name="image_url")
+    @Column(name = "image_url")
     private String imageUrl;
-    @Column(name="language")
+    @Column(name = "language")
     private String language;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -34,16 +34,19 @@ public class Questions {
                     nullable = false) })
     private Collection<Categories> categories;
 
+    @ManyToMany(mappedBy = "questions", fetch = FetchType.LAZY)
+    private Collection<Tests> tests;
+
     public Questions() {
         //default
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getQuestionId() {
+        return questionId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
     }
 
     public Integer getType() {
@@ -100,5 +103,13 @@ public class Questions {
 
     public void setCategories(Collection<Categories> categories) {
         this.categories = categories;
+    }
+
+    public Collection<Tests> getTests() {
+        return tests;
+    }
+
+    public void setTests(Collection<Tests> tests) {
+        this.tests = tests;
     }
 }

@@ -15,13 +15,19 @@ import java.util.List;
  */
 @Transactional
 public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
+/*
+<<<<<<< HEAD
     @Override
     public Questions addQuestions(final Questions questions) {
+=======
+*/
+
+    public void addQuestion(Questions question) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(questions);
+        session.saveOrUpdate(question);
         transaction.commit();
-        return questions;
+//        return questions;
     }
 
     @Override
