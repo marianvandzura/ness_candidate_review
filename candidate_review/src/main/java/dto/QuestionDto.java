@@ -1,42 +1,40 @@
-package model;
+package dto;
 
-import javax.persistence.*;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.Column;
+import java.util.List;
 
 /**
- * Created by Marian_Vandzura on 27.10.2015.
+ * Question Data Transfer Object.
+ *
+ * Created by Peter.
  */
-@Entity
-@Table(name = "questions")
-public class Questions {
-    @Id
-    @Column(name="question_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+public class QuestionDto {
+
+    @JsonProperty("id")
     private Integer id;
 
-    @Column(name="type")
+    @JsonProperty("type")
     private Integer type;
-    @Column(name="question")
+
+    @JsonProperty("question")
     private String question;
-    @Column(name="level")
+
+    @JsonProperty("level")
     private Integer level;
-    @Column(name="code")
+
+    @JsonProperty("code")
     private String code;
-    @Column(name="image_url")
+
+    @JsonProperty("url")
     private String imageUrl;
-    @Column(name="language")
+
+    @JsonProperty("language")
     private String language;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "categories_questions", joinColumns = {
-            @JoinColumn(name = "question_id", referencedColumnName="question_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "category_id",referencedColumnName="category_id",
-                    nullable = false) })
-    private Collection<Categories> categories;
-
-    public Questions() {
-        //default
-    }
+    @JsonProperty("categories")
+    private List<CategoryDto> categories;
 
     public Integer getId() {
         return id;
@@ -94,11 +92,11 @@ public class Questions {
         this.language = language;
     }
 
-    public Collection<Categories> getCategories() {
+    public List<CategoryDto> getCategories() {
         return categories;
     }
 
-    public void setCategories(Collection<Categories> categories) {
+    public void setCategories(List<CategoryDto> categories) {
         this.categories = categories;
     }
 }

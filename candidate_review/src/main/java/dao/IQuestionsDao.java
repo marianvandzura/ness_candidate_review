@@ -9,7 +9,9 @@ import java.util.List;
  */
 public interface IQuestionsDao {
 
-    void addQuestions(Questions questions);
+    Questions addQuestions(Questions questions);
 
     List<Questions> getAllQuestions();
+
+    Questions findById(Integer id);
 }
