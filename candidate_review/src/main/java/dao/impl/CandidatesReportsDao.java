@@ -1,7 +1,7 @@
 package dao.impl;
 
-import dao.ICandidatesDao;
-import model.Candidates;
+import dao.ICandidatesReportsDao;
+import model.CandidatesReports;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,21 +14,21 @@ import java.util.List;
  * Created by Marian_Vandzura on 27.10.2015.
  */
 @Transactional
-public class CandidatesDao  extends HibernateDaoSupport implements ICandidatesDao {
+public class CandidatesReportsDao extends HibernateDaoSupport implements ICandidatesReportsDao {
 
-    public void addCandidates(Candidates candidates) {
+    public void addCandidateReport(CandidatesReports candidatesReport) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(candidates);
+        session.saveOrUpdate(candidatesReport);
         transaction.commit();
     }
 
-    public List<Candidates> getAllCandidates() {
+    public List<CandidatesReports> getAllCandidatesReports() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Candidates ");
+        Query query = session.createQuery("from CandidatesReports ");
 
-        List<Candidates> candidates = query.list();
+        List<CandidatesReports> candidates = query.list();
         transaction.commit();
         return candidates;
     }

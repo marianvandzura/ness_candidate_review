@@ -18,10 +18,10 @@ import java.util.List;
 @Transactional
 public class TestsDao extends HibernateDaoSupport implements ITestsDao {
 
-    public void addTests(Tests tests) {
+    public void addTest(Tests test) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(tests);
+        session.saveOrUpdate(test);
         transaction.commit();
     }
 

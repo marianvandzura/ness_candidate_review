@@ -25,7 +25,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>model.Person</value>
-                <value>model.Candidates</value>
+                <value>model.CandidatesReports</value>
                 <value>model.Categories</value>
                 <value>model.Options</value>
                 <value>model.QuestionResults</value>
@@ -71,7 +71,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="candidatesDao" class="dao.impl.CandidatesDao">
+    <bean id="candidatesDao" class="dao.impl.CandidatesReportsDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

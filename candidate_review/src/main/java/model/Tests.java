@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
@@ -9,27 +10,31 @@ import javax.persistence.*;
 @Table(name = "tests")
 public class Tests {
     @Id
-    @Column(name="test_id")
+    @Column(name = "test_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Integer testId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users userId;
 
-    @Column(name="visible")
+    @Column(name = "visible")
     private Boolean visible;
-    @Column(name="position")
+    @Column(name = "position")
     private String position;
-    @Column(name="info")
+    @Column(name = "info")
     private String info;
 
-    public Integer getId() {
-        return id;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable
+    private Collection<Questions> questions;
+
+    public Integer getTestId() {
+        return testId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTestId(Integer testId) {
+        this.testId = testId;
     }
 
     public Users getUserId() {
@@ -62,5 +67,13 @@ public class Tests {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public Collection<Questions> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Collection<Questions> questions) {
+        this.questions = questions;
     }
 }

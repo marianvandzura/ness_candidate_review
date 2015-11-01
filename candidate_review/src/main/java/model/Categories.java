@@ -15,7 +15,7 @@ public class Categories {
     @Id
     @Column(name = "category_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Integer categoryId;
 
     @Column(name = "category_name")
     private String categoryName;
@@ -26,14 +26,6 @@ public class Categories {
 
     public Categories() {
         //default
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getCategoryName() {
@@ -52,4 +44,11 @@ public class Categories {
         this.questions = questions;
     }
 
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 }

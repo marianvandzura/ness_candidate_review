@@ -13,14 +13,14 @@ import javax.persistence.*;
 public class Person {
 
     @Id
-    @Column(name="person_id")
+    @Column(name = "person_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    public Person(){
+    public Person() {
         //default consctructor
     }
 
