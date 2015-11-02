@@ -57,7 +57,7 @@ public class HelloController {
 		question.setCategories(Arrays.asList(category));
 		Questions savedQuestion = questionService.addQuestion(question);
 		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestion.getQuestionId());
-		List<CategoryDto> categoriesForQuestion = categoryService.findByQuestion(questionDtoFromDB.getId());
+		List<CategoryDto> categoriesForQuestion = categoryService.findCategoriesByQuestion(questionDtoFromDB.getId());
 
 		ObjectMapper mapper = new ObjectMapper();
 		String jason = new String();

@@ -7,6 +7,8 @@ import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Question service.
  *
@@ -27,5 +29,9 @@ public class QuestionService {
 
     public Questions addQuestion(final QuestionDto questionDto) {
         return questionsDao.addQuestion(questionAssembler.populateDomainFromDto(questionDto));
+    }
+
+    public List<QuestionDto> findQuesionsByCategory (final Integer categoryId) {
+        return questionAssembler.extractDtosListFromDomain(questionsDao.findQuestionsByCategory(categoryId));
     }
 }

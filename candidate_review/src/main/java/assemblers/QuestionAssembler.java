@@ -59,4 +59,18 @@ public class QuestionAssembler {
         domain.setCategories(catDomains);
         return domain;
     }
+
+    /**
+     * Extract List of DTOs from domain.
+     *
+     * @param domain
+     * @return extracted DTOs
+     */
+    public List<QuestionDto> extractDtosListFromDomain(final List<Questions> domain) {
+        List<QuestionDto> questionDtoArrayList = new ArrayList<QuestionDto>();
+        for (Questions question : domain) {
+            questionDtoArrayList.add(extractDtoFromDomain(question));
+        }
+        return questionDtoArrayList;
+    }
 }

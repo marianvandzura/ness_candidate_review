@@ -14,4 +14,6 @@ public interface IQuestionsDao {
     List<Questions> getAllQuestions();
 
     Questions findQuestionById(Integer id);
+
+    List<Questions> findQuestionsByCategory(Integer categoryId);
 }

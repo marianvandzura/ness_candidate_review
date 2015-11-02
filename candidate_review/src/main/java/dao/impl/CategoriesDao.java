@@ -19,10 +19,7 @@ import java.util.List;
 @Transactional
 public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao {
 
-/*<<<<<<< HEAD
     @Override
-    public void addCategories(final Categories categories) {
-=======*/
     public void addCategory(Categories category) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -51,7 +48,7 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
          * For getting id of qustion use question.id again name of the property in model class.
          */
         criteria.createAlias("questions","question", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("question.id",questionId));
+        criteria.add(Restrictions.eq("question.id", questionId));
         List<Categories> catList = (List<Categories>) criteria.list();
         transaction.commit();
         return catList;
