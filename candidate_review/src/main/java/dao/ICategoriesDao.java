@@ -12,4 +12,20 @@ public interface ICategoriesDao {
     void addCategory(Categories categories);
 
     List<Categories> getAllCategories();
+
+    /**
+     * Find all categories releated to question.
+     *
+     * @param questionId
+     * @return List of categories.
+     */
+    List<Categories> findCategoriesByQuestion(Integer questionId);
+
+    /**
+     * Find Category by id.
+     *
+     * @param id
+     * @return
+     */
+    Categories findById(Integer id);
 }

@@ -20,8 +20,7 @@ public class Categories {
     @Column(name = "category_name")
     private String categoryName;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     private Set<Questions> questions = new HashSet<Questions>(0);
 
     public Categories() {

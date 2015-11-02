@@ -1,13 +1,22 @@
 package controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.IPersonDao;
-import model.Person;
+import dto.CategoryDto;
+import dto.QuestionDto;
+import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import service.CategoryService;
+import service.PersonService;
+import service.QuestionService;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -17,18 +26,47 @@ public class HelloController {
 	@Autowired
 	IPersonDao personDao;
 
+	@Autowired
+	PersonService personService;
+
+	@Autowired
+	QuestionService questionService;
+
+	@Autowired
+	CategoryService categoryService;
+
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
-	public ModelAndView printWelcome() {
+	public @ResponseBody List<CategoryDto> printWelcome() {
 		//model.addAttribute("message", "Hello world!");
 		//return name(location) of view template
 		ModelAndView modelAndView = new ModelAndView("hello");
-		Person person = new Person();
-		person.setName("NESS");
-		personDao.addPerson(person);
+//		Person person = new Person();
+//		person.setName("NESS");
+//		personDao.addPerson(person);
+//		List<Person> persons = personService.getAll();
+//		modelAndView.addObject("persons", fromDB);
 
+		QuestionDto question = new QuestionDto();
+		CategoryDto category = new CategoryDto();
+		category.setId(1);
+		question.setType(20);
+		question.setQuestion("xxxx");
+		question.setLanguage("mongolsky");
+		question.setLevel(20);
+		question.setCode("akoze");
+		question.setCategories(Arrays.asList(category));
+		Questions savedQuestion = questionService.addQuestion(question);
+		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestion.getQuestionId());
+		List<CategoryDto> categoriesForQuestion = categoryService.findCategoriesByQuestion(questionDtoFromDB.getId());
 
-		List<Person> persons = personDao.getAllPersons();
-        modelAndView.addObject("persons", persons);
-		return modelAndView;
+		ObjectMapper mapper = new ObjectMapper();
+		String jason = new String();
+		try {
+			jason = mapper.writeValueAsString(questionDtoFromDB);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		modelAndView.addObject("persons", savedQuestion.getCategories());
+		return categoriesForQuestion;
 	}
 }

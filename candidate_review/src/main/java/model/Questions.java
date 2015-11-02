@@ -27,7 +27,11 @@ public class Questions {
     @Column(name = "language")
     private String language;
 
-    @ManyToMany(mappedBy = "questions", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "categories_questions", joinColumns = {
+            @JoinColumn(name = "question_id", referencedColumnName="question_id", nullable = false) },
+            inverseJoinColumns = { @JoinColumn(name = "category_id",referencedColumnName="category_id",
+                    nullable = false) })
     private Collection<Categories> categories;
 
     @ManyToMany(mappedBy = "questions", fetch = FetchType.LAZY)
