@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class QuestionController {
 
-    @RequestMapping(value = "/{id}/qest" ,method= RequestMethod.GET)
-    public String getQestion(@PathVariable(value="id") String id) {
+    @RequestMapping(value = "/{id}/qest", method = RequestMethod.GET)
+    public String getQuestion(@PathVariable(value = "id") String id) {
         Questions question = new Questions();
 
         return "index";

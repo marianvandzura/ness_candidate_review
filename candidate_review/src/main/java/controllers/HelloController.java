@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.IPersonDao;
 import dto.CategoryDto;
 import dto.QuestionDto;
-import model.Categories;
-import model.Person;
 import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,18 +55,18 @@ public class HelloController {
 		question.setLevel(20);
 		question.setCode("akoze");
 		question.setCategories(Arrays.asList(category));
-		Questions saved = questionService.addQuestion(question);
-		QuestionDto fromDB = questionService.getById(saved.getId());
-		List<CategoryDto> categoriesForQ = categoryService.findByQuestion(fromDB.getId());
+		Questions savedQuestion = questionService.addQuestion(question);
+		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestion.getQuestionId());
+		List<CategoryDto> categoriesForQuestion = categoryService.findByQuestion(questionDtoFromDB.getId());
 
 		ObjectMapper mapper = new ObjectMapper();
 		String jason = new String();
 		try {
-			jason = mapper.writeValueAsString(fromDB);
+			jason = mapper.writeValueAsString(questionDtoFromDB);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		modelAndView.addObject("persons", saved.getCategories());
-		return categoriesForQ;
+		modelAndView.addObject("persons", savedQuestion.getCategories());
+		return categoriesForQuestion;
 	}
 }

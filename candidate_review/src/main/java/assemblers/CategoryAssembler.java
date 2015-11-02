@@ -23,10 +23,10 @@ public class CategoryAssembler {
      * @return extracted DTO
      */
     public CategoryDto extractDtoFromDomain(final Categories domain) {
-        CategoryDto dto = new CategoryDto();
-        dto.setId(domain.getId());
-        dto.setCategoryName(domain.getCategoryName());
-        return dto;
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(domain.getCategoryId());
+        categoryDto.setCategoryName(domain.getCategoryName());
+        return categoryDto;
     }
 
     /**
@@ -36,10 +36,10 @@ public class CategoryAssembler {
      * @return extracted DTOs
      */
     public List<CategoryDto> extractDtoFromDomain(final List<Categories> domain) {
-        List<CategoryDto> dto = new ArrayList<CategoryDto>();
+        List<CategoryDto> categoryDtoArrayList = new ArrayList<CategoryDto>();
        for (Categories category : domain) {
-           dto.add(extractDtoFromDomain(category));
+           categoryDtoArrayList.add(extractDtoFromDomain(category));
        }
-        return dto;
+        return categoryDtoArrayList;
     }
 }
