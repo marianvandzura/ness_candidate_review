@@ -37,7 +37,7 @@ public class HelloController {
 
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
     @ResponseBody
-	public QuestionDto printWelcome() {
+	public List<CategoryDto> printWelcome() {
 		//model.addAttribute("message", "Hello world!");
 		//return name(location) of view template
 		ModelAndView modelAndView = new ModelAndView("hello");
@@ -70,6 +70,6 @@ public class HelloController {
 			e.printStackTrace();
 		}
 		modelAndView.addObject("persons", savedQuestion.getCategories());
-		return questionDtoFromDB;
+		return categoriesForQuestion;
 	}
 }

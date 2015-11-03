@@ -49,7 +49,7 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
          * For getting id of qustion use question.id again name of the property in model class.
          */
         criteria.createAlias("questions","question", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("question.id", questionId));
+        criteria.add(Restrictions.eq("question.questionId", questionId));
         List<Categories> catList = (List<Categories>) criteria.list();
         transaction.commit();
         return catList;
