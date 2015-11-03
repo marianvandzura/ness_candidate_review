@@ -53,6 +53,7 @@ public class QuestionAssembler {
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
         List<Categories> catDomains = new ArrayList<Categories>();
+        //TODO ?
         for (CategoryDto categoryDto : dto.getCategories()) {
             catDomains.add(categoriesDao.findById(1));
         }

@@ -9,7 +9,9 @@ import java.util.List;
  */
 public interface IOptionsDao {
 
-    void addOption(Options option);
+    Options addOption(Options option);
 
     List<Options> getAllOptiopns();
+
+    List<Options> findOptionsByQuestion(Integer questionId);
 }
