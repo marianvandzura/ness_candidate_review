@@ -11,7 +11,7 @@ public interface IOptionsDao {
 
     Options addOption(Options option);
 
-    List<Options> getAllOptiopns();
+    List<Options> getAllOptions();
 
     List<Options> findOptionsByQuestion(Integer questionId);
 }

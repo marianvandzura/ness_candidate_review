@@ -18,7 +18,7 @@ public class OptionDto {
     @JsonProperty("truth")
     private Boolean truth;
 
-    @JsonProperty("question_id")
+    @JsonProperty("questionId")
     private Integer questionId;
 
     public OptionDto() {

@@ -21,16 +21,6 @@ import java.util.List;
 @Component
 public class OptionAssembler {
 
-    @Autowired
-    IOptionsDao optionsDao;
-
-    @Autowired
-    OptionAssembler optionAssembler;
-
-
-    @Autowired
-    IQuestionsDao questionsDao;
-
     public OptionAssembler(){
         //default
     }

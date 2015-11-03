@@ -29,7 +29,7 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-    public List<Options> getAllOptiopns() {
+    public List<Options> getAllOptions() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Options ");
