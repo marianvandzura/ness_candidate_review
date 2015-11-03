@@ -24,6 +24,10 @@ public class CategoryService {
     @Autowired
     CategoryAssembler categoryAssembler;
 
+    public Categories addCategory(final CategoryDto categoryDto) {
+        return categoriesDao.addCategory(categoryAssembler.populateDomainFromDto(categoryDto));
+    }
+
     public List<CategoryDto> findCategoriesByQuestion(final Integer questId) {
         return categoryAssembler.extractDtoFromDomain(categoriesDao.findCategoriesByQuestion(questId));
     }
