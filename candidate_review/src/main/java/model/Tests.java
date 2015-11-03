@@ -1,5 +1,7 @@
 package model;
 
+import dto.UserDto;
+
 import javax.persistence.*;
 import java.util.Collection;
 
