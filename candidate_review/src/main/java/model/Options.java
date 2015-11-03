@@ -16,7 +16,7 @@ public class Options {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    private Questions questionsId;
+    private Questions question;
 
     @Column(name = "option")
     private String option;
@@ -26,6 +26,28 @@ public class Options {
 
     public Options() {
         //default
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
+            return false;
+        }
+        Options option = (Options) obj;
+        return (this.optionId == option.getOptionId())
+                && (this.option.equals(option.getOption()));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+        result = 31 * result + optionId;
+        result = 31 * result + (option != null ? option.hashCode() : 0);
+        return result;
     }
 
     public Integer getOptionId() {
@@ -52,11 +74,11 @@ public class Options {
         this.truth = truth;
     }
 
-    public Questions getQuestionsId() {
-        return questionsId;
+    public Questions getQuestion() {
+        return question;
     }
 
-    public void setQuestionsId(Questions questionsId) {
-        this.questionsId = questionsId;
+    public void setQuestion(Questions question) {
+        this.question = question;
     }
 }

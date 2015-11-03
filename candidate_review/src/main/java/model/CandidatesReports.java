@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -24,8 +25,8 @@ public class CandidatesReports {
     private String email;
     @Column(name = "test_name")
     private String testName;
-    @Column(name = "timestamp")
-    private Date timestamp;
+    @Column(name = "date")
+    private Timestamp date;
     @Column(name = "total_time")
     private Integer totalTime;
     @Column(name = "number_of_questions")
@@ -37,6 +38,31 @@ public class CandidatesReports {
 
     public CandidatesReports() {
         //default
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
+            return false;
+        }
+       CandidatesReports candidatesReport = (CandidatesReports) obj;
+        return (this.reportId == candidatesReport.getReportId())
+                && (this.email.equals(candidatesReport.getEmail())
+                && (this.testName.equals(candidatesReport.getTestName()))
+                && (this.date.getTime() == candidatesReport.getDate().getTime()));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+        result = 31 * result + reportId;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (testName != null ? testName.hashCode() : 0);
+        return result;
     }
 
     public Integer getReportId() {
@@ -79,12 +105,12 @@ public class CandidatesReports {
         this.testName = testName;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
+    public Timestamp getDate() {
+        return date;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
     public Integer getTotalTime() {

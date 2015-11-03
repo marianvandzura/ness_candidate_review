@@ -36,7 +36,8 @@ public class HelloController {
 	CategoryService categoryService;
 
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
-	public @ResponseBody List<CategoryDto> printWelcome() {
+    @ResponseBody
+	public QuestionDto printWelcome() {
 		//model.addAttribute("message", "Hello world!");
 		//return name(location) of view template
 		ModelAndView modelAndView = new ModelAndView("hello");
@@ -49,11 +50,13 @@ public class HelloController {
 		QuestionDto question = new QuestionDto();
 		CategoryDto category = new CategoryDto();
 		category.setId(1);
+        category.setCategoryName("Java category");
+
 		question.setType(20);
-		question.setQuestion("xxxx");
-		question.setLanguage("mongolsky");
+		question.setQuestion("What's your name?");
+		question.setLanguage("EN");
 		question.setLevel(20);
-		question.setCode("akoze");
+		question.setCode("no code");
 		question.setCategories(Arrays.asList(category));
 		Questions savedQuestion = questionService.addQuestion(question);
 		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestion.getQuestionId());
@@ -67,6 +70,6 @@ public class HelloController {
 			e.printStackTrace();
 		}
 		modelAndView.addObject("persons", savedQuestion.getCategories());
-		return categoriesForQuestion;
+		return questionDtoFromDB;
 	}
 }

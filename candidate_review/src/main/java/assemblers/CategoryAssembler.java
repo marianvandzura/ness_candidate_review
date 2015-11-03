@@ -1,7 +1,9 @@
 package assemblers;
 
 import dto.CategoryDto;
+import dto.QuestionDto;
 import model.Categories;
+import model.Questions;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,6 +29,19 @@ public class CategoryAssembler {
         categoryDto.setId(domain.getCategoryId());
         categoryDto.setCategoryName(domain.getCategoryName());
         return categoryDto;
+    }
+
+    public Categories populateDomainFromDto(final CategoryDto dto) {
+        Categories domain = new Categories();
+        domain.setCategoryId(dto.getId());
+        domain.setCategoryName(dto.getCategoryName());
+
+//        List<Questions> questionDomains = new ArrayList<Questions>();
+//        //TODO ?
+//        for (QuestionDto questionDto : dto.get()) {
+//            catDomains.add(categoriesDao.findById(1));
+//        }
+        return domain;
     }
 
     /**

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ICategoriesDao {
 
-    void addCategory(Categories categories);
+    Categories addCategory(Categories categories);
 
     List<Categories> getAllCategories();
 
