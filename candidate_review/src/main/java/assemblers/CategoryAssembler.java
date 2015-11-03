@@ -4,18 +4,22 @@ import dto.CategoryDto;
 import dto.QuestionDto;
 import model.Categories;
 import model.Questions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  Class for assembling Category objects to DTO(Data Transprt Objects) from domain.
- *
+ * Class for assembling Category objects to DTO(Data Transprt Objects) from domain.
+ * <p>
  * Created by Peter.
  */
 @Component
 public class CategoryAssembler {
+
+    @Autowired
+    QuestionAssembler questionAssembler;
 
     /**
      * Extract DTO from domain.
@@ -31,16 +35,21 @@ public class CategoryAssembler {
         return categoryDto;
     }
 
+    /**
+     * create domain object from DTO
+     * @param dto
+     * @return domain object
+     */
     public Categories populateDomainFromDto(final CategoryDto dto) {
         Categories domain = new Categories();
         domain.setCategoryId(dto.getId());
         domain.setCategoryName(dto.getCategoryName());
 
-//        List<Questions> questionDomains = new ArrayList<Questions>();
-//        //TODO ?
-//        for (QuestionDto questionDto : dto.get()) {
-//            catDomains.add(categoriesDao.findById(1));
-//        }
+        List<Questions> questionDomains = new ArrayList<Questions>();
+        for (QuestionDto questionDto : dto.getQuestions()) {
+            questionDomains.add(questionAssembler.populateDomainFromDto(questionDto));
+        }
+        domain.setQuestions(questionDomains);
         return domain;
     }
 
@@ -52,9 +61,9 @@ public class CategoryAssembler {
      */
     public List<CategoryDto> extractDtoFromDomain(final List<Categories> domain) {
         List<CategoryDto> categoryDtoArrayList = new ArrayList<CategoryDto>();
-       for (Categories category : domain) {
-           categoryDtoArrayList.add(extractDtoFromDomain(category));
-       }
+        for (Categories category : domain) {
+            categoryDtoArrayList.add(extractDtoFromDomain(category));
+        }
         return categoryDtoArrayList;
     }
 }

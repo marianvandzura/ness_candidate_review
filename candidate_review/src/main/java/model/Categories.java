@@ -1,8 +1,9 @@
 package model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
@@ -14,14 +15,14 @@ public class Categories {
 
     @Id
     @Column(name = "category_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer categoryId;
 
     @Column(name = "category_name")
     private String categoryName;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
-    private Set<Questions> questions = new HashSet<Questions>(0);
+    private Collection<Questions> questions;
 
     public Categories() {
         //default
@@ -57,11 +58,11 @@ public class Categories {
         this.categoryName = categoryName;
     }
 
-    public Set<Questions> getQuestions() {
+    public Collection<Questions> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(Set<Questions> questions) {
+    public void setQuestions(Collection<Questions> questions) {
         this.questions = questions;
     }
 

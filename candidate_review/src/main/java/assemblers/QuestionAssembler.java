@@ -43,6 +43,11 @@ public class QuestionAssembler {
         return dto;
     }
 
+    /**
+     * create domain object from DTO
+     * @param dto
+     * @return domain object
+     */
     public Questions populateDomainFromDto(final QuestionDto dto) {
         Questions domain = new Questions();
         domain.setQuestionId(dto.getId());

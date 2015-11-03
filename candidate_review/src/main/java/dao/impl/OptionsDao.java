@@ -49,7 +49,7 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
          * For getting id of qustion use question.id again name of the property in model class.
          */
         criteria.createAlias("options","option", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("option.id", questionId));
+        criteria.add(Restrictions.eq("option.optionId", questionId));
         List<Options> catList = (List<Options>) criteria.list();
         transaction.commit();
         return catList;

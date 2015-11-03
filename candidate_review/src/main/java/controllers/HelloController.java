@@ -50,7 +50,7 @@ public class HelloController {
 		QuestionDto question = new QuestionDto();
 		CategoryDto category = new CategoryDto();
 		category.setId(1);
-        category.setCategoryName("Java category");
+		category.setCategoryName("Java category");
 
 		question.setType(20);
 		question.setQuestion("What's your name?");
@@ -59,17 +59,19 @@ public class HelloController {
 		question.setCode("no code");
 		question.setCategories(Arrays.asList(category));
 		Questions savedQuestion = questionService.addQuestion(question);
-		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestion.getQuestionId());
-		List<CategoryDto> categoriesForQuestion = categoryService.findCategoriesByQuestion(questionDtoFromDB.getId());
 
-		ObjectMapper mapper = new ObjectMapper();
-		String jason = new String();
-		try {
-			jason = mapper.writeValueAsString(questionDtoFromDB);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		modelAndView.addObject("persons", savedQuestion.getCategories());
+		int savedQuestionId = savedQuestion.getQuestionId();
+		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestionId);
+		List<CategoryDto> categoriesForQuestion = categoryService.findCategoriesByQuestion(savedQuestionId);
+
+//		ObjectMapper mapper = new ObjectMapper();
+//		String jason = new String();
+//		try {
+//			jason = mapper.writeValueAsString(questionDtoFromDB);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//		modelAndView.addObject("persons", savedQuestion.getCategories());
 		return questionDtoFromDB;
 	}
 }

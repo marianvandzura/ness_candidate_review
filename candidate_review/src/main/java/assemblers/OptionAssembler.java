@@ -40,6 +40,12 @@ public class OptionAssembler {
     }
 
 
+    /**
+     * create domain object from DTO
+     * @param dto
+     * @param questionsDao
+     * @return domain object
+     */
     public Options populateDomainFromDto(final OptionDto dto, IQuestionsDao questionsDao) {
         Options domain = new Options();
         domain.setOptionId(dto.getId());
