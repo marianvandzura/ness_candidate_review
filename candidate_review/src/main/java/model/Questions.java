@@ -29,9 +29,9 @@ public class Questions {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "categories_questions", joinColumns = {
-            @JoinColumn(name = "question_id", referencedColumnName="question_id", nullable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "category_id",referencedColumnName="category_id",
-                    nullable = false) })
+            @JoinColumn(name = "question_id", referencedColumnName = "question_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "category_id",
+                    nullable = false)})
     private Collection<Categories> categories;
 
     @ManyToMany(mappedBy = "questions", fetch = FetchType.LAZY)
@@ -39,6 +39,32 @@ public class Questions {
 
     public Questions() {
         //default
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
+            return false;
+        }
+        Questions question = (Questions) obj;
+        return (this.questionId == question.getQuestionId())
+                && (this.type == question.getType())
+                && (this.question.equals(question.getQuestion()))
+                && (this.level == question.getLevel())
+                && (this.code.equals(question.code));
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 0;
+        result = 31 * result + questionId;
+        result = 31 * result + (question != null ? question.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 
     public Integer getQuestionId() {
