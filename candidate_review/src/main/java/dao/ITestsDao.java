@@ -9,7 +9,9 @@ import java.util.List;
  */
 public interface ITestsDao {
 
-    void addTest(Tests test);
+    Tests addTest(Tests test);
 
     List<Tests> getAllTests();
+
+    Tests findById(Integer id);
 }

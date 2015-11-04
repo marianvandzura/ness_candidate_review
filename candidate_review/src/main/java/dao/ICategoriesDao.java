@@ -13,13 +13,13 @@ public interface ICategoriesDao {
 
     List<Categories> getAllCategories();
 
-    /**
-     * Find all categories releated to question.
-     *
-     * @param questionId
-     * @return List of categories.
-     */
-    List<Categories> findCategoriesByQuestion(Integer questionId);
+//    /**
+//     * Find all categories releated to question.
+//     *
+//     * @param questionId
+//     * @return List of categories.
+//     */
+//    List<Categories> findCategoriesByQuestion(Integer questionId);
 
     /**
      * Find Category by id.

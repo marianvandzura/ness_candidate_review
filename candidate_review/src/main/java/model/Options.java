@@ -16,7 +16,7 @@ public class Options {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    private Questions questionsId;
+    private Questions question;
 
     @Column(name = "option")
     private String option;
@@ -74,11 +74,11 @@ public class Options {
         this.truth = truth;
     }
 
-    public Questions getQuestionsId() {
-        return questionsId;
+    public Questions getQuestion() {
+        return question;
     }
 
-    public void setQuestionsId(Questions questionsId) {
-        this.questionsId = questionsId;
+    public void setQuestion(Questions question) {
+        this.question = question;
     }
 }
