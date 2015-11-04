@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,16 +46,7 @@ public class QuestionAssembler {
         domain.setLevel(dto.getLevel());
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
-<<<<<<< HEAD
-        List<Categories> catDomains = new ArrayList<Categories>();
-        //TODO ?
-        for (CategoryDto categoryDto : dto.getCategories()) {
-            catDomains.add(categoriesDao.findById(1));
-        }
-        domain.setCategories(catDomains);
-=======
         domain.setCategory(categoriesDao.findById(dto.getCategory().getId()));
->>>>>>> refs/remotes/origin/master
         return domain;
     }
 
@@ -66,7 +56,7 @@ public class QuestionAssembler {
      * @param domain
      * @return extracted DTOs
      */
-    public List<QuestionDto> extractDtosListFromDomain(final Collection<Questions> domain) {
+    public List<QuestionDto> extractDtosListFromDomain(final List<Questions> domain) {
         List<QuestionDto> questionDtoArrayList = new ArrayList<QuestionDto>();
         for (Questions question : domain) {
             questionDtoArrayList.add(extractDtoFromDomain(question));
