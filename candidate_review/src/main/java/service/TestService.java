@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Created by Peter on 4.11.2015.
  */
+@Service
 public class TestService {
     @Autowired
     ITestsDao testsDao;

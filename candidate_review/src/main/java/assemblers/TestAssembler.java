@@ -32,7 +32,7 @@ public class TestAssembler {
     @Autowired
     UserAssembler userAssembler;
 
-    public TestsAssembler() {
+    public TestAssembler() {
         // default
     }
 
