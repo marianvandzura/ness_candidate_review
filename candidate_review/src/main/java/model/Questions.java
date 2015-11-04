@@ -46,7 +46,7 @@ public class Questions {
         }
         Questions question = (Questions) obj;
         return (this.questionId == question.getQuestionId())
-                && (this.type == question.getType())
+                && (this.type!= null &&  this.type.equals(question.getType()))
                 && (this.question != null && this.question.equals(question.getQuestion()))
                 && (this.level == question.getLevel())
                 && (this.code != null && this.code.equals(question.code));
