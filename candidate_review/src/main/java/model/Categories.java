@@ -20,9 +20,6 @@ public class Categories {
     @Column(name = "category_name")
     private String categoryName;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
-    private Set<Questions> questions = new HashSet<Questions>(0);
-
     public Categories() {
         //default
     }
@@ -38,7 +35,7 @@ public class Categories {
         }
         Categories category = (Categories) obj;
         return (this.categoryId == category.getCategoryId())
-                && (this.categoryName.equals(category.getCategoryName()));
+                && (this.categoryName != null && this.categoryName.equals(category.getCategoryName()));
     }
 
     @Override
@@ -55,14 +52,6 @@ public class Categories {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public Set<Questions> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(Set<Questions> questions) {
-        this.questions = questions;
     }
 
     public Integer getCategoryId() {

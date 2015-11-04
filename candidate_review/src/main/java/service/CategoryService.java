@@ -2,13 +2,8 @@ package service;
 
 import assemblers.CategoryAssembler;
 import dao.ICategoriesDao;
-import dao.impl.CategoriesDao;
-import dto.CategoryDto;
-import model.Categories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Category service
@@ -24,6 +19,7 @@ public class CategoryService {
     @Autowired
     CategoryAssembler categoryAssembler;
 
+<<<<<<< HEAD
     public Categories addCategory(final CategoryDto categoryDto) {
         return categoriesDao.addCategory(categoryAssembler.populateDomainFromDto(categoryDto));
     }
@@ -31,6 +27,8 @@ public class CategoryService {
     public List<CategoryDto> findCategoriesByQuestion(final Integer questId) {
         return categoryAssembler.extractDtoFromDomain(categoriesDao.findCategoriesByQuestion(questId));
     }
+=======
+>>>>>>> refs/remotes/origin/master
 
 
 }

@@ -3,7 +3,6 @@ package service;
 import assemblers.QuestionAssembler;
 import dao.IQuestionsDao;
 import dto.QuestionDto;
-import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,8 @@ public class QuestionService {
         return questionAssembler.extractDtoFromDomain(questionsDao.findQuestionById(id));
     }
 
-    public Questions addQuestion(final QuestionDto questionDto) {
-        return questionsDao.addQuestion(questionAssembler.populateDomainFromDto(questionDto));
+    public QuestionDto addQuestion(final QuestionDto questionDto) {
+        return questionAssembler.extractDtoFromDomain(questionsDao.addQuestion(questionAssembler.populateDomainFromDto(questionDto)));
     }
 
     public List<QuestionDto> findQuesionsByCategory (final Integer categoryId) {

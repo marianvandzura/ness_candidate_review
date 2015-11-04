@@ -49,10 +49,10 @@ public class CandidatesReports {
         if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
             return false;
         }
-       CandidatesReports candidatesReport = (CandidatesReports) obj;
+        CandidatesReports candidatesReport = (CandidatesReports) obj;
         return (this.reportId == candidatesReport.getReportId())
-                && (this.email.equals(candidatesReport.getEmail())
-                && (this.testName.equals(candidatesReport.getTestName()))
+                && (this.email != null && this.email.equals(candidatesReport.getEmail())
+                && (this.testName != null && this.testName.equals(candidatesReport.getTestName()))
                 && (this.date.getTime() == candidatesReport.getDate().getTime()));
     }
 

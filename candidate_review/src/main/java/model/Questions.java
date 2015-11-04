@@ -27,15 +27,9 @@ public class Questions {
     @Column(name = "language")
     private String language;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "categories_questions", joinColumns = {
-            @JoinColumn(name = "question_id", referencedColumnName = "question_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "category_id",
-                    nullable = false)})
-    private Collection<Categories> categories;
-
-    @ManyToMany(mappedBy = "questions", fetch = FetchType.LAZY)
-    private Collection<Tests> tests;
+    @ManyToOne//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")//, nullable = false)
+    private Categories category;
 
     public Questions() {
         //default
@@ -53,9 +47,9 @@ public class Questions {
         Questions question = (Questions) obj;
         return (this.questionId == question.getQuestionId())
                 && (this.type == question.getType())
-                && (this.question.equals(question.getQuestion()))
+                && (this.question != null && this.question.equals(question.getQuestion()))
                 && (this.level == question.getLevel())
-                && (this.code.equals(question.code));
+                && (this.code != null && this.code.equals(question.code));
     }
 
     @Override
@@ -123,19 +117,11 @@ public class Questions {
         this.language = language;
     }
 
-    public Collection<Categories> getCategories() {
-        return categories;
+    public Categories getCategory() {
+        return category;
     }
 
-    public void setCategories(Collection<Categories> categories) {
-        this.categories = categories;
-    }
-
-    public Collection<Tests> getTests() {
-        return tests;
-    }
-
-    public void setTests(Collection<Tests> tests) {
-        this.tests = tests;
+    public void setCategory(Categories category) {
+        this.category = category;
     }
 }

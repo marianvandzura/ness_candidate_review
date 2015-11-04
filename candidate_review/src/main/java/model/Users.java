@@ -39,7 +39,7 @@ public class Users {
         }
         Users user = (Users) obj;
         return (this.userId == user.getUserId())
-                && (this.email.equals(user.getEmail()));
+                && (this.email != null && this.email.equals(user.getEmail()));
     }
 
     @Override

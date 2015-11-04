@@ -57,7 +57,7 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
          * Joining Questions table based on the name of the property in {@link Questions}.
          * For getting id of qustion use question.id again name of the property in model class.
          */
-        criteria.createAlias("categories","category", JoinType.INNER_JOIN);
+        criteria.createAlias("category","category", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("category.id", categoryId));
         List<Questions> catList = (List<Questions>) criteria.list();
         transaction.commit();

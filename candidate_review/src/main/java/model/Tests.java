@@ -27,11 +27,13 @@ public class Tests {
     @Column(name = "info")
     private String info;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "test_questions",
+            joinColumns = @JoinColumn(name = "test_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "question_id", nullable = false))
     private Collection<Questions> questions;
 
-    public Tests(){
+    public Tests() {
         //default
     }
 
@@ -46,8 +48,8 @@ public class Tests {
         }
         Tests test = (Tests) obj;
         return (this.testId == test.getTestId())
-                && (this.info.equals(test.getInfo()))
-                && (this.position.equals(test.getPosition()));
+                && (this.info != null && this.info.equals(test.getInfo()))
+                && (this.position != null && this.position.equals(test.getPosition()));
     }
 
     @Override

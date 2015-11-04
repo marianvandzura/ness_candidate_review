@@ -34,7 +34,7 @@ public class QuestionDto {
     private String language;
 
     @JsonProperty("categories")
-    private List<CategoryDto> categories;
+    private CategoryDto category;
 
     public Integer getId() {
         return id;
@@ -92,11 +92,11 @@ public class QuestionDto {
         this.language = language;
     }
 
-    public List<CategoryDto> getCategories() {
-        return categories;
+    public CategoryDto getCategory() {
+        return category;
     }
 
-    public void setCategories(List<CategoryDto> categories) {
-        this.categories = categories;
+    public void setCategory(CategoryDto category) {
+        this.category = category;
     }
 }

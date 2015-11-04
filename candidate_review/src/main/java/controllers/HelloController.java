@@ -1,11 +1,9 @@
 package controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.ICategoriesDao;
 import dao.IPersonDao;
 import dto.CategoryDto;
 import dto.QuestionDto;
-import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +14,6 @@ import service.CategoryService;
 import service.PersonService;
 import service.QuestionService;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -35,9 +32,16 @@ public class HelloController {
 	@Autowired
 	CategoryService categoryService;
 
+	@Autowired
+	ICategoriesDao categoriesDao;
+
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
+<<<<<<< HEAD
     @ResponseBody
 	public List<CategoryDto> printWelcome() {
+=======
+	public @ResponseBody List<QuestionDto> printWelcome() {
+>>>>>>> refs/remotes/origin/master
 		//model.addAttribute("message", "Hello world!");
 		//return name(location) of view template
 		ModelAndView modelAndView = new ModelAndView("hello");
@@ -47,8 +51,22 @@ public class HelloController {
 //		List<Person> persons = personService.getAll();
 //		modelAndView.addObject("persons", fromDB);
 
+//		QuestionDto question = new QuestionDto();
+//		CategoryDto category = new CategoryDto();
+//		category.setId(1);
+//		question.setType(20);
+//		question.setQuestion("xxxx");
+//		question.setLanguage("mongolsky");
+//		question.setLevel(20);
+//		question.setCode("akoze");
+//		question.setCategories(Arrays.asList(category));
+//		Questions savedQuestion = questionService.addQuestion(question);
+//		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestion.getQuestionId());
+//		List<CategoryDto> categoriesForQuestion = categoryService.findCategoriesByQuestion(questionDtoFromDB.getId());
+
 		QuestionDto question = new QuestionDto();
 		CategoryDto category = new CategoryDto();
+<<<<<<< HEAD
 		category.setId(1);
         category.setCategoryName("Java category");
 
@@ -61,15 +79,29 @@ public class HelloController {
 		Questions savedQuestion = questionService.addQuestion(question);
 		QuestionDto questionDtoFromDB = questionService.getQuestionById(savedQuestion.getQuestionId());
 		List<CategoryDto> categoriesForQuestion = categoryService.findCategoriesByQuestion(questionDtoFromDB.getId());
+=======
+//		Categories category = new Categories();
+		category.setId(21);
+//		category.setCategoryName("JAVA");
 
-		ObjectMapper mapper = new ObjectMapper();
-		String jason = new String();
-		try {
-			jason = mapper.writeValueAsString(questionDtoFromDB);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		modelAndView.addObject("persons", savedQuestion.getCategories());
-		return categoriesForQuestion;
+		question.setCategory(category);
+		question.setCode("code");
+		question.setLevel(2);
+		question.setLanguage("SK");
+		question.setQuestion("Ako byt dobry?");
+		question.setType(1);
+
+		List<QuestionDto> fromDb = questionService.findQuesionsByCategory(20);
+>>>>>>> refs/remotes/origin/master
+
+//		ObjectMapper mapper = new ObjectMapper();
+//		String jason = new String();
+//		try {
+//			jason = mapper.writeValueAsString(questionDtoFromDB);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//		modelAndView.addObject("persons", category);
+		return fromDb;
 	}
 }
