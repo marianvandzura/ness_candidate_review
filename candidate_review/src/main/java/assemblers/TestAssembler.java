@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class TestAssembler {
     @Autowired
     UserAssembler userAssembler;
 
-    public TestAssembler() {
+    public TestsAssembler() {
         // default
     }
 
@@ -50,6 +51,16 @@ public class TestAssembler {
         dto.setQuestions(catDtos);
         return dto;
     }
+
+
+    public List<TestDto> extractDtoListFromDomain(final Collection<Tests> domain) {
+        List<TestDto> testsDtoArrayList = new ArrayList<TestDto>();
+        for (Tests test : domain) {
+            testsDtoArrayList.add(extractDtoFromDomain(test));
+        }
+        return testsDtoArrayList;
+    }
+
 
     public Tests populateDtoFromDomain(final TestDto testDto) {
         Tests domain = new Tests();
