@@ -17,12 +17,11 @@ import java.util.List;
 public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao {
 
     @Override
-    public Categories addCategory(Categories category) {
+    public void addCategory(Categories category) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(category);
         transaction.commit();
-        return null;
     }
 
     @Override
