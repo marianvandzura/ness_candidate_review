@@ -22,7 +22,7 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(category);
         transaction.commit();
-        return category;
+        return null;
     }
 
     @Override
@@ -36,23 +36,6 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
         return categories;
     }
 
-<<<<<<< HEAD
-    @Override
-    public List<Categories> findCategoriesByQuestion(final Integer questionId) {
-        Session session = getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        Criteria criteria = session.createCriteria(Categories.class);
-        /**
-         * Joining Questions table based on the name of the property in {@link Categories}.
-         * For getting id of qustion use question.id again name of the property in model class.
-         */
-        criteria.createAlias("questions","question", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("question.questionId", questionId));
-        List<Categories> catList = (List<Categories>) criteria.list();
-        transaction.commit();
-        return catList;
-    }
-=======
 //    @Override
 //    public List<Categories> findCategoriesByQuestion(final Integer questionId) {
 //        Session session = getSessionFactory().getCurrentSession();
@@ -68,7 +51,6 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
 //        transaction.commit();
 //        return catList;
 //    }
->>>>>>> refs/remotes/origin/master
 
     @Override
     public Categories findById(final Integer id) {

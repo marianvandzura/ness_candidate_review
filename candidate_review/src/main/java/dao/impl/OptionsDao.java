@@ -19,10 +19,6 @@ import java.util.List;
 @Transactional
 public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
 
-<<<<<<< HEAD
-    @Override
-=======
->>>>>>> refs/remotes/origin/master
     public Options addOption(Options option) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -32,11 +28,7 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-<<<<<<< HEAD
-    public List<Options> getAllOptions() {
-=======
     public List<Options> getAllOptiopns() {
->>>>>>> refs/remotes/origin/master
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Options ");
@@ -47,21 +39,6 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-<<<<<<< HEAD
-    public List<Options> findOptionsByQuestion(Integer questionId) {
-        Session session = getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        Criteria criteria = session.createCriteria(Options.class);
-        /**
-         * Joining Questions table based on the name of the property in {@link Questions}.
-         * For getting id of qustion use question.id again name of the property in model class.
-         */
-        criteria.createAlias("options","option", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("option.id", questionId));
-        List<Options> catList = (List<Options>) criteria.list();
-        transaction.commit();
-        return catList;
-=======
     public Options findById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -80,6 +57,5 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
         List<Options> options = (List<Options>) criteria.list();
         transaction.commit();
         return options;
->>>>>>> refs/remotes/origin/master
     }
 }
