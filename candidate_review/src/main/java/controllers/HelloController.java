@@ -70,7 +70,7 @@ public class HelloController {
 		question.setLevel(2);
 		question.setLanguage("SK");
 		question.setQuestion("Ako byt dobry?");
-		question.setType(1);
+		question.setType("checkbox");
 
 		List<QuestionDto> fromDb = questionService.findQuesionsByCategory(20);
 

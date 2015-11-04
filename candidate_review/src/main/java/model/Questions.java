@@ -15,7 +15,7 @@ public class Questions {
     private Integer questionId;
 
     @Column(name = "type")
-    private Integer type;
+    private String type;
     @Column(name = "question")
     private String question;
     @Column(name = "level")
@@ -69,11 +69,11 @@ public class Questions {
         this.questionId = questionId;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 
