@@ -31,7 +31,7 @@ public class Tests {
             inverseJoinColumns = @JoinColumn(name = "question_id", nullable = false))
     private Collection<Questions> questions;
 
-    public Tests(){
+    public Tests() {
         //default
     }
 
@@ -46,8 +46,8 @@ public class Tests {
         }
         Tests test = (Tests) obj;
         return (this.testId == test.getTestId())
-                && (this.info.equals(test.getInfo()))
-                && (this.position.equals(test.getPosition()));
+                && (this.info != null && this.info.equals(test.getInfo()))
+                && (this.position != null && this.position.equals(test.getPosition()));
     }
 
     @Override

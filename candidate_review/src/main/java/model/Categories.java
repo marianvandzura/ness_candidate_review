@@ -35,7 +35,7 @@ public class Categories {
         }
         Categories category = (Categories) obj;
         return (this.categoryId == category.getCategoryId())
-                && (this.categoryName.equals(category.getCategoryName()));
+                && (this.categoryName != null && this.categoryName.equals(category.getCategoryName()));
     }
 
     @Override

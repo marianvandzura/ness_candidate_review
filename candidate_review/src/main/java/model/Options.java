@@ -39,7 +39,7 @@ public class Options {
         }
         Options option = (Options) obj;
         return (this.optionId == option.getOptionId())
-                && (this.option.equals(option.getOption()));
+                && (this.option != null && this.option.equals(option.getOption()));
     }
 
     @Override
