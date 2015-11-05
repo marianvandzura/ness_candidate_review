@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NESS KDC - Test Center for applicants</title>
+  <link rel="stylesheet" href="myStyle.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+
+  <link rel="stylesheet" href="css/codemirror.css">
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="js/angular.min.js"></script>
+  <script src="js/angular-animate.min.js"></script>
+  <script src="js/angular-cookies.min.js"></script>
+  <script src="js/angular-route.min.js"></script>
+  <script src="js/angular-sanitize.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/codemirror.js"></script>
+  <script src="myApp.js"></script>
+
+</head>
+  <body>
+    <div ng-app="NESS-TCFA">
+      <div class="container top">
+        <div class="my-right">
+          <button ng-if="settings.logged == false" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#loginModal">
+            <span class="glyphicon glyphicon-user"></span> Login
+          </button>
+          <a href="#/controlPanel/" style="margin-left: 3px" ng-if="settings.logged == true" type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-th-large"></span> Control Panel
+          </a>
+          <button ng-if="settings.logged == true" type="button" class="btn btn-default btn-sm" ng-click="logout()">
+            <span class="glyphicon glyphicon-user"></span> Logout!
+          </button>
+        </div>
+
+        <a href="#/home/">
+          <img class="img-responsive" alt="NESS KDC - Test Center for applicants" src="media/logo.png" class="my-fluid">
+        </a>
+        <strong ng-if="settings.logged == true">{{'You are logged as ' + settings.user.name + ' ' + settings.user.surname}}</strong>
+        <div class="my-right toptext my-wide">TEST CENTER FOR APPLICANTS</div>
+        <div class="modal fade" id="loginModal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Sign in!</h4>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="loginEmail">Email address</label>
+                  <input ng-model="loginEmail" type="email" required class="form-control" id="loginEmail" placeholder="Email">
+                  <p ng-show="loginEmail.input.$error.required">something wrong with email :/</p>
+
+                  </div>
+                  <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="login()">Continue</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container" style="padding-left: 40px; padding-right: 40px">
+        <div ng-view></div>
+
+        <br><br>
+        <div class="my-center my-small">
+          © 2015 Ness Technologies. All Rights Reserved<br><br>
+          <a href="#/home/">
+            <img src="media/logo_mini.jpg" alt="NESS KDC"></a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

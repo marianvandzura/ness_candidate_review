@@ -1,0 +1,152 @@
+<div class="row" style="background-color: #f5f5f5; border-radius: 4px;">
+  <div class="col-md-6" ng-class="showRightBar == false ? 'col-md-12' : 'col-md-6'">
+    <br>
+    <div class="form-group">
+      <button type="button" ng-show="showRightBar == false" ng-click="showRightBar = true" class="btn btn-link my-right">
+        Show <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      </button>
+      <label for="name">Quest name:</label>
+      <input type="text" class="form-control" id="name" ng-model="test.name">
+    </div>
+    <div class="form-group">
+      <label for="info">Information about test:</label>
+      <textarea rows="3" class="form-control" id="info" ng-model="test.info"></textarea>
+    </div>
+    <hr>
+
+    <div ng-repeat="item in test.questions">
+      <div ng-if="item.type == 'combobox'"><!-- Form to create combo box question -->
+        <span class="my-right"><small style="color: #cccccc">Question used in 4 tests</small></span>
+        <span><small style="color: #cccccc">Combobox question</small></span>
+        <div class="input-group">
+          <input type="text" class="form-control" id="usr" ng-model="item.question">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Copy and edit question</a></li>
+              <li><a ng-click="item.addOption()" href="">Add option</a></li>
+              <li><a href="">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="test.removeQuestion(item)" href="">Remove question from this test</a></li>
+            </ul>
+          </div>
+        </div>
+        <div ng-repeat="option in item.options">
+          <div class="input-group" style="margin: 2px;">
+            <input type="text" class="form-control" style="margin-left: 15px;" ng-model="option.option">
+          <span class="input-group-btn">
+            <button class="btn btn-default glyphicon glyphicon-remove" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
+            <button ng-click="item.addOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
+          </span>
+          </div>
+        </div>
+      </div>
+
+
+      <div ng-if="item.type == 'checkbox'"><!-- Form to create combo box question -->
+        <span class="my-right"><small style="color: #cccccc">Question used in 4 tests</small></span>
+        <span><small style="color: #cccccc">Checkbox question</small></span>
+        <div class="input-group">
+          <input type="text" class="form-control" ng-model="item.question">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Copy and edit question</a></li>
+              <li><a ng-click="item.addOption()" href="">Add option</a></li>
+              <li><a href="">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="test.removeQuestion(item)" href="">Remove question from this test</a></li>
+            </ul>
+          </div>
+        </div>
+        <div ng-repeat="option in item.options">
+          <div class="input-group" style="margin: 2px;">
+            <input type="text" class="form-control" style="margin-left: 15px;" ng-model="option.option">
+          <span class="input-group-btn">
+            <button class="btn btn-default glyphicon glyphicon-remove" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
+            <button ng-click="item.addOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
+          </span>
+          </div>
+        </div>
+      </div>
+
+      <!--div ng-if="item.type == 'checkbox'">
+        <div class="form-group">
+          <button style="margin-left: 2px" class="btn btn-danger my-right btn-xs">Remove question</button>
+
+          <label for="usrr">Question:</label>
+          <input type="text" class="form-control" id="usrr" ng-model="item.question">
+        </div>
+        <div ng-repeat="option in item.options">
+          <div class="form-group">
+            <button class="btn btn-warning my-right btn-xs" ng-click="item.removeOption(option)">Remove option</button>
+            <label for="answer8">Option x:</label>
+            <input type="text" class="form-control" id="answer8" ng-model="option.option">
+
+          </div>
+        </div>
+        <button style="margin-top: 4px;" class="btn btn-success my-right btn-xs" ng-click="item.addOption()">Add option</button>
+        <br><br>
+        <hr>
+      </div-->
+
+
+      <div ng-if="item.type == 'text'"><!-- Form to create text question -->
+        <div class="form-group">
+          <button class="btn btn-danger my-right btn-xs">Remove question</button>
+          <label for="answer2">Answer 1:</label>
+          <input type="text" class="form-control" id="answer2" ng-model="quesiton.question">
+        </div>
+        <hr>
+      </div>
+      <div ng-if="item.type == 'code'"><!-- Form to create check code question-->
+        <div class="form-group">
+          <button class="btn btn-danger my-right btn-xs">Remove question</button>
+          <label for="answer32">Answer 1:</label>
+          <input type="text" class="form-control" id="answer32" ng-model="question.question">
+          <label for="answer23">Code:</label>
+          <textarea type="text" class="form-control"  id="answer23" ng-model="question.code"></textarea>
+        </div>
+        <hr>
+      </div>
+    </div>
+
+
+    <hr>
+    <button type="button" class="btn btn-primary btn-block">Save test</button>
+    <br>
+
+  </div>
+  <div class="col-md-6" ng-show="showRightBar == true" ng-init="showRightBar = true" style=" border-left: 2px solid #cccccc; margin-top: 13px; margin-bottom: 13px;">
+    <button type="button"  ng-click="showRightBar = false" class="btn btn-link my-right">
+      Hide <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+    <h5><b>Add new question</b></h5>
+    <div class="btn-group"  role="group" aria-label="...">
+      <button type="button" class="btn btn-default" ng-click="test.addQuestion('checkbox')">Checkbox question</button>
+      <button type="button" class="btn btn-default" ng-click="test.addQuestion('combobox')">Combobox question</button>
+      <button type="button" class="btn btn-default" ng-click="test.addQuestion('text')">Text question</button>
+      <button type="button" class="btn btn-default" ng-click="test.addQuestion('code')">Code question</button>
+    </div>
+    <hr>
+    <label for="questionCategory">Add question from list</label>
+    <select id="questionCategory" class="form-control input">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+    <br>
+    <label for="questionSelect">Question</label>
+    <input type="text" class="form-control input-sm" placeholder="Search" style="margin-bottom: 5px;">
+    <select multiple id="questionSelect" class="form-control" style="height: 500px">
+      <option>Čo robí Peťo?(text)</option>
+      <option>Kde býva Igor?(code)</option>
+      <option>Som hladný?(text)</option>
+      <option>Som smadný?(checkbox)</option>
+      <option>Ako sa máš?(radio)</option>
+    </select>
+    <br>
+    <button type="button" class="btn btn-primary btn-block">Add question to my test</button>
+  </div>
+</div>
