@@ -72,7 +72,7 @@ public class HelloController {
 		question.setQuestion("Ako byt dobry?");
 		question.setType("checkbox");
 
-		List<QuestionDto> fromDb = questionService.findQuesionsByCategory(20);
+		List<QuestionDto> fromDb = questionService.getQuestionsByCategoryId(20);
 
 //		ObjectMapper mapper = new ObjectMapper();
 //		String jason = new String();

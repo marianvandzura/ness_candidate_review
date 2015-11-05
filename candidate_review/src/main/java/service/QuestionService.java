@@ -30,7 +30,7 @@ public class QuestionService {
         return questionAssembler.extractDtoFromDomain(questionsDao.addQuestion(questionAssembler.populateDomainFromDto(questionDto)));
     }
 
-    public List<QuestionDto> findQuesionsByCategory (final Integer categoryId) {
-        return questionAssembler.extractDtosListFromDomain(questionsDao.findQuestionsByCategory(categoryId));
+    public List<QuestionDto> getQuestionsByCategoryId(final Integer categoryId) {
+        return questionAssembler.extractDtoListFromDomain(questionsDao.findQuestionsByCategory(categoryId));
     }
 }

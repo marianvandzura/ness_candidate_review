@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Class for assembling Question objects to DTO(Data Transprt Objects) from domain and vice versa.
- *
+ * <p>
  * Created by Peter.
  */
 
@@ -24,6 +24,16 @@ public class QuestionAssembler {
     @Autowired
     CategoryAssembler categoryAssembler;
 
+    public QuestionAssembler() {
+        //default
+    }
+
+    /**
+     * create QuestionDto object from domain model Questions
+     *
+     * @param domain Questions model
+     * @return QuestionDto object
+     */
     public QuestionDto extractDtoFromDomain(final Questions domain) {
         QuestionDto dto = new QuestionDto();
         dto.setId(domain.getQuestionId());
@@ -37,6 +47,12 @@ public class QuestionAssembler {
         return dto;
     }
 
+    /**
+     * create domain object from DTO
+     *
+     * @param dto
+     * @return domain object
+     */
     public Questions populateDomainFromDto(final QuestionDto dto) {
         Questions domain = new Questions();
         domain.setQuestionId(dto.getId());
@@ -56,11 +72,25 @@ public class QuestionAssembler {
      * @param domain
      * @return extracted DTOs
      */
-    public List<QuestionDto> extractDtosListFromDomain(final List<Questions> domain) {
+    public List<QuestionDto> extractDtoListFromDomain(final List<Questions> domain) {
         List<QuestionDto> questionDtoArrayList = new ArrayList<QuestionDto>();
         for (Questions question : domain) {
             questionDtoArrayList.add(extractDtoFromDomain(question));
         }
         return questionDtoArrayList;
+    }
+
+    /**
+     * create domain objects from DTO List
+     *
+     * @param dtos
+     * @return List of domain objects
+     */
+    public List<Questions> populateDomainFromDto(final List<QuestionDto> dtos) {
+        List<Questions> domains = new ArrayList<Questions>();
+        for (QuestionDto dto : dtos) {
+            domains.add(this.populateDomainFromDto(dto));
+        }
+        return domains;
     }
 }

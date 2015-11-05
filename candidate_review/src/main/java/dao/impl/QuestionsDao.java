@@ -38,11 +38,12 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         transaction.commit();
         return questions;
     }
+
     @Override
     public Questions findQuestionById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Questions question = (Questions)session.get(Questions.class,id);
+        Questions question = (Questions) session.get(Questions.class, id);
         transaction.commit();
         return question;
 
@@ -57,10 +58,10 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
          * Joining Questions table based on the name of the property in {@link Questions}.
          * For getting id of qustion use question.id again name of the property in model class.
          */
-        criteria.createAlias("category","category", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("category.id", categoryId));
-        List<Questions> catList = (List<Questions>) criteria.list();
+        criteria.createAlias("category", "category", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("category.categoryId", categoryId));
+        List<Questions> categoriesList = (List<Questions>) criteria.list();
         transaction.commit();
-        return catList;
+        return categoriesList;
     }
 }

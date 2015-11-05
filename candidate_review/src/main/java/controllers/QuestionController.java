@@ -22,28 +22,34 @@ public class QuestionController {
     @Autowired
     QuestionService questionService;
 
-    @RequestMapping(value = "/{txt}/{lng}/{ctg}" , method = RequestMethod.GET)
-    public @ResponseBody
-    QuestionDto saveQuestion(@PathVariable(value = "txt") String txt,@PathVariable(value = "lng") String lng,
-                             @PathVariable(value = "ctg") Integer ctg) {
+    public QuestionController() {
+        //default
+    }
+
+    //TODO GET? to save question?
+    @RequestMapping(value = "/{txt}/{lng}/{ctg}", method = RequestMethod.GET)
+    @ResponseBody
+    public QuestionDto saveQuestion(@PathVariable(value = "txt") String paramQuestionText,
+                                    @PathVariable(value = "lng") String paramLanguage,
+                                    @PathVariable(value = "ctg") Integer paramCategoryId) {
+
+        //TODO ?
         QuestionDto question = new QuestionDto();
         CategoryDto category = new CategoryDto();
-        category.setId(ctg);
-
+        category.setId(paramCategoryId);
         question.setCategory(category);
         question.setCode("code");
         question.setLevel(2);
-        question.setLanguage(lng);
-        question.setQuestion(txt);
+        question.setLanguage(paramLanguage);
+        question.setQuestion(paramQuestionText);
         question.setType("checkbox");
 
         return questionService.addQuestion(question);
     }
 
-    @RequestMapping(value = "/{ctg}" , method = RequestMethod.GET)
-    public @ResponseBody
-    List<QuestionDto> findByCategory (@PathVariable(value = "ctg") Integer ctg) {
-
-        return questionService.findQuesionsByCategory(ctg);
+    @RequestMapping(value = "/{ctg}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<QuestionDto> findByCategory(@PathVariable(value = "ctg") Integer categoryId) {
+        return questionService.getQuestionsByCategoryId(categoryId);
     }
 }
