@@ -25,9 +25,10 @@ public class TestController {
     @Autowired
     IQuestionsDao questionsDao;
 
-    @RequestMapping(value = "/test" , method = RequestMethod.GET)
-    public @ResponseBody
-    Tests saveTest() {
+    @RequestMapping(value = "/test", method = RequestMethod.PUT)
+    @ResponseBody
+    public Tests saveTest() {
+        //TODO
         Tests test = new Tests();
         test.setQuestions(questionsDao.getAllQuestions());
         test.setInfo("more jak fajny test !");
@@ -35,22 +36,25 @@ public class TestController {
         return testService.save(test);
     }
 
-    @RequestMapping(value = "/getTests" , method = RequestMethod.GET)
-    public @ResponseBody
+    @RequestMapping(value = "/getTests", method = RequestMethod.GET)
+    public
+    @ResponseBody
     List<TestDto> getTests() {
         return testService.getTests();
     }
 
-    @RequestMapping(value = "/getMyTests" , method = RequestMethod.GET)
-    public @ResponseBody
-    List<TestDto> getMyTests() {
-        return testService.getMyTests();
+    @RequestMapping(value = "/getMyTests/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<TestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
+        return testService.getMyTests(userId);
     }
 
-    @RequestMapping(value = "/getTest/{id}" , method = RequestMethod.GET)
-    public @ResponseBody
+    @RequestMapping(value = "/getTest/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
     TestDto getTest(@PathVariable(value = "id") Integer id) {
-        return testService.getTest(id);
+        return testService.getTestById(id);
     }
 }
 

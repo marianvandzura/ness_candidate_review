@@ -36,15 +36,24 @@ public class TestService {
         return testDtos;
     }
 
-    public List<TestDto> getMyTests() {
+    public List<TestDto> getMyTests(Integer userid) {
         List<TestDto> testDtos = getTests();
-//        if ()
-        return testDtos;
+        List<TestDto> myTestDtos = new ArrayList<TestDto>();
+        for (TestDto testdto :testDtos)
+        {
+            if (testdto.getUser().getUserid()==userid)
+            {
+                myTestDtos.add(testdto);
+            }
+
+        }
+        return myTestDtos;
     }
 
 
-    public TestDto getTest(Integer id) {
+    public TestDto getTestById(Integer id) {
         TestDto tDto = this.testsAssembler.extractDtoFromDomain(testsDao.findById(id));
+
         if (tDto.getVisible()) return tDto;
         return null;
     }

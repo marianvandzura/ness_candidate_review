@@ -35,7 +35,7 @@ public class QuestionController {
         question.setLevel(2);
         question.setLanguage(lng);
         question.setQuestion(txt);
-        question.setType(1);
+        question.setType("Checkbox");
 
         return questionService.addQuestion(question);
     }

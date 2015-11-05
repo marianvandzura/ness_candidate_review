@@ -4,6 +4,7 @@ import dto.UserDto;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.

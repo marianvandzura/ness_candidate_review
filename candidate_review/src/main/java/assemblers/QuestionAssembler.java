@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -56,7 +57,7 @@ public class QuestionAssembler {
      * @param domain
      * @return extracted DTOs
      */
-    public List<QuestionDto> extractDtosListFromDomain(final List<Questions> domain) {
+    public List<QuestionDto> extractDtosListFromDomain(final Collection<Questions> domain) {
         List<QuestionDto> questionDtoArrayList = new ArrayList<QuestionDto>();
         for (Questions question : domain) {
             questionDtoArrayList.add(extractDtoFromDomain(question));

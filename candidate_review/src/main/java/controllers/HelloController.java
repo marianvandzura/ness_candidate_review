@@ -14,6 +14,7 @@ import service.CategoryService;
 import service.PersonService;
 import service.QuestionService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -34,6 +35,16 @@ public class HelloController {
 
 	@Autowired
 	ICategoriesDao categoriesDao;
+
+
+	@RequestMapping(value = "/esta", method = RequestMethod.POST)
+	public void handleRequest(HttpServletRequest request)
+	{
+
+
+
+	}
+
 
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
 	public @ResponseBody List<QuestionDto> printWelcome() {
@@ -70,7 +81,7 @@ public class HelloController {
 		question.setLevel(2);
 		question.setLanguage("SK");
 		question.setQuestion("Ako byt dobry?");
-		question.setType(1);
+		question.setType("Checkbox");
 
 		List<QuestionDto> fromDb = questionService.findQuesionsByCategory(20);
 
