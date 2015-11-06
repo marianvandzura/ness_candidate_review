@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> refs/remotes/origin/master
 package dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -65,3 +70,7 @@ public class UserDto {
     }
 
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/master

@@ -81,7 +81,11 @@ public class HelloController {
 		question.setLevel(2);
 		question.setLanguage("SK");
 		question.setQuestion("Ako byt dobry?");
+<<<<<<< HEAD
 		question.setType("Checkbox");
+=======
+		question.setType("checkbox");
+>>>>>>> refs/remotes/origin/master
 
 		List<QuestionDto> fromDb = questionService.findQuesionsByCategory(20);
 

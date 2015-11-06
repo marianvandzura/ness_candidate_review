@@ -35,7 +35,11 @@ public class QuestionController {
         question.setLevel(2);
         question.setLanguage(lng);
         question.setQuestion(txt);
+<<<<<<< HEAD
         question.setType("Checkbox");
+=======
+        question.setType("checkbox");
+>>>>>>> refs/remotes/origin/master
 
         return questionService.addQuestion(question);
     }
