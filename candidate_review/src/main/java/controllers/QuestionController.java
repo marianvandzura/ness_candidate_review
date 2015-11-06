@@ -38,6 +38,7 @@ public class QuestionController {
     public List<QuestionDto> getQuestionsWithIds(@PathVariable(value = "id") List<Integer> questionIds) {
         //init arrayList because of performance
         List<QuestionDto> result = new ArrayList<QuestionDto>(questionIds.size());
+
         for (int questionId : questionIds) {
             //get all options related to question based on question ID
             List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionId);
@@ -46,6 +47,24 @@ public class QuestionController {
             //add options to response
             question.setOptions(questionOptions);
             result.add(question);
+        }
+        return result;
+    }
+
+    //get questions by category
+    @RequestMapping(value = "/questions/{categoryId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
+        //init arrayList because of performance
+        List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
+        List<QuestionDto> result = new ArrayList<QuestionDto>(questionsByCategory.size());
+
+        for (QuestionDto questionDto : questionsByCategory) {
+            //get all options related to question based on question ID
+            List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionDto.getId());
+            //add options to response
+            questionDto.setOptions(questionOptions);
+            result.add(questionDto);
         }
         return result;
     }
@@ -67,9 +86,8 @@ public class QuestionController {
     }
 
     //update questions with id
-    @RequestMapping(value = "/question/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateQuestion(@PathVariable(value = "id") int questionId, @RequestBody QuestionDto question) {
-        //TODO copy values from new question
+    @RequestMapping(value = "/question/", method = RequestMethod.PUT)
+    public ResponseEntity updateQuestion(@RequestBody QuestionDto question) {
         //get existing question
         QuestionDto updatedQuestion = questionService.addQuestion(question);
         //get question options
@@ -88,14 +106,13 @@ public class QuestionController {
     public ResponseEntity deleteQuestion(@PathVariable(value = "id") int questionId) {
         //get existing question
         QuestionDto questionToDelete = questionService.getQuestionById(questionId);
-        if(questionToDelete != null) {
+        if (questionToDelete != null) {
             //get question options
             List<OptionDto> questionOptions = questionToDelete.getOptions();
             if (questionOptions != null && !questionOptions.isEmpty()) {
                 //if options exist for question add all
                 for (OptionDto option : questionOptions) {
-                    //TODO delete options
-                    optionService.addOption(option);
+                    optionService.deleteOption(option);
                 }
             }
             questionService.deleteQuestion(questionToDelete);

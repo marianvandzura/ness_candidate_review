@@ -20,6 +20,12 @@ public interface IOptionsDao {
      * delete option
      * @param option
      */
+    void deleteoption(Options option);
+
+    /**
+     * delete option
+     * @param option
+     */
     void deleteOption(Options option);
 
     /**

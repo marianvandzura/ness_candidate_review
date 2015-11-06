@@ -29,6 +29,14 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
+    public void deleteoption(Options option) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(option);
+        transaction.commit();
+    }
+
+    @Override
     public void deleteOption(Options option) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();

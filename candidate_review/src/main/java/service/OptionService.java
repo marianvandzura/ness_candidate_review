@@ -28,6 +28,10 @@ public class OptionService {
         return optionAssembler.extractDtoFromDomain(optionsDao.addOption(optionAssembler.populateDomainFromDto(option)));
     }
 
+    public void deleteOption(final OptionDto option) {
+        optionsDao.deleteOption(optionAssembler.populateDomainFromDto(option));
+    }
+
     public OptionDto findOptionById(final Integer id) {
         return optionAssembler.extractDtoFromDomain(optionsDao.findOptionById(id));
     }
