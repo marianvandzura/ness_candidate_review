@@ -19,12 +19,21 @@ import java.util.List;
 @Transactional
 public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
 
+    @Override
     public Options addOption(Options option) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(option);
         transaction.commit();
         return option;
+    }
+
+    @Override
+    public void deleteOption(Options option) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(option);
+        transaction.commit();
     }
 
     @Override
@@ -39,7 +48,7 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-    public Options findById(final Integer id) {
+    public Options findOptionById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Options option = (Options)session.get(Options.class,id);
@@ -48,7 +57,7 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-    public List<Options> findOptionsForQuestion(final Integer questionId) {
+    public List<Options> findOptionsByQuestionId(final Integer questionId) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(Options.class);

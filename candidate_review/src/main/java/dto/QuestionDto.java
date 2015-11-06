@@ -36,6 +36,9 @@ public class QuestionDto {
     @JsonProperty("categories")
     private CategoryDto category;
 
+    @JsonProperty("options")
+    private List<OptionDto> options;
+
     public Integer getId() {
         return id;
     }
@@ -98,5 +101,13 @@ public class QuestionDto {
 
     public void setCategory(CategoryDto category) {
         this.category = category;
+    }
+
+    public List<OptionDto> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<OptionDto> options) {
+        this.options = options;
     }
 }

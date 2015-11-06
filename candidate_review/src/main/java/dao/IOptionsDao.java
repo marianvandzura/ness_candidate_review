@@ -9,11 +9,36 @@ import java.util.List;
  */
 public interface IOptionsDao {
 
+    /**
+     * Add option to DB
+     * @param option
+     * @return added question
+     */
     Options addOption(Options option);
 
+    /**
+     * delete option
+     * @param option
+     */
+    void deleteOption(Options option);
+
+    /**
+     * Add multiple options to DB
+     * @return List of added options
+     */
     List<Options> getAllOptiopns();
 
-    Options findById(Integer id);
+    /**
+     * Find option in DB based on optionId
+     * @param id ID of option
+     * @return Options object
+     */
+    Options findOptionById(Integer id);
 
-    List<Options> findOptionsForQuestion(Integer questionId);
+    /**
+     * Find all options in DB based on question ID
+     * @param questionId ID of question
+     * @return List of options with matched question ID
+     */
+    List<Options> findOptionsByQuestionId(Integer questionId);
 }

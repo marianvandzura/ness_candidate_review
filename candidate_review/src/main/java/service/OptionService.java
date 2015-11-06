@@ -1,7 +1,8 @@
 package service;
 
+import assemblers.OptionAssembler;
 import dao.IOptionsDao;
-import model.Options;
+import dto.OptionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +17,22 @@ public class OptionService {
     @Autowired
     private IOptionsDao optionsDao;
 
-    public List<Options> findAll() {
-        return optionsDao.getAllOptiopns();
+    @Autowired
+    OptionAssembler optionAssembler;
+
+    public List<OptionDto> getAllOptions() {
+        return optionAssembler.extractDtoFromDomain(optionsDao.getAllOptiopns());
     }
 
-    public Options save(final Options option) {
-        return optionsDao.addOption(option);
+    public OptionDto addOption(final OptionDto option) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.addOption(optionAssembler.populateDomainFromDto(option)));
     }
 
-    public Options findById(final Integer id) {
-        return optionsDao.findById(id);
+    public OptionDto findOptionById(final Integer id) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.findOptionById(id));
     }
 
-    public List<Options> findByQuestion(final Integer questionId) {
-        return optionsDao.findOptionsForQuestion(questionId);
+    public List<OptionDto> findOptionsByQuestionId(final Integer questionId) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.findOptionsByQuestionId(questionId));
     }
 }
