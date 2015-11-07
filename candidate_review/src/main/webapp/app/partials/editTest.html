@@ -65,47 +65,25 @@
           <span class="input-group-btn">
             <button class="btn btn-default glyphicon glyphicon-remove" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
             <button ng-click="item.addOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
+            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-check" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-alert" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
           </span>
           </div>
         </div>
       </div>
 
-      <!--div ng-if="item.type == 'checkbox'">
-        <div class="form-group">
-          <button style="margin-left: 2px" class="btn btn-danger my-right btn-xs">Remove question</button>
-
-          <label for="usrr">Question:</label>
-          <input type="text" class="form-control" id="usrr" ng-model="item.question">
-        </div>
-        <div ng-repeat="option in item.options">
-          <div class="form-group">
-            <button class="btn btn-warning my-right btn-xs" ng-click="item.removeOption(option)">Remove option</button>
-            <label for="answer8">Option x:</label>
-            <input type="text" class="form-control" id="answer8" ng-model="option.option">
-
-          </div>
-        </div>
-        <button style="margin-top: 4px;" class="btn btn-success my-right btn-xs" ng-click="item.addOption()">Add option</button>
-        <br><br>
-        <hr>
-      </div-->
-
-
       <div ng-if="item.type == 'text'"><!-- Form to create text question -->
         <div class="form-group">
           <button class="btn btn-danger my-right btn-xs">Remove question</button>
-          <label for="answer2">Answer 1:</label>
           <input type="text" class="form-control" id="answer2" ng-model="quesiton.question">
         </div>
         <hr>
       </div>
       <div ng-if="item.type == 'code'"><!-- Form to create check code question-->
         <div class="form-group">
-          <button class="btn btn-danger my-right btn-xs">Remove question</button>
-          <label for="answer32">Answer 1:</label>
+          <button class="btn btn-danger my-right btn-xs">Remove question</button>;
           <input type="text" class="form-control" id="answer32" ng-model="question.question">
-          <label for="answer23">Code:</label>
-          <textarea type="text" class="form-control"  id="answer23" ng-model="question.code"></textarea>
+          <textarea class="form-control"  id="answer23" ng-model="question.code"></textarea>
         </div>
         <hr>
       </div>

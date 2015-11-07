@@ -1,17 +1,30 @@
-//TODO: Majovi povedat ze ak posle strom na ediaciu testov chcem tam aj cislo v kolkych testoch je
 //TODO: Prepinač visible dorobiť pre testy
-//TODO:
 angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ngSanitize'])//App init
-  .run(['$rootScope',function($rootScope){
+  .run(['$rootScope', '$http',function($rootScope,$http){
     $rootScope.settings = {
       logged: false
     };
+    $rootScope.communicator = new Communicator($http,'http://jsonplaceholder.typicode.com/');
+    var a = new Request(
+      );
+
+    $rootScope.deleteObjectPls = {
+      "userId": 1,
+      "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+      "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+    };
+    //$rootScope.communicator.sendData();
+
 
   }])
   .controller('homeController',['$scope','$rootScope','$window', function ($scope,$rootScope,$window) {//homeController
-    //$rootScope.settings - who know
-    //$rootScope.settings.user - info about user
-    //$rootScope.candidate - info about candidates
+    /*$scope.$on('$locationChangeStart', function( event ) {
+      var answer = confirm("Are you sure you want to leave this page?")
+      if (!answer) {
+        event.preventDefault();
+      }
+    });*/
+
     $rootScope.login = function(){
       if(true){//TODO: Authentication
         $rootScope.settings.user = {
@@ -48,10 +61,12 @@ angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ngSanitize'])//A
           type:'checkbox',
           options: [{
             id: 1,
-            option: 'option 1'
+            option: 'option 1',
+            truly: true
           },{
             id: 2,
-            option: 'option 2'
+            option: 'option 2',
+            truly: true
           }],
           addOption: function(){
             this.options.push({
@@ -408,6 +423,83 @@ angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ngSanitize'])//A
 
 
 
+function Communicator($http,url){
+  this.url = url;
+  this.http = $http;
+  this.fastQueue = [];
+  this.slowQueue = [];
+  this.blocked = false;
+  this.slowSending = false;
+}
+
+/*Communicator.prototype.addFastRequest = function(request){
+ this.fastQueue.push(request);
+ this.fastSend();
+ };*/
+Communicator.prototype.addFastRequest = function(data, postfix, method){
+  this.fastQueue.push(new Request(data,postfix,method));
+  this.fastSend();
+};
+
+Communicator.prototype.fastSend = function(){
+  communicator = this;
+  if(this.fastQueue.length > 0 && this.blocked == false){
+    this.blocked = true;
+    var item = this.fastQueue.pop();
+    console.log(communicator.url + item.postfix);
+    this.http({
+      method: item.method,
+      url: communicator.url + item.postfix,
+      data: item.data
+    }).then(function successCallback(response) {
+      console.log(response);
+      communicator.blocked = false;
+      if(communicator.slowSending == true) communicator.sendData();
+      else communicator.fastSend();
+    }, function errorCallback(response) {
+      console.log("Capitan communicator report error :O");
+    });
+  }
+
+};
+
+/*Communicator.prototype.addSlowRequest = function(request){
+ this.slowQueue.push(request);
+ };*/
+Communicator.prototype.addSlowRequest = function(data, postfix, method){
+  this.slowQueue.push(new Request(data,postfix,method));
+};
+
+Communicator.prototype.sendData = function(){
+  this.slowSending = true;
+  communicator = this;
+  if((this.slowQueue.length > 0 || this.fastQueue.length > 0) && this.blocked == false){
+    this.blocked = true;
+    var item;
+    if(this.fastQueue.length > 0) item = this.fastQueue.pop();
+    else item = this.slowQueue.pop();
+    console.log(communicator.url + item.postfix);
+    this.http({
+      method: item.method,
+      url: communicator.url + item.postfix,
+      data: item.data
+    }).then(function successCallback(response) {
+      console.log(response);
+      communicator.blocked = false;
+      communicator.sendData();
+    }, function errorCallback(response) {
+      console.log("Capitan communicator report error :O");
+    });
+  }
+  if(!this.blocked) this.slowSending = false;
+};
+
+
+function Request(objectToSend, postfix, method){
+  this.data = objectToSend;
+  this.postfix = postfix;
+  this.method = method;
+}
 
 function Category(collection, id, name){
   this.collection = collection;
@@ -429,7 +521,9 @@ function Question(collection, id, category_id, type, question, level, code, imag
   this.image_url = image_url;
   this.language = language;
   this.options = options;
-  for (var i = 0; i < options.length; i++) options[i].collection = options;
+  console.log(options);
+  console.log(this);
+  for (var i = 0; i < this.options.length; i++) this.options[i].collection = this.options;
 }
 Question.prototype.removeQuestion = function(item){
   this.collection.splice(this.collection.indexOf(item),1);
@@ -437,6 +531,12 @@ Question.prototype.removeQuestion = function(item){
 Question.prototype.addOption = function(option){
   option.collection = this.collection;
   this.collection.push(option);
+};
+Question.prototype.changeCheck = function(){
+  if(this.type == 'checkbox')
+    for(var x = 0; x < this.options.length; x++){
+      this.options[x].truly = false;
+    }
 };
 
 function Option(id, option, truly){
@@ -448,6 +548,64 @@ function Option(id, option, truly){
 Option.prototype.removeQuestion = function(item){
   this.collection.splice(this.collection.indexOf(item),1);
 };
+function Test(id, name, position, info, user_id){
+  this.id = id;
+  this.name = name;
+  this.position = position;
+  this.info = info;
+  this.user_id = user_id;
+  this.questions = [];
+}
+Test.prototype.addQuestion =  function(question){
+  this.questions.push(question);
+};
+
+
+function parseTestForEdit(input){
+  var test = new Test(input.id, input.name, input.position, input.info, input.user_id);
+  for(var x = 0; x < input.questions.length; x++){
+    var options = [];
+    for(var y = 0; y < input.questions[x].options.length; y++)
+      options.push(new Option(input.questions[x].options[y].id, input.questions[x].options[y].option, input.questions[x].options[y].truly))
+    var newQuestion = new Question(
+      //collection, id, category_id, type, question, level, code, image_url, language, options
+      test.questions,
+      input.questions[x].id,
+      input.questions[x].category_id,
+      input.questions[x].type,
+      input.questions[x].question,
+      input.questions[x].level,
+      input.questions[x].code,
+      input.questions[x].image_url,
+      input.questions[x].language,
+      options
+    );
+    test.addQuestion(newQuestion);
+  }
+  return test;
+}
+function parseQuestions(input){
+  var questions = [];
+  for(x = 0; x <input.length; x++){
+    var options = [];
+    for(var y = 0; y < input[x].options.length; y++)
+      options.push(new Option(input[x].options[y].id, input[x].options[y].option, input[x].options[y].truly))
+    var newQuestion = new Question(
+      questions,
+      input[x].id,
+      input[x].category_id,
+      input[x].type,
+      input[x].question,
+      input[x].level,
+      input[x].code,
+      input[x].image_url,
+      input[x].language,
+      options
+    );
+    questions.push(newQuestion);
+  }
+  return questions;
+}
 /*
 * JS Legend for dummies
 * [] - pole
@@ -490,8 +648,9 @@ y = {
   name: "Test for Java Senior Dev",
   position: "Senior JavaDev",
   info: "Bla bla bla bla",
-  questions: [ //pole objektov
-    {//id, test_id, category_id, type, question, level, code, image_url, language
+  user_id: 5,
+  questions: [
+    {
       id:1,
       category_id:1,
       question: 'Check question',
@@ -687,9 +846,3 @@ var o = {
 // Categories klasicky REST - post, get, put, delete - .../questions/[<id>/]
 
 
-/*
-* question_result - zmazat
-* column_8 vyhodit
-* do candidates + ktory drži infošky o vysledku testu ... časy, body a pdoobne
-*
-* */
