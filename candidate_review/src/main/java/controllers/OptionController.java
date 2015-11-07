@@ -21,6 +21,9 @@ import java.util.List;
 @Controller
 public class OptionController {
 
+    public OptionController(){
+        //default
+    }
 
     @Autowired
     OptionService optionService;

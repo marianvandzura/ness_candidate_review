@@ -19,6 +19,10 @@ import java.util.List;
 @Transactional
 public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
 
+    public OptionsDao(){
+        //default
+    }
+
     @Override
     public Options addOption(Options option) {
         Session session = getSessionFactory().getCurrentSession();
@@ -26,14 +30,6 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
         session.saveOrUpdate(option);
         transaction.commit();
         return option;
-    }
-
-    @Override
-    public void deleteoption(Options option) {
-        Session session = getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        session.delete(option);
-        transaction.commit();
     }
 
     @Override
@@ -45,7 +41,7 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-    public List<Options> getAllOptiopns() {
+    public List<Options> getAllOptions() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Options ");
@@ -69,8 +65,8 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(Options.class);
-        criteria.createAlias("question","question", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("question.id", questionId));
+        criteria.createAlias("questions","question", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("question.questionId", questionId));
         List<Options> options = (List<Options>) criteria.list();
         transaction.commit();
         return options;

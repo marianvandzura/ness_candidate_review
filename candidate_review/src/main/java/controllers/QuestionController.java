@@ -1,6 +1,5 @@
 package controllers;
 
-import dto.CategoryDto;
 import dto.OptionDto;
 import dto.QuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class to handle REST requests
+ * <p>
  * Created by Marian_Vandzura on 6.11.2015.
  */
 
@@ -32,7 +33,12 @@ public class QuestionController {
     }
 
 
-    //get questions with ids
+    /**
+     * get questions with array of ids passed as param
+     *
+     * @param questionIds
+     * @return List of requested questions
+     */
     @RequestMapping(value = "/questions/{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<QuestionDto> getQuestionsWithIds(@PathVariable(value = "id") List<Integer> questionIds) {
@@ -51,12 +57,17 @@ public class QuestionController {
         return result;
     }
 
-    //get questions by category
+    /**
+     * get questions by category
+     *
+     * @param categoryId
+     * @return List of questions related to category
+     */
     @RequestMapping(value = "/questions/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
     public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
-        //init arrayList because of performance
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
+        //init arrayList size because of performance
         List<QuestionDto> result = new ArrayList<QuestionDto>(questionsByCategory.size());
 
         for (QuestionDto questionDto : questionsByCategory) {
@@ -69,14 +80,19 @@ public class QuestionController {
         return result;
     }
 
-    //save question
+    /**
+     * save question and question options
+     *
+     * @param question
+     * @return HTTP response
+     */
     @RequestMapping(value = "/question/", method = RequestMethod.POST)
     public ResponseEntity saveQuestion(@RequestBody QuestionDto question) {
         QuestionDto savedQuestion = questionService.addQuestion(question);
         //get question options
         List<OptionDto> questionOptions = question.getOptions();
         if (questionOptions != null && !questionOptions.isEmpty()) {
-            //if options exist for question add all
+            //if options exist for question, add all
             for (OptionDto option : questionOptions) {
                 option.setId(question.getId());
                 optionService.addOption(option);
@@ -85,15 +101,20 @@ public class QuestionController {
         return new ResponseEntity<QuestionDto>(savedQuestion, HttpStatus.OK);
     }
 
-    //update questions with id
+    /**
+     * update question and related options
+     *
+     * @param question
+     * @return HTTP response
+     */
     @RequestMapping(value = "/question/", method = RequestMethod.PUT)
     public ResponseEntity updateQuestion(@RequestBody QuestionDto question) {
-        //get existing question
+        //update question
         QuestionDto updatedQuestion = questionService.addQuestion(question);
         //get question options
         List<OptionDto> questionOptions = question.getOptions();
         if (questionOptions != null && !questionOptions.isEmpty()) {
-            //if options exist for question add all
+            //if options exist for question update all
             for (OptionDto option : questionOptions) {
                 optionService.addOption(option);
             }
@@ -101,7 +122,12 @@ public class QuestionController {
         return new ResponseEntity<QuestionDto>(updatedQuestion, HttpStatus.OK);
     }
 
-    //delete question with id
+    /**
+     * delete question with passed id and related options
+     *
+     * @param questionId
+     * @return HTTP response
+     */
     @RequestMapping(value = "/question/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteQuestion(@PathVariable(value = "id") int questionId) {
         //get existing question
@@ -110,11 +136,12 @@ public class QuestionController {
             //get question options
             List<OptionDto> questionOptions = questionToDelete.getOptions();
             if (questionOptions != null && !questionOptions.isEmpty()) {
-                //if options exist for question add all
+                //if options exist for question delete all
                 for (OptionDto option : questionOptions) {
                     optionService.deleteOption(option);
                 }
             }
+            //delete question
             questionService.deleteQuestion(questionToDelete);
         }
         return new ResponseEntity<QuestionDto>(questionToDelete, HttpStatus.OK);

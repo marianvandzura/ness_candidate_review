@@ -20,19 +20,13 @@ public interface IOptionsDao {
      * delete option
      * @param option
      */
-    void deleteoption(Options option);
-
-    /**
-     * delete option
-     * @param option
-     */
     void deleteOption(Options option);
 
     /**
      * Add multiple options to DB
      * @return List of added options
      */
-    List<Options> getAllOptiopns();
+    List<Options> getAllOptions();
 
     /**
      * Find option in DB based on optionId

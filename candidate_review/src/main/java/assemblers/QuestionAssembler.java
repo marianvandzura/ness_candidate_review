@@ -87,7 +87,8 @@ public class QuestionAssembler {
      * @return List of domain objects
      */
     public List<Questions> populateDomainFromDto(final List<QuestionDto> dtos) {
-        List<Questions> domains = new ArrayList<Questions>();
+        //init list size because of performance
+        List<Questions> domains = new ArrayList<Questions>(dtos.size());
         for (QuestionDto dto : dtos) {
             domains.add(this.populateDomainFromDto(dto));
         }

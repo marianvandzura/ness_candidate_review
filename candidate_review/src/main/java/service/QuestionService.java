@@ -22,6 +22,10 @@ public class QuestionService {
     @Autowired
     QuestionAssembler questionAssembler;
 
+    public QuestionService(){
+        //default
+    }
+
     /**
      * get question with ID
      * @param id
