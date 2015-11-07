@@ -27,7 +27,7 @@ public class Questions {
     @Column(name = "language")
     private String language;
 
-    @ManyToOne//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")//, nullable = false)
     private Categories category;
 
@@ -46,7 +46,7 @@ public class Questions {
         }
         Questions question = (Questions) obj;
         return (this.questionId == question.getQuestionId())
-                && (this.type!= null &&  this.type.equals(question.getType()))
+                && (this.type != null && this.type.equals(question.getType()))
                 && (this.question != null && this.question.equals(question.getQuestion()))
                 && (this.level == question.getLevel())
                 && (this.code != null && this.code.equals(question.code));

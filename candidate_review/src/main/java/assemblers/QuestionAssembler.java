@@ -1,7 +1,9 @@
 package assemblers;
 
 import dao.ICategoriesDao;
+import dto.CategoryDto;
 import dto.QuestionDto;
+import model.Categories;
 import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,7 +45,9 @@ public class QuestionAssembler {
         dto.setLevel(domain.getLevel());
         dto.setQuestion(domain.getQuestion());
         dto.setType(domain.getType());
-        dto.setCategory(categoryAssembler.extractDtoFromDomain(domain.getCategory()));
+        CategoryDto category = categoryAssembler.extractDtoFromDomain(domain.getCategory());
+        dto.setCategory(category);
+        dto.setCategoryId(category.getId());
         return dto;
     }
 
@@ -61,7 +65,9 @@ public class QuestionAssembler {
         domain.setLevel(dto.getLevel());
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
-        domain.setCategory(categoriesDao.findById(dto.getCategoryId()));
+        int categoryId = dto.getCategoryId();
+        Categories category = categoriesDao.findById(categoryId);
+        domain.setCategory(category);
         return domain;
     }
 

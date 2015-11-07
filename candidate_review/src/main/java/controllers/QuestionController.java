@@ -116,6 +116,7 @@ public class QuestionController {
         if (questionOptions != null && !questionOptions.isEmpty()) {
             //if options exist for question update all
             for (OptionDto option : questionOptions) {
+                option.setQuestion(updatedQuestion);
                 optionService.addOption(option);
             }
         }
