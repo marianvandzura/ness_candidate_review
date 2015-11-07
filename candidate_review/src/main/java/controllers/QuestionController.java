@@ -1,5 +1,6 @@
 package controllers;
 
+import dto.CategoryDto;
 import dto.OptionDto;
 import dto.QuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import service.CategoryService;
 import service.OptionService;
 import service.QuestionService;
 
@@ -27,6 +29,9 @@ public class QuestionController {
 
     @Autowired
     OptionService optionService;
+
+    @Autowired
+    CategoryService categoryService;
 
     public QuestionController() {
         //default
@@ -110,17 +115,29 @@ public class QuestionController {
     @RequestMapping(value = "/question/", method = RequestMethod.PUT)
     public ResponseEntity updateQuestion(@RequestBody QuestionDto question) {
         //update question
-        QuestionDto updatedQuestion = questionService.addQuestion(question);
+        QuestionDto questionToUpdate = questionService.getQuestionById(question.getId());
+        //category changed
+        CategoryDto category;
+        int questionCategoryId = question.getCategoryId();
+        int questionToUpdateCategoryId = questionToUpdate.getCategoryId();
+        if (questionCategoryId != questionToUpdateCategoryId) {
+            category = categoryService.getCategoryById(questionCategoryId);
+            questionToUpdate.setCategoryId(question.getCategoryId());
+        } else {
+            category = categoryService.getCategoryById(questionToUpdateCategoryId);
+        }
+        questionToUpdate.setCategory(category);
+        questionToUpdate = questionService.updateQuestionDto(questionToUpdate, question);
         //get question options
         List<OptionDto> questionOptions = question.getOptions();
         if (questionOptions != null && !questionOptions.isEmpty()) {
             //if options exist for question update all
             for (OptionDto option : questionOptions) {
-                option.setQuestion(updatedQuestion);
+                option.setQuestion(questionToUpdate);
                 optionService.addOption(option);
             }
         }
-        return new ResponseEntity<QuestionDto>(updatedQuestion, HttpStatus.OK);
+        return new ResponseEntity<QuestionDto>(questionToUpdate, HttpStatus.OK);
     }
 
     /**

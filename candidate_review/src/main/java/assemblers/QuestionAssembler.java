@@ -51,6 +51,18 @@ public class QuestionAssembler {
         return dto;
     }
 
+    public QuestionDto updateDto(QuestionDto question, QuestionDto newQuestion){
+        question.setCode(newQuestion.getCode());
+        question.setImageUrl(newQuestion.getImageUrl());
+        question.setLanguage(newQuestion.getLanguage());
+        question.setLevel(newQuestion.getLevel());
+        question.setQuestion(newQuestion.getQuestion());
+        question.setType(newQuestion.getType());
+        question.setCategory(newQuestion.getCategory());
+        question.setCategoryId(newQuestion.getCategoryId());
+        return question;
+    }
+
     /**
      * create domain object from DTO
      *

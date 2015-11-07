@@ -44,8 +44,16 @@ public class QuestionService {
         return questionAssembler.extractDtoFromDomain(questionsDao.addQuestion(questionAssembler.populateDomainFromDto(questionDto)));
     }
 
+    /**
+     * delete question
+     * @param questionDto
+     */
     public void deleteQuestion(QuestionDto questionDto){
         questionsDao.deleteQuestion(questionAssembler.populateDomainFromDto(questionDto));
+    }
+
+    public QuestionDto updateQuestionDto(QuestionDto question, QuestionDto newQuestion){
+        return questionAssembler.updateDto(question, newQuestion);
     }
 
     /**
