@@ -31,6 +31,7 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
         Transaction transaction = session.beginTransaction();
         session.delete(category);
         transaction.commit();
+        session.clear();
     }
 
     @Override

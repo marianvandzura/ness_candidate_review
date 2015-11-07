@@ -51,7 +51,6 @@ public class CategoryAssembler {
      */
     public Categories populateDomainFromDto(final CategoryDto dto) {
         Categories domain = new Categories();
-        domain.setCategoryId(dto.getId());
         domain.setCategoryName(dto.getCategoryName());
         return domain;
     }

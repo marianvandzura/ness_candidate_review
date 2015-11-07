@@ -55,7 +55,6 @@ public class OptionAssembler {
      */
     public Options populateDomainFromDto(final OptionDto dto) {
         Options domain = new Options();
-        domain.setOptionId(dto.getId());
         domain.setOption(dto.getOption());
         domain.setTruth(dto.getTruth());
         domain.setQuestion(questionAssembler.populateDomainFromDto(dto.getQuestion()));

@@ -55,14 +55,13 @@ public class QuestionAssembler {
      */
     public Questions populateDomainFromDto(final QuestionDto dto) {
         Questions domain = new Questions();
-        domain.setQuestionId(dto.getId());
         domain.setCode(dto.getCode());
         domain.setImageUrl(dto.getImageUrl());
         domain.setLanguage(dto.getLanguage());
         domain.setLevel(dto.getLevel());
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
-        domain.setCategory(categoriesDao.findById(dto.getCategory().getId()));
+        domain.setCategory(categoriesDao.findById(dto.getCategoryId()));
         return domain;
     }
 

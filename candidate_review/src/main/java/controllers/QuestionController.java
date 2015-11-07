@@ -94,7 +94,7 @@ public class QuestionController {
         if (questionOptions != null && !questionOptions.isEmpty()) {
             //if options exist for question, add all
             for (OptionDto option : questionOptions) {
-                option.setId(question.getId());
+                option.setQuestion(question);
                 optionService.addOption(option);
             }
         }
