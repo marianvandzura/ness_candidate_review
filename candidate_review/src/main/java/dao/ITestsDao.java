@@ -14,4 +14,6 @@ public interface ITestsDao {
     List<Tests> getAllTests();
 
     Tests findById(Integer id);
+
+    Tests deleteTest(Tests test);
 }

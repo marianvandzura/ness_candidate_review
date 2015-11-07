@@ -21,6 +21,8 @@ public class Tests {
     @JoinColumn(name = "user_id")
     private Users userId;
 
+    @Column(name = "name")
+    private String name;
     @Column(name = "visible")
     private Boolean visible;
     @Column(name = "position")
@@ -70,11 +72,11 @@ public class Tests {
         this.testId = testId;
     }
 
-    public Users getUserId() {
+    public Users getUser() {
         return userId;
     }
 
-    public void setUserId(Users userId) {
+    public void setUser(Users userId) {
         this.userId = userId;
     }
 
@@ -108,5 +110,13 @@ public class Tests {
 
     public void setQuestions(Collection<Questions> questions) {
         this.questions = questions;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

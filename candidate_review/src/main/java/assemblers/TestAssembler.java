@@ -2,6 +2,7 @@ package assemblers;
 
 import dao.IQuestionsDao;
 import dao.ITestsDao;
+import dao.IUsersDao;
 import dto.QuestionDto;
 import dto.TestDto;
 import model.Questions;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +27,9 @@ public class TestAssembler {
     IQuestionsDao questionDao;
 
     @Autowired
+    IUsersDao usersDao;
+
+    @Autowired
     QuestionAssembler questionAssembler;
 
     @Autowired
@@ -37,19 +40,20 @@ public class TestAssembler {
     }
 
     public TestDto extractDtoFromDomain(final Tests domain) {
-        TestDto dto = new TestDto();
-        dto.setId(domain.getTestId());
-        dto.setInfo(domain.getInfo());
-        dto.setPosition(domain.getPosition());
-        dto.setVisible(domain.getVisible());
-        dto.setUser(userAssembler.extractDtoFromDomain(domain.getUserId()));
-        List<QuestionDto> catDtos = new ArrayList<QuestionDto>();
-        for (QuestionDto questDto: questionAssembler.extractDtosListFromDomain(domain.getQuestions()))
-        {
-            catDtos.add(questDto);
-        }
-        dto.setQuestions(catDtos);
-        return dto;
+        TestDto testDto = new TestDto();
+        testDto.setId(domain.getTestId());
+        testDto.setInfo(domain.getInfo());
+        testDto.setPosition(domain.getPosition());
+        testDto.setVisible(domain.getVisible());
+        testDto.setName(domain.getName());
+        //testDto.setUserId(domain.getUser().getUserId());
+//
+//        List<QuestionDto> catDtos = new ArrayList<QuestionDto>();
+//        for (QuestionDto questDto : questionAssembler.extractDtosListFromDomain(domain.getQuestions())) {
+//            catDtos.add(questDto);
+//        }
+//        testDto.setQuestions(catDtos);
+        return testDto;
     }
 
 
@@ -67,11 +71,11 @@ public class TestAssembler {
         domain.setInfo(testDto.getInfo());
         domain.setVisible(testDto.getVisible());
         domain.setPosition(testDto.getPosition());
+        domain.setName(testDto.getName());
         domain.setTestId(testDto.getId());
-        domain.setUserId(userAssembler.populateDtoFromDomain(testDto.getUser()));
+        domain.setUser(usersDao.addUserById(testDto.getUserId()));
         List<Questions> catDomains = new ArrayList<Questions>();
-        for (QuestionDto quest: testDto.getQuestions())
-        {
+        for (QuestionDto quest : testDto.getQuestions()) {
             catDomains.add(questionAssembler.populateDomainFromDto(quest));
         }
         domain.setQuestions(catDomains);

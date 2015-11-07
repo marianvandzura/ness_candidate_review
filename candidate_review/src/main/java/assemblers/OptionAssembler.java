@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class OptionAssembler {
         return dto;
     }
 
-    public List<OptionDto> extractDtoFromDomain(final List<Options> domains) {
+    public List<OptionDto> extractDtoFromDomain(final Collection<Options> domains) {
         List<OptionDto> dtos = new ArrayList<OptionDto>();
         for(Options domain : domains) {
             dtos.add(this.extractDtoFromDomain(domain));

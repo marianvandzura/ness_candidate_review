@@ -27,11 +27,18 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         return test;
     }
 
+    public Tests deleteTest(Tests test) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(test);
+        transaction.commit();
+        return test;
+    }
+
     public List<Tests> getAllTests() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Tests ");
-
         List<Tests> tests = query.list();
         transaction.commit();
         return tests;

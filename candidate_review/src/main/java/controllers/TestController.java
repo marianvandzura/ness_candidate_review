@@ -5,10 +5,8 @@ import dto.TestDto;
 import model.Tests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
 import service.TestService;
 
 import java.util.List;
@@ -25,41 +23,49 @@ public class TestController {
     @Autowired
     IQuestionsDao questionsDao;
 
-    @RequestMapping(value = "/test", method = RequestMethod.PUT)
-    @ResponseBody
-    public Tests saveTest() {
-        //TODO
-        Tests test = new Tests();
-        test.setQuestions(questionsDao.getAllQuestions());
-        test.setInfo("more jak fajny test !");
-        test.setPosition("Misionary position");
-        return testService.save(test);
-    }
-
-    @RequestMapping(value = "/getTests", method = RequestMethod.GET)
+    @RequestMapping(value = "/gettests", method = RequestMethod.GET)
     public
     @ResponseBody
     List<TestDto> getTests() {
         return testService.getTests();
     }
 
-    @RequestMapping(value = "/getMyTests/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getmytests/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     List<TestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
         return testService.getMyTests(userId);
     }
 
-    @RequestMapping(value = "/getTest/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/gettest/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     TestDto getTest(@PathVariable(value = "id") Integer id) {
         return testService.getTestById(id);
     }
+
+    @RequestMapping(value ="/edittest", method = RequestMethod.PUT)
+    public Tests update(@RequestBody TestDto testDto) {
+        Tests domain = testService.saveTest(testDto);
+        return domain;
+    }
+
+    @RequestMapping(value ="/deletetest", method = RequestMethod.DELETE)
+    public Tests deleteTets(@RequestBody TestDto testDto) {
+        Tests domain = testService.deleteTest(testDto);
+        return domain;
+
+    }
+
+
 }
 
 
 
+
+//        editTest
+//        deleteTest
+//        getTest
 
 
 

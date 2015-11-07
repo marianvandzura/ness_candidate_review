@@ -33,6 +33,9 @@ public class QuestionDto {
     @JsonProperty("language")
     private String language;
 
+    @JsonProperty("options")
+    private List<OptionDto> options;
+
     @JsonProperty("categories")
     private CategoryDto category;
 
@@ -98,5 +101,13 @@ public class QuestionDto {
 
     public void setCategory(CategoryDto category) {
         this.category = category;
+    }
+
+    public List<OptionDto> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<OptionDto> options) {
+        this.options = options;
     }
 }

@@ -1,11 +1,13 @@
 package assemblers;
 
 import dao.ICategoriesDao;
+import dao.IOptionsDao;
 import dto.QuestionDto;
 import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +27,12 @@ public class QuestionAssembler {
     @Autowired
     CategoryAssembler categoryAssembler;
 
+    @Autowired
+    OptionAssembler optionAssembler;
+
+    @Autowired
+    IOptionsDao optionsDao;
+
     public QuestionDto extractDtoFromDomain(final Questions domain) {
         QuestionDto dto = new QuestionDto();
         dto.setId(domain.getQuestionId());
@@ -34,6 +42,7 @@ public class QuestionAssembler {
         dto.setLevel(domain.getLevel());
         dto.setQuestion(domain.getQuestion());
         dto.setType(domain.getType());
+        dto.setOptions(optionAssembler.extractDtoFromDomain(optionsDao.findOptionsForQuestion(domain.getQuestionId())));
         dto.setCategory(categoryAssembler.extractDtoFromDomain(domain.getCategory()));
         return dto;
     }
@@ -48,6 +57,7 @@ public class QuestionAssembler {
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
         domain.setCategory(categoriesDao.findById(dto.getCategory().getId()));
+        optionAssembler.populateDomainFromDto(dto.getOptions());
         return domain;
     }
 

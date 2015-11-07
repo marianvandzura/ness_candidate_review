@@ -12,4 +12,6 @@ public interface IUsersDao {
     void addUser(Users user);
 
     List<Users> getAllUsers();
+
+    Users addUserById(Integer userId);
 }

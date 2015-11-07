@@ -33,4 +33,12 @@ public class UsersDao extends HibernateDaoSupport implements IUsersDao {
         transaction.commit();
         return users;
     }
+
+    public Users addUserById(Integer userId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Users users = (Users)session.get(Users.class,userId);
+        transaction.commit();
+        return users;
+    }
 }

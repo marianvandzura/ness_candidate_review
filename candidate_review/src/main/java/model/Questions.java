@@ -24,12 +24,16 @@ public class Questions {
     private String code;
     @Column(name = "image_url")
     private String imageUrl;
+
     @Column(name = "language")
     private String language;
+
 
     @ManyToOne//(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")//, nullable = false)
     private Categories category;
+
+
 
     public Questions() {
         //default
@@ -124,4 +128,5 @@ public class Questions {
     public void setCategory(Categories category) {
         this.category = category;
     }
+
 }
