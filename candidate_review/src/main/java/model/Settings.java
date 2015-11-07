@@ -11,7 +11,7 @@ public class Settings {
 
     @Id
     @Column(name = "setting_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer settingId;
 
     public Settings() {

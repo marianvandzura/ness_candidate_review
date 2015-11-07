@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Options {
     @Id
     @Column(name = "option_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer optionId;
 
     @ManyToOne(fetch = FetchType.LAZY)

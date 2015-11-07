@@ -132,18 +132,24 @@
         </dependency>
 
         <!-- mariadb-->
-        <!--<dependency>-->
-            <!--<groupId>org.mariadb.jdbc</groupId>-->
-            <!--<artifactId>mariadb-java-client</artifactId>-->
-            <!--<version>1.2.3</version>-->
-        <!--</dependency>-->
-
-        <!-- postgresql driver-->
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.4-1204-jdbc42</version>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>1.2.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.37</version>
+        </dependency>
+
+        <!--&lt;!&ndash; postgresql driver&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>org.postgresql</groupId>-->
+            <!--<artifactId>postgresql</artifactId>-->
+            <!--<version>9.4-1204-jdbc42</version>-->
+        <!--</dependency>-->
 
         <!-- ResponseBody JSON-->
         <dependency>

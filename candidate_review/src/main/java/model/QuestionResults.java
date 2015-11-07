@@ -11,7 +11,7 @@ public class QuestionResults {
 
     @Id
     @Column(name = "question_result_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer questionResultId;
 
     @Column(name = "time")

@@ -11,7 +11,7 @@ import java.util.Collection;
 public class Tests {
     @Id
     @Column(name = "test_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer testId;
 
     @ManyToOne(fetch = FetchType.LAZY)
