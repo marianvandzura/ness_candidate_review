@@ -19,7 +19,15 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
     public Tests addTest(Tests test) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(test);
+        session.save(test);
+        transaction.commit();
+        return test;
+    }
+
+    public Tests updateTest(Tests test) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(test);
         transaction.commit();
         return test;
     }

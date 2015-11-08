@@ -6,6 +6,8 @@ import dto.QuestionDto;
 import dto.TestDto;
 import model.Tests;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
@@ -84,11 +86,34 @@ public class TestController {
         return testDto;
     }
 
+
+
+
     @RequestMapping(value = "/edittest", method = RequestMethod.PUT)
     public ResponseStatus update(@RequestBody TestDto testDto) {
+        
         Tests domain = testService.saveTest(testDto);
-        return domain;
+
+
+      //  return domain;
     }
+//      QuestionDto savedQuestion = questionService.addQuestion(question);
+//    //get question options
+//    List<OptionDto> questionOptions = question.getOptions();
+//    if (questionOptions != null && !questionOptions.isEmpty()) {
+//        //if options exist for question, add all
+//        for (OptionDto option : questionOptions) {
+//            option.setQuestion(savedQuestion);
+//            optionService.addOption(option);
+//        }
+//    }
+//    //for test purpose
+//    List<OptionDto> savedOptions = optionService.findOptionsByQuestionId(savedQuestion.getId());
+//    savedQuestion.setOptions(savedOptions);
+//    return new ResponseEntity<QuestionDto>(savedQuestion, HttpStatus.OK);
+//
+
+
 
     @RequestMapping(value = "/deletetest", method = RequestMethod.DELETE)
     public Tests deleteTets(@RequestBody TestDto testDto) {

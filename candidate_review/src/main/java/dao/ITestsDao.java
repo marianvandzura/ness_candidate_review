@@ -11,6 +11,8 @@ public interface ITestsDao {
 
     Tests addTest(Tests test);
 
+    Tests updateTest(Tests test);
+
     List<Tests> getAllTests();
 
     Tests findById(Integer id);
