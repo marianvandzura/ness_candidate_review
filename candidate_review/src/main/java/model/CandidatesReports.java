@@ -14,7 +14,7 @@ public class CandidatesReports {
 
     @Id
     @Column(name = "report_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer reportId;
 
     @Column(name = "candidate_name")

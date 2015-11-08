@@ -14,7 +14,7 @@ public class Person {
 
     @Id
     @Column(name = "person_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "name")

@@ -11,7 +11,7 @@ import java.util.Collection;
 public class Questions {
     @Id
     @Column(name = "question_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer questionId;
 
     @Column(name = "type")
