@@ -36,7 +36,7 @@ public class HelloController {
 	ICategoriesDao categoriesDao;
 
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
-	public @ResponseBody List<QuestionDto> printWelcome() {
+	public @ResponseBody CategoryDto printWelcome() {
 		//model.addAttribute("message", "Hello world!");
 		//return name(location) of view template
 		ModelAndView modelAndView = new ModelAndView("hello");
@@ -61,8 +61,10 @@ public class HelloController {
 
 		QuestionDto question = new QuestionDto();
 		CategoryDto category = new CategoryDto();
+		category.setCategoryName("Java category");
+		CategoryDto savedCategory = categoryService.addCategory(category);
 //		Categories category = new Categories();
-		category.setId(21);
+//		category.setId(21);
 //		category.setCategoryName("JAVA");
 
 		question.setCategory(category);
@@ -72,7 +74,7 @@ public class HelloController {
 		question.setQuestion("Ako byt dobry?");
 		question.setType("checkbox");
 
-		List<QuestionDto> fromDb = questionService.findQuesionsByCategory(20);
+		//List<QuestionDto> fromDb = questionService.getQuestionsByCategoryId(20);
 
 //		ObjectMapper mapper = new ObjectMapper();
 //		String jason = new String();
@@ -82,6 +84,6 @@ public class HelloController {
 //			e.printStackTrace();
 //		}
 //		modelAndView.addObject("persons", category);
-		return fromDb;
+		return savedCategory;
 	}
 }

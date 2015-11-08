@@ -14,7 +14,7 @@ public class Options {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer optionId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     private Questions question;
 

@@ -9,8 +9,23 @@ import java.util.List;
  */
 public interface ICategoriesDao {
 
-    void addCategory(Categories categories);
+    /**
+     * add category
+     * @param categories
+     * @return added category
+     */
+    Categories addCategory(Categories categories);
 
+    /**
+     * delete category
+     * @param category
+     */
+    void deleteCategory(Categories category);
+
+    /**
+     * get all categories
+     * @return List of categories
+     */
     List<Categories> getAllCategories();
 
 //    /**
