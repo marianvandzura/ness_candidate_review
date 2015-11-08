@@ -39,51 +39,21 @@ public class TestService {
         return testsDao.addTest(test);
     }
 
+    /**
+     * Return list of all tests
+     * @return list of dtos
+     */
     public List<TestDto> getTests() {
-        List<TestDto> ListOfTestDto = new ArrayList<TestDto>();
-        List<Tests> tests = testsDao.getAllTests();
-        for(Tests test: tests)
-        {
-            test.setQuestions(null);
-            test.setUser(null);
-        }
-        for (TestDto testDto : this.testsAssembler.extractDtoListFromDomain(tests)) {
-            if (testDto.getVisible()) {
-                testDto.setQuestions(null);
-                testDto.setUserId(null);
-                ListOfTestDto.add(testDto);
-            }
-        }
-        return ListOfTestDto;
+        return this.testsAssembler.extractDtoListFromDomain(testsDao.getAllTests());
     }
 
-    public List<TestDto> getMyTests(Integer userid) {
-        List<TestDto> myListOfTestDto = new ArrayList<TestDto>();
-        for (TestDto testdto : this.testsAssembler.extractDtoListFromDomain(testsDao.getAllTests())) {
-            if ((testdto.getUserId() == userid) && testdto.getVisible()) {
-                testdto.setQuestions(null);
-                testdto.setUserId(null);
-                myListOfTestDto.add(testdto);
-            }
-        }
-        return myListOfTestDto;
-    }
-
-
-
+    /**
+     * Returns test by id
+     * @param id of test
+     * @return
+     */
     public TestDto getTestById(Integer id) {
-        TestDto testDto = this.testsAssembler.extractDtoFromDomain(testsDao.findById(id));
-        //TODO fill questions to test
-//        if (testDto != null) {
-//            for (QuestionDto questionDto : testDto.getQuestions()) {
-//                for (OptionDto optionDto : questionDto.getOptions()) {
-//                    optionDto.setTruth(false);
-//                }
-//            }
-//            if (testDto.getVisible()) return testDto;
-//        }
-         if (testDto.getVisible()) return testDto;
-        return null;
+        return testsAssembler.extractDtoFromDomain(testsDao.findById(id));
     }
 
 

@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import service.TestService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,10 +24,24 @@ public class TestController {
     @Autowired
     IQuestionsDao questionsDao;
 
+    /**
+     * get all visible tests
+     *
+     * @return
+     */
+
     @RequestMapping(value = "/gettests", method = RequestMethod.GET)
     public
     @ResponseBody
     List<TestDto> getTests() {
+        List<TestDto> testDtos = new ArrayList<TestDto>();
+        for (TestDto testDto : testService.getTests()) {
+            if (testDto.getVisible()) {
+                testDto.setQuestions(null);
+                testDto.setUserId(null);
+                testDtos.add(testDto);
+            }
+        }
         return testService.getTests();
     }
 
@@ -34,7 +49,15 @@ public class TestController {
     public
     @ResponseBody
     List<TestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
-        return testService.getMyTests(userId);
+        List<TestDto> testDtos = new ArrayList<TestDto>();
+        for (TestDto testDto : testService.getTests()) {
+            if (testDto.getVisible() && (testDto.getUserId() == userId)) {
+                testDto.setQuestions(null);
+                testDto.setUserId(null);
+                testDtos.add(testDto);
+            }
+        }
+        return testService.getTests();
     }
 
     @RequestMapping(value = "/gettest/{id}", method = RequestMethod.GET)
@@ -44,13 +67,13 @@ public class TestController {
         return testService.getTestById(id);
     }
 
-    @RequestMapping(value ="/edittest", method = RequestMethod.PUT)
+    @RequestMapping(value = "/edittest", method = RequestMethod.PUT)
     public Tests update(@RequestBody TestDto testDto) {
         Tests domain = testService.saveTest(testDto);
         return domain;
     }
 
-    @RequestMapping(value ="/deletetest", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deletetest", method = RequestMethod.DELETE)
     public Tests deleteTets(@RequestBody TestDto testDto) {
         Tests domain = testService.deleteTest(testDto);
         return domain;
@@ -59,8 +82,6 @@ public class TestController {
 
 
 }
-
-
 
 
 //        editTest

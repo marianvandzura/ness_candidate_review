@@ -76,4 +76,13 @@ public class TestAssembler {
         domain.setQuestions(catDomains);
         return domain;
     }
+
+
+    public List<Tests> populateDtoListFromDomain(final List<TestDto> testDtos) {
+        List<Tests> testsList = new ArrayList<Tests>();
+        for (TestDto testDto : testDtos) {
+            testsList.add(populateDtoFromDomain(testDto));
+        }
+        return testsList;
+    }
 }
