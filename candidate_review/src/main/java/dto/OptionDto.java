@@ -12,7 +12,7 @@ public class OptionDto {
     private Integer id;
 
 
-   // @JsonProperty("question")
+    @JsonProperty("question")
     @JsonIgnore
     private QuestionDto question;
 

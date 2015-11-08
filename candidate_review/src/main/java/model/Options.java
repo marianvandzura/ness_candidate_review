@@ -15,7 +15,7 @@ public class Options {
     private Integer optionId;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "question")
     private Questions question;
 
     @Column(name = "option")
