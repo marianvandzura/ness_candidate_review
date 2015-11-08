@@ -1,15 +1,14 @@
 package controllers;
 
 import dao.IQuestionsDao;
-import dto.OptionDto;
 import dto.QuestionDto;
 import dto.TestDto;
 import model.Tests;
+import org.bouncycastle.util.test.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import service.OptionService;
 import service.TestService;
@@ -81,46 +80,47 @@ public class TestController {
         List<QuestionDto> ListOfQuestDto = new ArrayList<QuestionDto>();
         for(QuestionDto questDto : testDto.getQuestions())
         {
-              //TODO   put options to questions
+              //TODO put options to questions, option controller
         }
         return testDto;
     }
 
 
-
-
+    /**
+     * Should save test
+     * @param Dto of new test thats to be saved
+     * @return ResponseEntity
+     */
     @RequestMapping(value = "/savetest", method = RequestMethod.POST)
     public ResponseEntity<TestDto> save(@RequestBody TestDto Dto) {
         TestDto testDto  = testService.saveTest(Dto);
         return new ResponseEntity<TestDto>(testDto, HttpStatus.OK);
-
     }
 
-    @RequestMapping(value = "/exittest", method = RequestMethod.PUT)
-    public ResponseEntity<TestDto> edit(@RequestBody TestDto Dto) {
-        
-        TestDto testDto  = testService.editTest(Dto);
-
-        return new ResponseEntity<TestDto>(testDto, HttpStatus.OK);
-
+    /**
+     * Update existing test
+     * @param newTestDto updates Dto of test
+     * @return ResponseEntity
+     */
+    @RequestMapping(value = "/edittest", method = RequestMethod.PUT)
+    public ResponseEntity<TestDto> edit(@RequestBody TestDto newTestDto) {
+        TestDto updatedTest = testService.editTest(newTestDto);
+        return new ResponseEntity<TestDto>(updatedTest, HttpStatus.OK);
     }
 
 
-
+    /**
+     * Method will delete test in database, if exists.
+     * @param testDto
+     * @return
+     */
     @RequestMapping(value = "/deletetest", method = RequestMethod.DELETE)
-    public Tests deleteTets(@RequestBody TestDto testDto) {
-        Tests domain = testService.deleteTest(testDto);
-        return domain;
-
+    public ResponseEntity<TestDto> deleteTets(@RequestBody TestDto testDto) {
+        TestDto deletedTest = testService.deleteTest(testDto);
+        return new ResponseEntity<TestDto>(deletedTest, HttpStatus.OK);
     }
-
-
 }
 
-
-//        editTest
-//        deleteTest
-//        getTest
 
 
 

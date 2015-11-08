@@ -12,8 +12,6 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,7 +59,7 @@ public class TestService {
         return testsAssembler.extractDtoFromDomain(testsDao.updateTest(testsAssembler.populateDtoFromDomain(testDto)));
     }
 
-    public Tests deleteTest(TestDto testDto) {
-        return testsDao.deleteTest(testsAssembler.populateDtoFromDomain(testDto));
+    public TestDto deleteTest(TestDto testDto) {
+        return testsAssembler.extractDtoFromDomain(testsDao.deleteTest(testsAssembler.populateDtoFromDomain(testDto)));
     }
 }
