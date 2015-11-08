@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.IQuestionsDao;
+import dto.QuestionDto;
 import dto.TestDto;
 import model.Tests;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,13 @@ public class TestController {
     public
     @ResponseBody
     TestDto getTest(@PathVariable(value = "id") Integer id) {
-        return testService.getTestById(id);
+        TestDto testDto = testService.getTestById(id);
+        List<QuestionDto> ListOfQuestDto = new ArrayList<QuestionDto>();
+        for(QuestionDto questDto : testDto.getQuestions())
+        {
+            ListOfQuestDto.add();
+        }
+        return testDto;
     }
 
     @RequestMapping(value = "/edittest", method = RequestMethod.PUT)
