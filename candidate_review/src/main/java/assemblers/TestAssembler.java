@@ -46,13 +46,8 @@ public class TestAssembler {
         testDto.setPosition(domain.getPosition());
         testDto.setVisible(domain.getVisible());
         testDto.setName(domain.getName());
-        List<QuestionDto> catDtos = new ArrayList<QuestionDto>();
-        if(domain.getQuestions()!=null)
-        for (QuestionDto questDto : questionAssembler.extractDtosListFromDomain(domain.getQuestions())) {
-            catDtos.add(questDto);
-        }
-
-        testDto.setQuestions(catDtos);
+        testDto.setUserId(domain.getUser().getUserId());
+        testDto.setQuestions(questionAssembler.extractDtosListFromDomain(domain.getQuestions()));
         return testDto;
     }
 
