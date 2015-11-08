@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.IQuestionsDao;
+import dto.OptionDto;
 import dto.QuestionDto;
 import dto.TestDto;
 import model.Tests;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import service.OptionService;
 import service.TestService;
 
 import java.util.ArrayList;
@@ -24,6 +26,9 @@ public class TestController {
 
     @Autowired
     IQuestionsDao questionsDao;
+
+    @Autowired
+    OptionService optionService;
 
     /**
      * get all visible tests
@@ -61,6 +66,11 @@ public class TestController {
         return testService.getTests();
     }
 
+    /**
+     * Return test by id
+     * @param id id of a test
+     * @return
+     */
     @RequestMapping(value = "/gettest/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -69,13 +79,13 @@ public class TestController {
         List<QuestionDto> ListOfQuestDto = new ArrayList<QuestionDto>();
         for(QuestionDto questDto : testDto.getQuestions())
         {
-            ListOfQuestDto.add();
+              //TODO   put options to questions
         }
         return testDto;
     }
 
     @RequestMapping(value = "/edittest", method = RequestMethod.PUT)
-    public Tests update(@RequestBody TestDto testDto) {
+    public ResponseStatus update(@RequestBody TestDto testDto) {
         Tests domain = testService.saveTest(testDto);
         return domain;
     }
