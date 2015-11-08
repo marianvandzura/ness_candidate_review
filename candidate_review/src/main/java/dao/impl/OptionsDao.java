@@ -37,8 +37,8 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.delete(option);
-        transaction.commit();
         session.clear();
+        transaction.commit();
     }
 
     @Override
@@ -66,9 +66,10 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(Options.class);
-        criteria.createAlias("questions","question", JoinType.INNER_JOIN);
+        criteria.createAlias("question","question", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("question.questionId", questionId));
         List<Options> options = (List<Options>) criteria.list();
+        session.clear();
         transaction.commit();
         return options;
     }

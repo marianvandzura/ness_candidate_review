@@ -1,5 +1,6 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -10,7 +11,9 @@ public class OptionDto {
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("question")
+
+   // @JsonProperty("question")
+    @JsonIgnore
     private QuestionDto question;
 
     @JsonProperty("option")

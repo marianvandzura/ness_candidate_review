@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Question service.
- *
+ * <p>
  * Created by Peter.
  */
 @Service
@@ -22,12 +22,21 @@ public class QuestionService {
     @Autowired
     QuestionAssembler questionAssembler;
 
-    public QuestionService(){
+    public QuestionService() {
         //default
     }
 
+//    /**
+//     * get all available questions
+//     * @return List of questions
+//     */
+//    public List<QuestionDto> getAllQuestions(){
+//        return questionAssembler.extractDtoListFromDomain(questionsDao.getAllQuestions());
+//    }
+
     /**
      * get question with ID
+     *
      * @param id
      * @return QuestionDto object
      */
@@ -37,6 +46,7 @@ public class QuestionService {
 
     /**
      * add question to DB
+     *
      * @param questionDto
      * @return added QuestionDto object
      */
@@ -46,18 +56,20 @@ public class QuestionService {
 
     /**
      * delete question
+     *
      * @param questionDto
      */
-    public void deleteQuestion(QuestionDto questionDto){
+    public void deleteQuestion(final QuestionDto questionDto) {
         questionsDao.deleteQuestion(questionAssembler.populateDomainFromDto(questionDto));
     }
 
-    public QuestionDto updateQuestionDto(QuestionDto question, QuestionDto newQuestion){
+    public QuestionDto updateQuestionDto(final QuestionDto question, final QuestionDto newQuestion) {
         return questionAssembler.updateDto(question, newQuestion);
     }
 
     /**
      * get List of questions based on category
+     *
      * @param categoryId
      * @return List of questions
      */

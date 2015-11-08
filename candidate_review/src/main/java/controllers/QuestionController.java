@@ -68,7 +68,7 @@ public class QuestionController {
      * @param categoryId
      * @return List of questions related to category
      */
-    @RequestMapping(value = "/questions/{categoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/questions/category/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
     public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
@@ -92,17 +92,20 @@ public class QuestionController {
      * @return HTTP response
      */
     @RequestMapping(value = "/question/", method = RequestMethod.POST)
-    public ResponseEntity saveQuestion(@RequestBody QuestionDto question) {
+    public ResponseEntity saveQuestion(@RequestBody final QuestionDto question) {
         QuestionDto savedQuestion = questionService.addQuestion(question);
         //get question options
         List<OptionDto> questionOptions = question.getOptions();
         if (questionOptions != null && !questionOptions.isEmpty()) {
             //if options exist for question, add all
             for (OptionDto option : questionOptions) {
-                option.setQuestion(question);
+                option.setQuestion(savedQuestion);
                 optionService.addOption(option);
             }
         }
+        //for test purpose
+        List<OptionDto> savedOptions = optionService.findOptionsByQuestionId(savedQuestion.getId());
+        savedQuestion.setOptions(savedOptions);
         return new ResponseEntity<QuestionDto>(savedQuestion, HttpStatus.OK);
     }
 
@@ -152,7 +155,8 @@ public class QuestionController {
         QuestionDto questionToDelete = questionService.getQuestionById(questionId);
         if (questionToDelete != null) {
             //get question options
-            List<OptionDto> questionOptions = questionToDelete.getOptions();
+            //TODO options not found
+            List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionId);
             if (questionOptions != null && !questionOptions.isEmpty()) {
                 //if options exist for question delete all
                 for (OptionDto option : questionOptions) {
