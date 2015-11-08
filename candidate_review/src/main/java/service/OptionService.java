@@ -22,6 +22,7 @@ public class OptionService {
 
     /**
      * get all available options
+     *
      * @return List of options
      */
     public List<OptionDto> getAllOptions() {
@@ -30,6 +31,7 @@ public class OptionService {
 
     /**
      * add option
+     *
      * @param option
      * @return added OptionDto object
      */
@@ -38,7 +40,27 @@ public class OptionService {
     }
 
     /**
+     * update option
+     * @param option
+     * @return updated option
+     */
+    public OptionDto updateOption(final OptionDto option) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.updateOption(optionAssembler.populateDomainFromDto(option)));
+    }
+
+    /**
+     * update optionDto
+     * @param option
+     * @param newOption
+     * @return updated optionDto
+     */
+    public OptionDto updateOptionDto(final OptionDto option, final OptionDto newOption) {
+        return optionAssembler.updateDto(option, newOption);
+    }
+
+    /**
      * delete option
+     *
      * @param option
      */
     public void deleteOption(final OptionDto option) {
@@ -47,6 +69,7 @@ public class OptionService {
 
     /**
      * find option based on option ID
+     *
      * @param id
      * @return OptionDto object with ID
      */
@@ -56,6 +79,7 @@ public class OptionService {
 
     /**
      * get all options for question
+     *
      * @param questionId
      * @return List of options related to question with ID
      */

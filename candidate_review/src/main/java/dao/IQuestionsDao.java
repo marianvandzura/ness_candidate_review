@@ -17,6 +17,13 @@ public interface IQuestionsDao {
     Questions addQuestion(Questions question);
 
     /**
+     * Update question
+     * @param question
+     * @return updated question
+     */
+    Questions updateQuestion(Questions question);
+
+    /**
      * delete question
      * @param question
      */

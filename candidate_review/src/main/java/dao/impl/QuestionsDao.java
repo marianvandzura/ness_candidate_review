@@ -33,6 +33,15 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
     }
 
     @Override
+    public Questions updateQuestion(Questions question) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(question);
+        transaction.commit();
+        return question;
+    }
+
+    @Override
     public void deleteQuestion(Questions question) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();

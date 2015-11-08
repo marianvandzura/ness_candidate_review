@@ -55,6 +55,15 @@ public class QuestionService {
     }
 
     /**
+     * update question
+     * @param questionDto
+     * @return updated question
+     */
+    public QuestionDto updateQuestion(final QuestionDto questionDto){
+        return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(questionAssembler.populateDomainFromDto(questionDto)));
+    }
+
+    /**
      * delete question
      *
      * @param questionDto
@@ -63,6 +72,12 @@ public class QuestionService {
         questionsDao.deleteQuestion(questionAssembler.populateDomainFromDto(questionDto));
     }
 
+    /**
+     * update questionDto
+     * @param question
+     * @param newQuestion
+     * @return
+     */
     public QuestionDto updateQuestionDto(final QuestionDto question, final QuestionDto newQuestion) {
         return questionAssembler.updateDto(question, newQuestion);
     }

@@ -131,13 +131,22 @@ public class QuestionController {
         }
         questionToUpdate.setCategory(category);
         questionToUpdate = questionService.updateQuestionDto(questionToUpdate, question);
+        questionService.updateQuestion(questionToUpdate);
         //get question options
         List<OptionDto> questionOptions = question.getOptions();
         if (questionOptions != null && !questionOptions.isEmpty()) {
             //if options exist for question update all
             for (OptionDto option : questionOptions) {
-                option.setQuestion(questionToUpdate);
-                optionService.addOption(option);
+                if(optionService.findOptionById(option.getId()) == null) {
+                    //new option added
+                    option.setQuestion(questionToUpdate);
+                    optionService.addOption(option);
+                }else{
+                    OptionDto optionToUpdate = optionService.findOptionById(option.getId());
+                    option.setQuestion(questionToUpdate);
+                    option = optionService.updateOptionDto(optionToUpdate, option);
+                    optionService.updateOption(option);
+                }
             }
         }
         return new ResponseEntity<QuestionDto>(questionToUpdate, HttpStatus.OK);

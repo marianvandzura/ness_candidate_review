@@ -36,6 +36,20 @@ public class OptionAssembler {
     }
 
     /**
+     * update questionDto with new values
+     *
+     * @param option
+     * @param newOption
+     * @return updated question
+     */
+    public OptionDto updateDto(final OptionDto option, final OptionDto newOption) {
+        option.setOption(newOption.getOption());
+        option.setTruth(newOption.getTruth());
+        option.setQuestion(newOption.getQuestion());
+        return option;
+    }
+
+    /**
      * create OptionDto object for all domain Options models in List
      * @param domains
      * @return List of OptionDto objects

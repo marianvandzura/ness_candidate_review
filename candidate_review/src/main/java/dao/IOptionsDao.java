@@ -17,6 +17,13 @@ public interface IOptionsDao {
     Options addOption(Options option);
 
     /**
+     * Update option
+     * @param option
+     * @return updated question
+     */
+    Options updateOption(Options option);
+
+    /**
      * delete option
      * @param option
      */

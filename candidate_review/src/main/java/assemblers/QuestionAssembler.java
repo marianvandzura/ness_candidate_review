@@ -51,7 +51,14 @@ public class QuestionAssembler {
         return dto;
     }
 
-    public QuestionDto updateDto(final  QuestionDto question,final   QuestionDto newQuestion){
+    /**
+     * update questionDto with new values
+     *
+     * @param question
+     * @param newQuestion
+     * @return updated question
+     */
+    public QuestionDto updateDto(final QuestionDto question, final QuestionDto newQuestion) {
         question.setCode(newQuestion.getCode());
         question.setImageUrl(newQuestion.getImageUrl());
         question.setLanguage(newQuestion.getLanguage());
