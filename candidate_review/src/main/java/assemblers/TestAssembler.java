@@ -73,7 +73,7 @@ public class TestAssembler {
         domain.setPosition(testDto.getPosition());
         domain.setName(testDto.getName());
         domain.setTestId(testDto.getId());
-        domain.setUser(usersDao.findUserById(testDto.getUser().getUserId()));
+        domain.setUser(usersDao.findUserById(testDto.getUserId()));
         List<Questions> catDomains = new ArrayList<Questions>();
         for (QuestionDto quest : testDto.getQuestions()) {
             catDomains.add(questionAssembler.populateDomainFromDto(quest));

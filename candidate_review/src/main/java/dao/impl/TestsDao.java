@@ -47,7 +47,6 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         Transaction transaction = session.beginTransaction();
         Tests test = (Tests)session.get(Tests.class,id);
 
-        test.getUser().getUserId();
         test.getQuestions().size();
 
         transaction.commit();

@@ -50,7 +50,7 @@ public class TestService {
         for (TestDto testDto : this.testsAssembler.extractDtoListFromDomain(tests)) {
             if (testDto.getVisible()) {
                 testDto.setQuestions(null);
-                testDto.setUser(null);
+                testDto.setUserId(null);
                 ListOfTestDto.add(testDto);
             }
         }
@@ -60,7 +60,9 @@ public class TestService {
     public List<TestDto> getMyTests(Integer userid) {
         List<TestDto> myListOfTestDto = new ArrayList<TestDto>();
         for (TestDto testdto : this.testsAssembler.extractDtoListFromDomain(testsDao.getAllTests())) {
-            if (testdto.getUser().getUserId() == userid && testdto.getVisible()) {
+            if ((testdto.getUserId() == userid) && testdto.getVisible()) {
+                testdto.setQuestions(null);
+                testdto.setUserId(null);
                 myListOfTestDto.add(testdto);
             }
         }
@@ -71,6 +73,7 @@ public class TestService {
 
     public TestDto getTestById(Integer id) {
         TestDto testDto = this.testsAssembler.extractDtoFromDomain(testsDao.findById(id));
+        //TODO fill questions to test
 //        if (testDto != null) {
 //            for (QuestionDto questionDto : testDto.getQuestions()) {
 //                for (OptionDto optionDto : questionDto.getOptions()) {

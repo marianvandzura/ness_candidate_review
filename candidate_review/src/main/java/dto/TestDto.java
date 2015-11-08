@@ -15,8 +15,8 @@ public class TestDto {
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("user")
-    private Users user;
+    @JsonProperty("user_id")
+    private Integer userId;
 
     @JsonProperty("info")
     private String info;
@@ -73,12 +73,12 @@ public class TestDto {
         this.questions = questions;
     }
 
-    public Users getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(Users userid) {
-        this.user = userid;
+    public void setUserId(Integer userid) {
+        this.userId = userid;
     }
 
     public String getName() {
