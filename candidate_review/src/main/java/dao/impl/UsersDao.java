@@ -34,7 +34,7 @@ public class UsersDao extends HibernateDaoSupport implements IUsersDao {
         return users;
     }
 
-    public Users addUserById(Integer userId) {
+    public Users findUserById(Integer userId) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Users users = (Users)session.get(Users.class,userId);

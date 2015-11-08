@@ -2,6 +2,7 @@ package dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.Questions;
+import model.Users;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,8 +15,8 @@ public class TestDto {
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("userId")
-    private Integer userId;
+    @JsonProperty("user")
+    private Users user;
 
     @JsonProperty("info")
     private String info;
@@ -72,12 +73,12 @@ public class TestDto {
         this.questions = questions;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userid) {
-        this.userId = userid;
+    public void setUser(Users userid) {
+        this.user = userid;
     }
 
     public String getName() {

@@ -46,13 +46,13 @@ public class TestAssembler {
         testDto.setPosition(domain.getPosition());
         testDto.setVisible(domain.getVisible());
         testDto.setName(domain.getName());
-        //testDto.setUserId(domain.getUser().getUserId());
-//
-//        List<QuestionDto> catDtos = new ArrayList<QuestionDto>();
-//        for (QuestionDto questDto : questionAssembler.extractDtosListFromDomain(domain.getQuestions())) {
-//            catDtos.add(questDto);
-//        }
-//        testDto.setQuestions(catDtos);
+        List<QuestionDto> catDtos = new ArrayList<QuestionDto>();
+        if(domain.getQuestions()!=null)
+        for (QuestionDto questDto : questionAssembler.extractDtosListFromDomain(domain.getQuestions())) {
+            catDtos.add(questDto);
+        }
+
+        testDto.setQuestions(catDtos);
         return testDto;
     }
 
@@ -73,7 +73,7 @@ public class TestAssembler {
         domain.setPosition(testDto.getPosition());
         domain.setName(testDto.getName());
         domain.setTestId(testDto.getId());
-        domain.setUser(usersDao.addUserById(testDto.getUserId()));
+        domain.setUser(usersDao.findUserById(testDto.getUser().getUserId()));
         List<Questions> catDomains = new ArrayList<Questions>();
         for (QuestionDto quest : testDto.getQuestions()) {
             catDomains.add(questionAssembler.populateDomainFromDto(quest));

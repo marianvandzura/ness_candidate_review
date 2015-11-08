@@ -2,10 +2,7 @@ package dao.impl;
 
 import dao.ITestsDao;
 import model.Tests;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
@@ -44,11 +41,15 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         return tests;
     }
 
-    @Override
+
     public Tests findById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Tests test = (Tests)session.get(Tests.class,id);
+
+        test.getUser().getUserId();
+        test.getQuestions().size();
+
         transaction.commit();
         return test;
     }
