@@ -35,10 +35,6 @@ public class TestService {
     IQuestionsDao questionsDao;
 
 
-    public Tests save(final Tests test) {
-        return testsDao.addTest(test);
-    }
-
     /**
      * Return list of all tests
      * @return list of dtos
@@ -57,8 +53,12 @@ public class TestService {
     }
 
 
-    public Tests saveTest(TestDto testDto) {
-        return testsDao.addTest(testsAssembler.populateDtoFromDomain(testDto));
+    public TestDto saveTest(TestDto testDto) {
+        return testsAssembler.extractDtoFromDomain(testsDao.addTest(testsAssembler.populateDtoFromDomain(testDto)));
+    }
+
+    public TestDto editTest(TestDto testDto) {
+        return testsAssembler.extractDtoFromDomain(testsDao.updateTest(testsAssembler.populateDtoFromDomain(testDto)));
     }
 
     public Tests deleteTest(TestDto testDto) {

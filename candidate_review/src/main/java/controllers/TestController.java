@@ -89,29 +89,21 @@ public class TestController {
 
 
 
-    @RequestMapping(value = "/edittest", method = RequestMethod.PUT)
-    public ResponseStatus update(@RequestBody TestDto testDto) {
-        
-        Tests domain = testService.saveTest(testDto);
+    @RequestMapping(value = "/savetest", method = RequestMethod.POST)
+    public ResponseEntity<TestDto> save(@RequestBody TestDto Dto) {
+        TestDto testDto  = testService.saveTest(Dto);
+        return new ResponseEntity<TestDto>(testDto, HttpStatus.OK);
 
-
-      //  return domain;
     }
-//      QuestionDto savedQuestion = questionService.addQuestion(question);
-//    //get question options
-//    List<OptionDto> questionOptions = question.getOptions();
-//    if (questionOptions != null && !questionOptions.isEmpty()) {
-//        //if options exist for question, add all
-//        for (OptionDto option : questionOptions) {
-//            option.setQuestion(savedQuestion);
-//            optionService.addOption(option);
-//        }
-//    }
-//    //for test purpose
-//    List<OptionDto> savedOptions = optionService.findOptionsByQuestionId(savedQuestion.getId());
-//    savedQuestion.setOptions(savedOptions);
-//    return new ResponseEntity<QuestionDto>(savedQuestion, HttpStatus.OK);
-//
+
+    @RequestMapping(value = "/exittest", method = RequestMethod.PUT)
+    public ResponseEntity<TestDto> edit(@RequestBody TestDto Dto) {
+        
+        TestDto testDto  = testService.editTest(Dto);
+
+        return new ResponseEntity<TestDto>(testDto, HttpStatus.OK);
+
+    }
 
 
 

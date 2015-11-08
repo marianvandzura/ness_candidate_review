@@ -57,7 +57,6 @@ public class QuestionAssembler {
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
         domain.setCategory(categoriesDao.findById(dto.getCategory().getId()));
-        optionAssembler.populateDomainFromDto(dto.getOptions());
         return domain;
     }
 
