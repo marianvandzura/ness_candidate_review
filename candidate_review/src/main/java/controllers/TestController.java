@@ -32,11 +32,10 @@ public class TestController {
     OptionService optionService;
 
     /**
-     * get all visible tests
+     * Get all visible tests
      *
-     * @return
+     * @return all tests
      */
-
     @RequestMapping(value = "/gettests", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -46,12 +45,19 @@ public class TestController {
             if (testDto.getVisible()) {
                 testDto.setQuestions(null);
                 testDto.setUserId(null);
+                testDto.setVisible(null);
                 testDtos.add(testDto);
             }
         }
-        return testService.getTests();
+        return testDtos;
     }
 
+    /**
+     * Get test by userId, the one who owns them
+     *
+     * @param userId user id
+     * @return my tests
+     */
     @RequestMapping(value = "/getmytests/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -64,11 +70,12 @@ public class TestController {
                 testDtos.add(testDto);
             }
         }
-        return testService.getTests();
+        return testDtos;
     }
 
     /**
      * Return test by id
+     *
      * @param id id of a test
      * @return
      */
@@ -78,9 +85,8 @@ public class TestController {
     TestDto getTest(@PathVariable(value = "id") Integer id) {
         TestDto testDto = testService.getTestById(id);
         List<QuestionDto> ListOfQuestDto = new ArrayList<QuestionDto>();
-        for(QuestionDto questDto : testDto.getQuestions())
-        {
-              //TODO put options to questions, option controller
+        for (QuestionDto questDto : testDto.getQuestions()) {
+            //TODO put options to questions, option controller
         }
         return testDto;
     }
@@ -88,17 +94,20 @@ public class TestController {
 
     /**
      * Should save test
+     *
      * @param Dto of new test thats to be saved
      * @return ResponseEntity
      */
     @RequestMapping(value = "/savetest", method = RequestMethod.POST)
     public ResponseEntity<TestDto> save(@RequestBody TestDto Dto) {
-        TestDto testDto  = testService.saveTest(Dto);
+        //TODO save new question to database
+        TestDto testDto = testService.saveTest(Dto);
         return new ResponseEntity<TestDto>(testDto, HttpStatus.OK);
     }
 
     /**
      * Update existing test
+     *
      * @param newTestDto updates Dto of test
      * @return ResponseEntity
      */
@@ -111,12 +120,13 @@ public class TestController {
 
     /**
      * Method will delete test in database, if exists.
-     * @param testDto
-     * @return
+     *
+     * @param id id of test
+     * @return ResponseEntity
      */
-    @RequestMapping(value = "/deletetest", method = RequestMethod.DELETE)
-    public ResponseEntity<TestDto> deleteTets(@RequestBody TestDto testDto) {
-        TestDto deletedTest = testService.deleteTest(testDto);
+    @RequestMapping(value = "/deletetest/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<TestDto> deleteTets(@PathVariable(value = "id") Integer id) {
+        TestDto deletedTest = testService.deleteTest(testService.getTestById(id));
         return new ResponseEntity<TestDto>(deletedTest, HttpStatus.OK);
     }
 }

@@ -19,6 +19,7 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
     public Tests addTest(Tests test) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
+        test.setTestId(null);
         session.save(test);
         transaction.commit();
         return test;
@@ -45,6 +46,13 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Tests ");
         List<Tests> tests = query.list();
+
+        for(Tests test: tests)
+        {
+            Hibernate.initialize(test.getQuestions());
+            Hibernate.initialize(test.getUser());
+        }
+
         transaction.commit();
         return tests;
     }
@@ -55,9 +63,30 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         Transaction transaction = session.beginTransaction();
         Tests test = (Tests)session.get(Tests.class,id);
 
-        test.getQuestions().size();
+        //TODO something to do with lazy initialization
+        Hibernate.initialize(test.getQuestions());
+        Hibernate.initialize(test.getUser());
+
+        test.setQuestions(test.getQuestions());
+        test.setUser(test.getUser());
 
         transaction.commit();
         return test;
+    }
+
+    public List<Tests> getTestsByUserId(Integer id) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from Tests ");
+        List<Tests> tests = query.list();
+
+        for(Tests test: tests)
+        {
+            Hibernate.initialize(test.getQuestions());
+            Hibernate.initialize(test.getUser());
+        }
+
+        transaction.commit();
+        return tests;
     }
 }
