@@ -73,16 +73,16 @@ public class QuestionController {
     public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
         //init arrayList size because of performance
-        List<QuestionDto> result = new ArrayList<QuestionDto>(questionsByCategory.size());
-
-        for (QuestionDto questionDto : questionsByCategory) {
-            //get all options related to question based on question ID
-            List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionDto.getId());
-            //add options to response
-            questionDto.setOptions(questionOptions);
-            result.add(questionDto);
-        }
-        return result;
+//        List<QuestionDto> result = new ArrayList<QuestionDto>(questionsByCategory.size());
+//
+//        for (QuestionDto questionDto : questionsByCategory) {
+//            //get all options related to question based on question ID
+//            List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionDto.getId());
+//            //add options to response
+//            questionDto.setOptions(questionOptions);
+//            result.add(questionDto);
+//        }
+        return questionsByCategory;
     }
 
     /**
@@ -94,18 +94,6 @@ public class QuestionController {
     @RequestMapping(value = "/question/", method = RequestMethod.POST)
     public ResponseEntity saveQuestion(@RequestBody final QuestionDto question) {
         QuestionDto savedQuestion = questionService.addQuestion(question);
-        //get question options
-        List<OptionDto> questionOptions = question.getOptions();
-        if (questionOptions != null && !questionOptions.isEmpty()) {
-            //if options exist for question, add all
-            for (OptionDto option : questionOptions) {
-                option.setQuestion(savedQuestion);
-                optionService.addOption(option);
-            }
-        }
-        //for test purpose
-        List<OptionDto> savedOptions = optionService.findOptionsByQuestionId(savedQuestion.getId());
-        savedQuestion.setOptions(savedOptions);
         return new ResponseEntity<QuestionDto>(savedQuestion, HttpStatus.OK);
     }
 
@@ -137,11 +125,11 @@ public class QuestionController {
         if (questionOptions != null && !questionOptions.isEmpty()) {
             //if options exist for question update all
             for (OptionDto option : questionOptions) {
-                if(optionService.findOptionById(option.getId()) == null) {
+                if (optionService.findOptionById(option.getId()) == null) {
                     //new option added
                     option.setQuestion(questionToUpdate);
                     optionService.addOption(option);
-                }else{
+                } else {
                     OptionDto optionToUpdate = optionService.findOptionById(option.getId());
                     option.setQuestion(questionToUpdate);
                     option = optionService.updateOptionDto(optionToUpdate, option);

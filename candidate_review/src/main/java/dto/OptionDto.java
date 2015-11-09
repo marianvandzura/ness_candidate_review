@@ -11,7 +11,6 @@ public class OptionDto {
     @JsonProperty("id")
     private Integer id;
 
-
     @JsonProperty("question")
     @JsonIgnore
     private QuestionDto question;

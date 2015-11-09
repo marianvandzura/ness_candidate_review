@@ -31,6 +31,9 @@ public class Questions {
     @JoinColumn(name = "category_id")//, nullable = false)
     private Categories category;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private Collection<Options> options;
+
     public Questions() {
         //default
     }
@@ -123,5 +126,13 @@ public class Questions {
 
     public void setCategory(Categories category) {
         this.category = category;
+    }
+
+    public Collection<Options> getOptions() {
+        return options;
+    }
+
+    public void setOptions(Collection<Options> options) {
+        this.options = options;
     }
 }

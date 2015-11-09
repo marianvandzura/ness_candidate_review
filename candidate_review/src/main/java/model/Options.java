@@ -14,10 +14,6 @@ public class Options {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer optionId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "question")
-    private Questions question;
-
     @Column(name = "option")
     private String option;
     @Column(name = "truth")
@@ -74,11 +70,4 @@ public class Options {
         this.truth = truth;
     }
 
-    public Questions getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Questions question) {
-        this.question = question;
-    }
 }

@@ -26,6 +26,9 @@ public class QuestionAssembler {
     @Autowired
     CategoryAssembler categoryAssembler;
 
+    @Autowired
+    OptionAssembler optionAssembler;
+
     public QuestionAssembler() {
         //default
     }
@@ -45,6 +48,7 @@ public class QuestionAssembler {
         dto.setLevel(domain.getLevel());
         dto.setQuestion(domain.getQuestion());
         dto.setType(domain.getType());
+        dto.setOptions(optionAssembler.extractDtoFromDomain(domain.getOptions()));
         CategoryDto category = categoryAssembler.extractDtoFromDomain(domain.getCategory());
         dto.setCategory(category);
         dto.setCategoryId(category.getId());
@@ -84,6 +88,7 @@ public class QuestionAssembler {
         domain.setLevel(dto.getLevel());
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
+        domain.setOptions(optionAssembler.populateDomainFromDto(dto.getOptions()));
         int categoryId = dto.getCategoryId();
         Categories category = categoriesDao.findById(categoryId);
         domain.setCategory(category);
