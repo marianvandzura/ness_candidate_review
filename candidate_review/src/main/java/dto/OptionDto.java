@@ -11,10 +11,6 @@ public class OptionDto {
     @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("question")
-    @JsonIgnore
-    private QuestionDto question;
-
     @JsonProperty("option")
     private String option;
 
@@ -45,11 +41,4 @@ public class OptionDto {
         this.truth = truth;
     }
 
-    public QuestionDto getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(QuestionDto question) {
-        this.question = question;
-    }
 }

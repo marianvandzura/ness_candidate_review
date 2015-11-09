@@ -52,11 +52,11 @@ public class QuestionController {
 
         for (int questionId : questionIds) {
             //get all options related to question based on question ID
-            List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionId);
+           // List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionId);
             //get question
             QuestionDto question = questionService.getQuestionById(questionId);
             //add options to response
-            question.setOptions(questionOptions);
+            //question.setOptions(questionOptions);
             result.add(question);
         }
         return result;
@@ -127,11 +127,11 @@ public class QuestionController {
             for (OptionDto option : questionOptions) {
                 if (optionService.findOptionById(option.getId()) == null) {
                     //new option added
-                    option.setQuestion(questionToUpdate);
+                    //option.setQuestion(questionToUpdate);
                     optionService.addOption(option);
                 } else {
                     OptionDto optionToUpdate = optionService.findOptionById(option.getId());
-                    option.setQuestion(questionToUpdate);
+                    //option.setQuestion(questionToUpdate);
                     option = optionService.updateOptionDto(optionToUpdate, option);
                     optionService.updateOption(option);
                 }
