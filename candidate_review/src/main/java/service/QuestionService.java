@@ -3,6 +3,7 @@ package service;
 import assemblers.QuestionAssembler;
 import dao.IQuestionsDao;
 import dto.QuestionDto;
+import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,11 @@ public class QuestionService {
      * @return QuestionDto object
      */
     public QuestionDto getQuestionById(final Integer id) {
-        return questionAssembler.extractDtoFromDomain(questionsDao.findQuestionById(id));
+        Questions questions = null;
+        if ((questions = questionsDao.findQuestionById(id)) != null) {
+            return questionAssembler.extractDtoFromDomain(questions);
+        }
+        return null;
     }
 
     /**
@@ -56,10 +61,11 @@ public class QuestionService {
 
     /**
      * update question
+     *
      * @param questionDto
      * @return updated question
      */
-    public QuestionDto updateQuestion(final QuestionDto questionDto){
+    public QuestionDto updateQuestion(final QuestionDto questionDto) {
         return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(questionAssembler.populateDomainFromDto(questionDto)));
     }
 
@@ -69,11 +75,12 @@ public class QuestionService {
      * @param questionDto
      */
     public void deleteQuestion(final QuestionDto questionDto) {
-        questionsDao.deleteQuestion(questionAssembler.populateDomainFromDto(questionDto));
+        questionsDao.deleteQuestion(questionDto.getId());
     }
 
     /**
      * update questionDto
+     *
      * @param question
      * @param newQuestion
      * @return

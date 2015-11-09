@@ -42,11 +42,17 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
     }
 
     @Override
-    public void deleteQuestion(Questions question) {
+    public void deleteQuestion(int questionId) {
+
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.delete(question);
-        session.clear();
+        Query query = session.createQuery("delete Questions where questionId = :id").setParameter("id", questionId);
+        query.executeUpdate();
+//                Transaction transaction = session.beginTransaction();
+//        Questions questionToDelete = (Questions) session.get(Questions.class, questionId);
+//        //TODO
+//        session.delete(questionToDelete);
+//        //session.clear();
         transaction.commit();
     }
 

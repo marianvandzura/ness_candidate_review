@@ -28,28 +28,6 @@ public class Users {
         //default
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        Users user = (Users) obj;
-        return (this.userId == user.getUserId())
-                && (this.email != null && this.email.equals(user.getEmail()));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + userId;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
-    }
-
     public Integer getUserId() {
         return userId;
     }

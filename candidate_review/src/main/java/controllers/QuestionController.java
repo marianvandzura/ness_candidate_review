@@ -151,19 +151,12 @@ public class QuestionController {
         //get existing question
         QuestionDto questionToDelete = questionService.getQuestionById(questionId);
         if (questionToDelete != null) {
-            //get question options
-            //TODO options not found
-            List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionId);
-            if (questionOptions != null && !questionOptions.isEmpty()) {
-                //if options exist for question delete all
-                for (OptionDto option : questionOptions) {
-                    optionService.deleteOption(option);
-                }
-            }
             //delete question
             questionService.deleteQuestion(questionToDelete);
+            return new ResponseEntity("Question deleted", HttpStatus.OK);
+        }else{
+            return new ResponseEntity("Question NOT FOUND",HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<QuestionDto>(questionToDelete, HttpStatus.OK);
     }
 
 }

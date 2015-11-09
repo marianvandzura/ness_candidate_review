@@ -24,28 +24,6 @@ public class Options {
         //default
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        Options option = (Options) obj;
-        return (this.optionId == option.getOptionId())
-                && (this.option != null && this.option.equals(option.getOption()));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + optionId;
-        result = 31 * result + (option != null ? option.hashCode() : 0);
-        return result;
-    }
-
     public Integer getOptionId() {
         return optionId;
     }
