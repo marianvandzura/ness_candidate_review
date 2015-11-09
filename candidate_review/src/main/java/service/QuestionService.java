@@ -2,11 +2,15 @@ package service;
 
 import assemblers.QuestionAssembler;
 import dao.IQuestionsDao;
+import dto.OptionDto;
 import dto.QuestionDto;
+import model.Options;
 import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -66,7 +70,24 @@ public class QuestionService {
      * @return updated question
      */
     public QuestionDto updateQuestion(final QuestionDto questionDto) {
-        return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(questionAssembler.populateDomainFromDto(questionDto)));
+        List<OptionDto> questionOptions = questionDto.getOptions();
+//        List<Integer> optionIds = new ArrayList<>(questionOptions.size());
+//        for (OptionDto option : questionOptions) {
+//            optionIds.add(option.getId());
+//        }
+        int questionId = questionDto.getId();
+        Questions question = questionAssembler.populateDomainFromDto(questionDto);
+        question.setQuestionId(questionId);
+        Collection<Options> options = question.getOptions();
+        int i = 0;
+        for (Options singleOption : options){
+            OptionDto optionDto =  questionOptions.get(i++);
+            int optionId = optionDto == null ? -1 : optionDto.getId();
+            if(optionId != -1){
+                singleOption.setOptionId(optionId);
+            }
+        }
+        return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(question));
     }
 
     /**
@@ -96,6 +117,11 @@ public class QuestionService {
      * @return List of questions
      */
     public List<QuestionDto> getQuestionsByCategoryId(final Integer categoryId) {
-        return questionAssembler.extractDtoListFromDomain(questionsDao.findQuestionsByCategory(categoryId));
+        List<Questions> questions = questionsDao.findQuestionsByCategory(categoryId);
+        if (questions != null) {
+            return questionAssembler.extractDtoListFromDomain(questions);
+        } else {
+            return null;
+        }
     }
 }

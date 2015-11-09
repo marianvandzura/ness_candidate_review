@@ -7,6 +7,8 @@ import model.Categories;
 import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import service.CategoryService;
+import service.QuestionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,9 @@ public class QuestionAssembler {
 
     @Autowired
     OptionAssembler optionAssembler;
+
+    @Autowired
+    CategoryService categoryService;
 
     public QuestionAssembler() {
         //default
@@ -69,6 +74,7 @@ public class QuestionAssembler {
         question.setLevel(newQuestion.getLevel());
         question.setQuestion(newQuestion.getQuestion());
         question.setType(newQuestion.getType());
+        question.setOptions(newQuestion.getOptions());
         question.setCategory(newQuestion.getCategory());
         question.setCategoryId(newQuestion.getCategoryId());
         return question;

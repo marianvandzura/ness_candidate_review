@@ -1,6 +1,5 @@
 package controllers;
 
-import dto.CategoryDto;
 import dto.OptionDto;
 import dto.QuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ public class QuestionController {
         //default
     }
 
-
     /**
      * get questions with array of ids passed as param
      *
@@ -49,15 +47,12 @@ public class QuestionController {
     public List<QuestionDto> getQuestionsWithIds(@PathVariable(value = "id") List<Integer> questionIds) {
         //init arrayList because of performance
         List<QuestionDto> result = new ArrayList<QuestionDto>(questionIds.size());
-
+        //get all questions
         for (int questionId : questionIds) {
-            //get all options related to question based on question ID
-           // List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionId);
-            //get question
             QuestionDto question = questionService.getQuestionById(questionId);
-            //add options to response
-            //question.setOptions(questionOptions);
-            result.add(question);
+            if (question != null) {
+                result.add(question);
+            }
         }
         return result;
     }
@@ -72,16 +67,6 @@ public class QuestionController {
     @ResponseBody
     public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
-        //init arrayList size because of performance
-//        List<QuestionDto> result = new ArrayList<QuestionDto>(questionsByCategory.size());
-//
-//        for (QuestionDto questionDto : questionsByCategory) {
-//            //get all options related to question based on question ID
-//            List<OptionDto> questionOptions = optionService.findOptionsByQuestionId(questionDto.getId());
-//            //add options to response
-//            questionDto.setOptions(questionOptions);
-//            result.add(questionDto);
-//        }
         return questionsByCategory;
     }
 
@@ -89,12 +74,12 @@ public class QuestionController {
      * save question and question options
      *
      * @param question
-     * @return HTTP response
+     * @return saved question
      */
     @RequestMapping(value = "/question/", method = RequestMethod.POST)
     public ResponseEntity saveQuestion(@RequestBody final QuestionDto question) {
         QuestionDto savedQuestion = questionService.addQuestion(question);
-        return new ResponseEntity<QuestionDto>(savedQuestion, HttpStatus.OK);
+        return new ResponseEntity<>(savedQuestion, HttpStatus.OK);
     }
 
     /**
@@ -107,37 +92,9 @@ public class QuestionController {
     public ResponseEntity updateQuestion(@RequestBody QuestionDto question) {
         //update question
         QuestionDto questionToUpdate = questionService.getQuestionById(question.getId());
-        //category changed
-        CategoryDto category;
-        int questionCategoryId = question.getCategoryId();
-        int questionToUpdateCategoryId = questionToUpdate.getCategoryId();
-        if (questionCategoryId != questionToUpdateCategoryId) {
-            category = categoryService.getCategoryById(questionCategoryId);
-            questionToUpdate.setCategoryId(question.getCategoryId());
-        } else {
-            category = categoryService.getCategoryById(questionToUpdateCategoryId);
-        }
-        questionToUpdate.setCategory(category);
         questionToUpdate = questionService.updateQuestionDto(questionToUpdate, question);
-        questionService.updateQuestion(questionToUpdate);
-        //get question options
-        List<OptionDto> questionOptions = question.getOptions();
-        if (questionOptions != null && !questionOptions.isEmpty()) {
-            //if options exist for question update all
-            for (OptionDto option : questionOptions) {
-                if (optionService.findOptionById(option.getId()) == null) {
-                    //new option added
-                    //option.setQuestion(questionToUpdate);
-                    optionService.addOption(option);
-                } else {
-                    OptionDto optionToUpdate = optionService.findOptionById(option.getId());
-                    //option.setQuestion(questionToUpdate);
-                    option = optionService.updateOptionDto(optionToUpdate, option);
-                    optionService.updateOption(option);
-                }
-            }
-        }
-        return new ResponseEntity<QuestionDto>(questionToUpdate, HttpStatus.OK);
+        QuestionDto updatedQuestion = questionService.updateQuestion(questionToUpdate);
+        return new ResponseEntity<>(updatedQuestion, HttpStatus.OK);
     }
 
     /**
@@ -154,8 +111,8 @@ public class QuestionController {
             //delete question
             questionService.deleteQuestion(questionToDelete);
             return new ResponseEntity("Question deleted", HttpStatus.OK);
-        }else{
-            return new ResponseEntity("Question NOT FOUND",HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity("Question NOT FOUND", HttpStatus.NOT_FOUND);
         }
     }
 
