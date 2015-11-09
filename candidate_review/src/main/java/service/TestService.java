@@ -4,6 +4,7 @@ import assemblers.QuestionAssembler;
 import assemblers.TestAssembler;
 import dao.IQuestionsDao;
 import dao.ITestsDao;
+import dto.ListTestDto;
 import dto.OptionDto;
 import dto.QuestionDto;
 import dto.TestDto;
@@ -37,8 +38,16 @@ public class TestService {
      * Return list of all tests
      * @return list of dtos
      */
-    public List<TestDto> getTests() {
+    public List<ListTestDto> getTests() {
         return this.testsAssembler.extractDtoListFromDomain(testsDao.getAllTests());
+    }
+
+    /**
+     * Return list of all tests
+     * @return list of dtos
+     */
+    public List<ListTestDto> getMyTests(Integer id) {
+        return this.testsAssembler.extractDtoListFromDomain(testsDao.getTestsByUserId(id));
     }
 
     /**

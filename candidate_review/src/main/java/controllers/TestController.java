@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.IQuestionsDao;
+import dto.ListTestDto;
 import dto.QuestionDto;
 import dto.TestDto;
 import model.Tests;
@@ -39,17 +40,8 @@ public class TestController {
     @RequestMapping(value = "/gettests", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<TestDto> getTests() {
-        List<TestDto> testDtos = new ArrayList<TestDto>();
-        for (TestDto testDto : testService.getTests()) {
-            if (testDto.getVisible()) {
-                testDto.setQuestions(null);
-                testDto.setUserId(null);
-                testDto.setVisible(null);
-                testDtos.add(testDto);
-            }
-        }
-        return testDtos;
+    List<ListTestDto> getTests() {
+        return testService.getTests();
     }
 
     /**
@@ -61,16 +53,8 @@ public class TestController {
     @RequestMapping(value = "/getmytests/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<TestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
-        List<TestDto> testDtos = new ArrayList<TestDto>();
-        for (TestDto testDto : testService.getTests()) {
-            if (testDto.getVisible() && (testDto.getUserId() == userId)) {
-                testDto.setQuestions(null);
-                testDto.setUserId(null);
-                testDtos.add(testDto);
-            }
-        }
-        return testDtos;
+    List<ListTestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
+        return testService.getMyTests(userId);
     }
 
     /**

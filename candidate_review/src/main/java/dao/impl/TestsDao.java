@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.ITestsDao;
+import model.Questions;
 import model.Tests;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
@@ -47,8 +48,7 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         Query query = session.createQuery("from Tests ");
         List<Tests> tests = query.list();
 
-        for(Tests test: tests)
-        {
+        for (Tests test : tests) {
             Hibernate.initialize(test.getQuestions());
             Hibernate.initialize(test.getUser());
         }
@@ -61,7 +61,7 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
     public Tests findById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Tests test = (Tests)session.get(Tests.class,id);
+        Tests test = (Tests) session.get(Tests.class, id);
 
         //TODO something to do with lazy initialization
         Hibernate.initialize(test.getQuestions());
@@ -74,19 +74,16 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         return test;
     }
 
-    public List<Tests> getTestsByUserId(Integer id) {
+    public List<Tests> getTestsByUserId(Integer userid) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("from Tests ");
-        List<Tests> tests = query.list();
+        Criteria criteria = session.createCriteria(Tests.class);
 
-        for(Tests test: tests)
-        {
-            Hibernate.initialize(test.getQuestions());
-            Hibernate.initialize(test.getUser());
-        }
-
+        criteria.createAlias("user", "user", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("user.userId", userid));
+        List<Tests> testList = (List<Tests>) criteria.list();
         transaction.commit();
-        return tests;
+        return testList;
     }
+
 }

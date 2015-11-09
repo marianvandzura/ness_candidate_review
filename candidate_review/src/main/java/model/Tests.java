@@ -1,10 +1,7 @@
 package model;
 
-import dto.UserDto;
-
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
@@ -19,7 +16,7 @@ public class Tests {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users userId;
+    private Users user;
 
     @Column(name = "name")
     private String name;
@@ -73,11 +70,11 @@ public class Tests {
     }
 
     public Users getUser() {
-        return userId;
+        return user;
     }
 
     public void setUser(Users userId) {
-        this.userId = userId;
+        this.user = userId;
     }
 
     public Boolean getVisible() {

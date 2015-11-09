@@ -18,4 +18,6 @@ public interface ITestsDao {
     Tests findById(Integer id);
 
     Tests deleteTest(Tests test);
+
+    List<Tests> getTestsByUserId(Integer userid);
 }

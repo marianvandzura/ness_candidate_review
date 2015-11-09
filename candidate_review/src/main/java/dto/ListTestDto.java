@@ -9,14 +9,12 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by Lubomir on 11/3/2015.
+ * Created by Lubomir on 11/9/2015.
  */
-public class TestDto {
+public class ListTestDto {
+
     @JsonProperty("id")
     private Integer id;
-
-//    @JsonProperty("user_id")
-//    private Integer userId;
 
     @JsonProperty("info")
     private String info;
@@ -27,11 +25,6 @@ public class TestDto {
     @JsonProperty("position")
     private String position;
 
-    @JsonProperty("visible")
-    private Boolean visible;
-
-    @JsonProperty("questions")
-    private List<QuestionDto> questions;
 
     public Integer getId() {
         return id;
@@ -56,30 +49,6 @@ public class TestDto {
     public void setPosition(String position) {
         this.position = position;
     }
-
-    public Boolean getVisible() {
-        return visible;
-    }
-
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
-    }
-
-    public List<QuestionDto> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<QuestionDto> questions) {
-        this.questions = questions;
-    }
-
-//    public Integer getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(Integer userid) {
-//        this.userId = userid;
-//    }
 
     public String getName() {
         return name;

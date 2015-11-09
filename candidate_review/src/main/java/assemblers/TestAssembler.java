@@ -3,6 +3,7 @@ package assemblers;
 import dao.IQuestionsDao;
 import dao.ITestsDao;
 import dao.IUsersDao;
+import dto.ListTestDto;
 import dto.QuestionDto;
 import dto.TestDto;
 import model.Questions;
@@ -46,16 +47,22 @@ public class TestAssembler {
         testDto.setPosition(domain.getPosition());
         testDto.setVisible(domain.getVisible());
         testDto.setName(domain.getName());
-        testDto.setUserId(domain.getUser().getUserId());
+//        testDto.setUserId(domain.getUser().getUserId());
         testDto.setQuestions(questionAssembler.extractDtosListFromDomain(domain.getQuestions()));
         return testDto;
     }
 
 
-    public List<TestDto> extractDtoListFromDomain(final Collection<Tests> domain) {
-        List<TestDto> testsDtoArrayList = new ArrayList<TestDto>();
+    public List<ListTestDto> extractDtoListFromDomain(final Collection<Tests> domain) {
+        List<ListTestDto> testsDtoArrayList = new ArrayList<ListTestDto>();
+        ListTestDto testDto;
         for (Tests test : domain) {
-            testsDtoArrayList.add(extractDtoFromDomain(test));
+            testDto = new ListTestDto();
+            testDto.setId(test.getTestId());
+            testDto.setInfo(test.getInfo());
+            testDto.setPosition(test.getPosition());
+            testDto.setName(test.getName());
+            testsDtoArrayList.add(testDto);
         }
         return testsDtoArrayList;
     }
@@ -68,7 +75,7 @@ public class TestAssembler {
         domain.setPosition(testDto.getPosition());
         domain.setName(testDto.getName());
         domain.setTestId(testDto.getId());
-        domain.setUser(usersDao.findUserById(testDto.getUserId()));
+//        domain.setUser(usersDao.findUserById(testDto.getUserId()));
         List<Questions> catDomains = new ArrayList<Questions>();
         for (QuestionDto quest : testDto.getQuestions()) {
             catDomains.add(questionAssembler.populateDomainFromDto(quest));
