@@ -8,8 +8,7 @@
     <name>candidate_review</name>
 
     <properties>
-        <spring.version>4.1.1.RELEASE</spring.version>
-        <!--<version.hibernate>5.0.2.Final</version.hibernate>-->
+        <spring.version>4.2.1.RELEASE</spring.version>
         <jstl.version>1.2</jstl.version>
         <junit.version>4.11</junit.version>
         <logback.version>1.0.13</logback.version>
@@ -21,7 +20,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.2.1.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
@@ -93,12 +92,12 @@
             <version>4.2.1.RELEASE</version>
         </dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>junit</groupId>-->
+            <!--<artifactId>junit</artifactId>-->
+            <!--<version>4.11</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
         <!-- database -->
         <dependency>
@@ -173,8 +172,8 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
