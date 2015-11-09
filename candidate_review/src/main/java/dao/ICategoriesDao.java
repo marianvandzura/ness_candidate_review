@@ -11,16 +11,23 @@ public interface ICategoriesDao {
 
     /**
      * add category
-     * @param categories
+     * @param category
      * @return added category
      */
-    Categories addCategory(Categories categories);
+    Categories addCategory(Categories category);
+
+    /**
+     * update category
+     * @param category
+     * @return updated category
+     */
+    Categories updateCategory(Categories category);
 
     /**
      * delete category
-     * @param category
+     * @param categoryId
      */
-    void deleteCategory(Categories category);
+    void deleteCategory(int categoryId);
 
     /**
      * get all categories

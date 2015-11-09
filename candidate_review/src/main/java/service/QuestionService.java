@@ -31,14 +31,6 @@ public class QuestionService {
         //default
     }
 
-//    /**
-//     * get all available questions
-//     * @return List of questions
-//     */
-//    public List<QuestionDto> getAllQuestions(){
-//        return questionAssembler.extractDtoListFromDomain(questionsDao.getAllQuestions());
-//    }
-
     /**
      * get question with ID
      *
@@ -71,19 +63,15 @@ public class QuestionService {
      */
     public QuestionDto updateQuestion(final QuestionDto questionDto) {
         List<OptionDto> questionOptions = questionDto.getOptions();
-//        List<Integer> optionIds = new ArrayList<>(questionOptions.size());
-//        for (OptionDto option : questionOptions) {
-//            optionIds.add(option.getId());
-//        }
         int questionId = questionDto.getId();
         Questions question = questionAssembler.populateDomainFromDto(questionDto);
         question.setQuestionId(questionId);
         Collection<Options> options = question.getOptions();
         int i = 0;
-        for (Options singleOption : options){
-            OptionDto optionDto =  questionOptions.get(i++);
+        for (Options singleOption : options) {
+            OptionDto optionDto = questionOptions.get(i++);
             int optionId = optionDto == null ? -1 : optionDto.getId();
-            if(optionId != -1){
+            if (optionId != -1) {
                 singleOption.setOptionId(optionId);
             }
         }

@@ -36,7 +36,6 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
     public Questions updateQuestion(Questions question) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        //question.setQuestionId(questionId);
         session.update(question);
         transaction.commit();
         return question;
