@@ -77,10 +77,11 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
     public List<Tests> getTestsByUserId(Integer userid) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Criteria criteria = session.createCriteria(Tests.class);
 
+        Criteria criteria = session.createCriteria(Tests.class);
         criteria.createAlias("user", "user", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("user.userId", userid));
+
         List<Tests> testList = (List<Tests>) criteria.list();
         transaction.commit();
         return testList;
