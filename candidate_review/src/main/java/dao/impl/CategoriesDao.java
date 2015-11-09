@@ -17,10 +17,29 @@ import java.util.List;
 public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao {
 
     @Override
-    public void addCategory(Categories category) {
+    public Categories addCategory(Categories category) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(category);
+        transaction.commit();
+        return category;
+    }
+
+    @Override
+    public Categories updateCategory(Categories category) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(category);
+        transaction.commit();
+        return category;
+    }
+
+    @Override
+    public void deleteCategory(int categoryId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("delete Categories where categoryId = :id").setParameter("id", categoryId);
+        query.executeUpdate();
         transaction.commit();
     }
 
@@ -34,22 +53,6 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
         transaction.commit();
         return categories;
     }
-
-//    @Override
-//    public List<Categories> findCategoriesByQuestion(final Integer questionId) {
-//        Session session = getSessionFactory().getCurrentSession();
-//        Transaction transaction = session.beginTransaction();
-//        Criteria criteria = session.createCriteria(Categories.class);
-//        /**
-//         * Joining Questions table based on the name of the property in {@link Categories}.
-//         * For getting id of qustion use question.id again name of the property in model class.
-//         */
-//        criteria.createAlias("questions","question", JoinType.INNER_JOIN);
-//        criteria.add(Restrictions.eq("question.id", questionId));
-//        List<Categories> catList = (List<Categories>) criteria.list();
-//        transaction.commit();
-//        return catList;
-//    }
 
     @Override
     public Categories findById(final Integer id) {

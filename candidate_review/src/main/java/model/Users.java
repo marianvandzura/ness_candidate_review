@@ -12,7 +12,7 @@ public class Users {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
 
     @Column(name = "permissions")
@@ -26,28 +26,6 @@ public class Users {
 
     public Users() {
         //default
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        Users user = (Users) obj;
-        return (this.userId == user.getUserId())
-                && (this.email != null && this.email.equals(user.getEmail()));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + userId;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        return result;
     }
 
     public Integer getUserId() {

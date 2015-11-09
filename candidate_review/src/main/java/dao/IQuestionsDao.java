@@ -9,11 +9,43 @@ import java.util.List;
  */
 public interface IQuestionsDao {
 
+    /**
+     * Add question to DB
+     * @param question
+     * @return added question
+     */
     Questions addQuestion(Questions question);
 
+    /**
+     * Update question
+     * @param question
+     * @return updated question
+     */
+    Questions updateQuestion(Questions question);
+
+    /**
+     * delete question
+     * @param questionId
+     */
+    void deleteQuestion(int questionId);
+
+    /**
+     * Add multiple questions to DB
+     * @return List of added questions
+     */
     List<Questions> getAllQuestions();
 
+    /**
+     * Find question in DB based on questionId
+     * @param id ID of question
+     * @return Questions object
+     */
     Questions findQuestionById(Integer id);
 
+    /**
+     * Find all questions in DB based on question category
+     * @param categoryId ID of question category
+     * @return List of questions with matched category
+     */
     List<Questions> findQuestionsByCategory(Integer categoryId);
 }

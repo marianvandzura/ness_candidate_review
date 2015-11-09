@@ -1,7 +1,8 @@
 package service;
 
+import assemblers.OptionAssembler;
 import dao.IOptionsDao;
-import model.Options;
+import dto.OptionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +17,73 @@ public class OptionService {
     @Autowired
     private IOptionsDao optionsDao;
 
-    public List<Options> findAll() {
-        return optionsDao.getAllOptiopns();
+    @Autowired
+    OptionAssembler optionAssembler;
+
+    /**
+     * get all available options
+     *
+     * @return List of options
+     */
+    public List<OptionDto> getAllOptions() {
+        return optionAssembler.extractDtoFromDomain(optionsDao.getAllOptions());
     }
 
-    public Options save(final Options option) {
-        return optionsDao.addOption(option);
+    /**
+     * add option
+     *
+     * @param option
+     * @return added OptionDto object
+     */
+    public OptionDto addOption(final OptionDto option) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.addOption(optionAssembler.populateDomainFromDto(option)));
     }
 
-    public Options findById(final Integer id) {
-        return optionsDao.findById(id);
+    /**
+     * update option
+     * @param option
+     * @return updated option
+     */
+    public OptionDto updateOption(final OptionDto option) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.updateOption(optionAssembler.populateDomainFromDto(option)));
     }
 
-    public List<Options> findByQuestion(final Integer questionId) {
-        return optionsDao.findOptionsForQuestion(questionId);
+    /**
+     * update optionDto
+     * @param option
+     * @param newOption
+     * @return updated optionDto
+     */
+    public OptionDto updateOptionDto(final OptionDto option, final OptionDto newOption) {
+        return optionAssembler.updateDto(option, newOption);
+    }
+
+    /**
+     * delete option
+     *
+     * @param option
+     */
+    public void deleteOption(final OptionDto option) {
+        optionsDao.deleteOption(optionAssembler.populateDomainFromDto(option));
+    }
+
+    /**
+     * find option based on option ID
+     *
+     * @param id
+     * @return OptionDto object with ID
+     */
+    public OptionDto findOptionById(final Integer id) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.findOptionById(id));
+    }
+
+    /**
+     * get all options for question
+     *
+     * @param questionId
+     * @return List of options related to question with ID
+     */
+    public List<OptionDto> findOptionsByQuestionId(final Integer questionId) {
+        return optionAssembler.extractDtoFromDomain(optionsDao.findOptionsByQuestionId(questionId));
     }
 }

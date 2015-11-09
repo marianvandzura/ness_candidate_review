@@ -15,6 +15,9 @@ public class QuestionDto {
     @JsonProperty("id")
     private Integer id;
 
+    @JsonProperty("category_id")
+    private Integer categoryId;
+
     @JsonProperty("type")
     private String type;
 
@@ -36,12 +39,23 @@ public class QuestionDto {
     @JsonProperty("categories")
     private CategoryDto category;
 
+    @JsonProperty("options")
+    private List<OptionDto> options;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getType() {
@@ -98,5 +112,13 @@ public class QuestionDto {
 
     public void setCategory(CategoryDto category) {
         this.category = category;
+    }
+
+    public List<OptionDto> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<OptionDto> options) {
+        this.options = options;
     }
 }
