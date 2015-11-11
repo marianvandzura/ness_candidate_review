@@ -48,7 +48,7 @@ public class TestAssembler {
         testDto.setVisible(domain.getVisible());
         testDto.setName(domain.getName());
         testDto.setUserId(domain.getUser().getUserId());
-        testDto.setQuestions(questionAssembler.extractDtosListFromDomain(domain.getQuestions()));
+        testDto.setQuestions(questionAssembler.extractDtoListFromDomain(domain.getQuestions()));
         return testDto;
     }
 

@@ -31,7 +31,7 @@ public class Questions {
     @JoinColumn(name = "category_id")//, nullable = false)
     private Categories category;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Options> options;
 
 

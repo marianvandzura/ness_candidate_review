@@ -110,7 +110,7 @@ public class QuestionAssembler {
      * @return extracted DTOs
      */
 
-    public List<QuestionDto> extractDtoListFromDomain(final List<Questions> domain) {
+    public List<QuestionDto> extractDtoListFromDomain(final Collection<Questions> domain) {
         List<QuestionDto> questionDtoArrayList = new ArrayList<QuestionDto>();
         for (Questions question : domain) {
             questionDtoArrayList.add(extractDtoFromDomain(question));

@@ -1,5 +1,6 @@
 package service;
 
+import assemblers.OptionAssembler;
 import assemblers.QuestionAssembler;
 import dao.IQuestionsDao;
 import dto.OptionDto;
@@ -15,7 +16,7 @@ import java.util.List;
 
 /**
  * Question service.
- * <p>
+ * <p/>
  * Created by Peter.
  */
 @Service
@@ -26,6 +27,12 @@ public class QuestionService {
 
     @Autowired
     QuestionAssembler questionAssembler;
+
+    @Autowired
+    OptionService optionService;
+
+    @Autowired
+   OptionAssembler optionAssembler;
 
     public QuestionService() {
         //default
@@ -62,20 +69,31 @@ public class QuestionService {
      * @return updated question
      */
     public QuestionDto updateQuestion(final QuestionDto questionDto) {
-        List<OptionDto> questionOptions = questionDto.getOptions();
-        int questionId = questionDto.getId();
-        Questions question = questionAssembler.populateDomainFromDto(questionDto);
-        question.setQuestionId(questionId);
-        Collection<Options> options = question.getOptions();
-        int i = 0;
-        for (Options singleOption : options) {
-            OptionDto optionDto = questionOptions.get(i++);
-            int optionId = optionDto == null ? -1 : optionDto.getId();
-            if (optionId != -1) {
-                singleOption.setOptionId(optionId);
+//        List<OptionDto> questionOptions = questionDto.getOptions();
+//        int questionId = questionDto.getId();
+//        Questions question = questionAssembler.populateDomainFromDto(questionDto);
+//        question.setQuestionId(questionId);
+//        Collection<Options> options = question.getOptions();
+//        int i = 0;
+//        for (Options singleOption : options) {
+//            OptionDto optionDto = questionOptions.get(i++);
+//            int optionId = optionDto == null ? -1 : optionDto.getId();
+//            if (optionId != -1) {
+//                singleOption.setOptionId(optionId);
+//            }
+//        }
+//        return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(question));
+        QuestionDto oldQuestionDto = getQuestionById(questionDto.getId());
+        Collection<OptionDto> listOfOptions = new ArrayList<>(6);
+        for(OptionDto oldOptions: questionDto.getOptions())
+        {
+            for(OptionDto newOptions: oldQuestionDto.getOptions())
+            {
+                if(newOptions.getId()==oldOptions.getId())
+                    listOfOptions.add(newOptions);
             }
         }
-        return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(question));
+
     }
 
     /**

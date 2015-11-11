@@ -31,18 +31,6 @@ public class CategoryAssembler {
         return categoryDto;
     }
 
-    public Categories populateDomainFromDto(final CategoryDto dto) {
-        Categories domain = new Categories();
-        domain.setCategoryId(dto.getId());
-        domain.setCategoryName(dto.getCategoryName());
-
-//        List<Questions> questionDomains = new ArrayList<Questions>();
-//        //TODO ?
-//        for (QuestionDto questionDto : dto.get()) {
-//            catDomains.add(categoriesDao.findById(1));
-//        }
-        return domain;
-    }
 
     /**
      * Extract List of DTOs from domain.

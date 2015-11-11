@@ -36,11 +36,9 @@ public class QuestionDto {
     @JsonProperty("language")
     private String language;
 
-    @JsonProperty("options")
-    private List<OptionDto> options;
-
     @JsonProperty("categories")
     private CategoryDto category;
+
 
     @JsonProperty("options")
     private List<OptionDto> options;
