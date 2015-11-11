@@ -1,5 +1,6 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -9,9 +10,6 @@ public class OptionDto {
 
     @JsonProperty("id")
     private Integer id;
-
-    @JsonProperty("question")
-    private QuestionDto question;
 
     @JsonProperty("option")
     private String option;
@@ -43,11 +41,4 @@ public class OptionDto {
         this.truth = truth;
     }
 
-    public QuestionDto getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(QuestionDto question) {
-        this.question = question;
-    }
 }

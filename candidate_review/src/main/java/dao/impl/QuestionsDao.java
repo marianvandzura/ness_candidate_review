@@ -19,6 +19,10 @@ import java.util.List;
 @Transactional
 public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
 
+    public QuestionsDao(){
+        //default
+    }
+
     @Override
     public Questions addQuestion(Questions question) {
         Session session = getSessionFactory().getCurrentSession();
@@ -26,6 +30,24 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         session.saveOrUpdate(question);
         transaction.commit();
         return question;
+    }
+
+    @Override
+    public Questions updateQuestion(Questions question) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(question);
+        transaction.commit();
+        return question;
+    }
+
+    @Override
+    public void deleteQuestion(int questionId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("delete Questions where questionId = :id").setParameter("id", questionId);
+        query.executeUpdate();
+        transaction.commit();
     }
 
     @Override
@@ -38,11 +60,12 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         transaction.commit();
         return questions;
     }
+
     @Override
     public Questions findQuestionById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Questions question = (Questions)session.get(Questions.class,id);
+        Questions question = (Questions) session.get(Questions.class, id);
         transaction.commit();
         return question;
 
@@ -55,13 +78,13 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         Criteria criteria = session.createCriteria(Questions.class);
         /**
          * Joining Questions table based on the name of the property in {@link Questions}.
-         * For getting id of qustion use question.id again name of the property in model class.
+         * For getting id of question use question.id again name of the property in model class.
          */
-        criteria.createAlias("category","category", JoinType.INNER_JOIN);
+        criteria.createAlias("category", "category", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("category.categoryId", categoryId));
-        List<Questions> catList = (List<Questions>) criteria.list();
+        List<Questions> categoriesList = (List<Questions>) criteria.list();
         transaction.commit();
-        return catList;
+        return categoriesList;
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.Collection;
 public class Tests {
     @Id
     @Column(name = "test_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer testId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,30 +35,6 @@ public class Tests {
 
     public Tests() {
         //default
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        Tests test = (Tests) obj;
-        return (this.testId == test.getTestId())
-                && (this.info != null && this.info.equals(test.getInfo()))
-                && (this.position != null && this.position.equals(test.getPosition()));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + testId;
-        result = 31 * result + (info != null ? info.hashCode() : 0);
-        result = 31 * result + (position != null ? position.hashCode() : 0);
-        return result;
     }
 
     public Integer getTestId() {

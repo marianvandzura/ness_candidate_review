@@ -1,19 +1,23 @@
 package controllers;
 
-import dto.CategoryDto;
+import dto.OptionDto;
 import dto.QuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import service.CategoryService;
+import service.OptionService;
 import service.QuestionService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Peter on 31.10.2015.
+ * Class to handle REST requests
+ * <p>
+ * Created by Marian_Vandzura on 6.11.2015.
  */
 
 @Controller
@@ -22,30 +26,94 @@ public class QuestionController {
     @Autowired
     QuestionService questionService;
 
-    @RequestMapping(value = "/{txt}/{lng}/{ctg}" , method = RequestMethod.GET)
-    public @ResponseBody
-    QuestionDto saveQuestion(@PathVariable(value = "txt") String txt,@PathVariable(value = "lng") String lng,
-                             @PathVariable(value = "ctg") Integer ctg) {
-        QuestionDto question = new QuestionDto();
-        CategoryDto category = new CategoryDto();
-        category.setId(ctg);
+    @Autowired
+    OptionService optionService;
 
-        question.setCategory(category);
-        question.setCode("code");
-        question.setLevel(2);
-        question.setLanguage(lng);
-        question.setQuestion(txt);
+    @Autowired
+    CategoryService categoryService;
 
-        question.setType("checkbox");
-
-
-        return questionService.addQuestion(question);
+    public QuestionController() {
+        //default
     }
 
-    @RequestMapping(value = "/{ctg}" , method = RequestMethod.GET)
-    public @ResponseBody
-    List<QuestionDto> findByCategory (@PathVariable(value = "ctg") Integer ctg) {
-
-        return questionService.findQuesionsByCategory(ctg);
+    /**
+     * get questions with array of ids passed as param
+     *
+     * @param questionIds
+     * @return List of requested questions
+     */
+    @RequestMapping(value = "/questions/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<QuestionDto> getQuestionsWithIds(@PathVariable(value = "id") List<Integer> questionIds) {
+        //init arrayList because of performance
+        List<QuestionDto> result = new ArrayList<QuestionDto>(questionIds.size());
+        //get all questions
+        for (int questionId : questionIds) {
+            QuestionDto question = questionService.getQuestionById(questionId);
+            if (question != null) {
+                result.add(question);
+            }
+        }
+        return result;
     }
+
+    /**
+     * get questions by category
+     *
+     * @param categoryId
+     * @return List of questions related to category
+     */
+    @RequestMapping(value = "/questions/category/{categoryId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
+        List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
+        return questionsByCategory;
+    }
+
+    /**
+     * save question and question options
+     *
+     * @param question
+     * @return saved question
+     */
+    @RequestMapping(value = "/question/", method = RequestMethod.POST)
+    public ResponseEntity saveQuestion(@RequestBody final QuestionDto question) {
+        QuestionDto savedQuestion = questionService.addQuestion(question);
+        return new ResponseEntity<>(savedQuestion, HttpStatus.OK);
+    }
+
+    /**
+     * update question and related options
+     *
+     * @param question
+     * @return HTTP response
+     */
+    @RequestMapping(value = "/question/", method = RequestMethod.PUT)
+    public ResponseEntity updateQuestion(@RequestBody QuestionDto question) {
+        //update question
+        QuestionDto questionToUpdate = questionService.getQuestionById(question.getId());
+        questionToUpdate = questionService.updateQuestionDto(questionToUpdate, question);
+        QuestionDto updatedQuestion = questionService.updateQuestion(questionToUpdate);
+        return new ResponseEntity<>(updatedQuestion, HttpStatus.OK);
+    }
+
+    /**
+     * delete question with passed id and related options
+     *
+     * @param questionId
+     * @return HTTP response
+     */
+    @RequestMapping(value = "/question/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteQuestion(@PathVariable(value = "id") int questionId) {
+        //get existing question
+        QuestionDto questionToDelete = questionService.getQuestionById(questionId);
+        if (questionToDelete != null) {
+            //delete question
+            questionService.deleteQuestion(questionToDelete);
+            return new ResponseEntity("Question deleted", HttpStatus.OK);
+        } else {
+            return new ResponseEntity("Question NOT FOUND", HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

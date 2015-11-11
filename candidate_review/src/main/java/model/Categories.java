@@ -14,7 +14,7 @@ public class Categories {
 
     @Id
     @Column(name = "category_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer categoryId;
 
     @Column(name = "category_name")
@@ -22,28 +22,6 @@ public class Categories {
 
     public Categories() {
         //default
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        Categories category = (Categories) obj;
-        return (this.categoryId == category.getCategoryId())
-                && (this.categoryName != null && this.categoryName.equals(category.getCategoryName()));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + categoryId;
-        result = 31 * result + (categoryName != null ? categoryName.hashCode() : 0);
-        return result;
     }
 
     public String getCategoryName() {

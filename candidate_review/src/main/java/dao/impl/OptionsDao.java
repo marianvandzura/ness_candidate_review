@@ -19,6 +19,11 @@ import java.util.List;
 @Transactional
 public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
 
+    public OptionsDao(){
+        //default
+    }
+
+    @Override
     public Options addOption(Options option) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -28,7 +33,25 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-    public List<Options> getAllOptiopns() {
+    public Options updateOption(Options option) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.update(option);
+        transaction.commit();
+        return option;
+    }
+
+    @Override
+    public void deleteOption(Options option) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(option);
+        session.clear();
+        transaction.commit();
+    }
+
+    @Override
+    public List<Options> getAllOptions() {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Options ");
@@ -39,7 +62,7 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-    public Options findById(final Integer id) {
+    public Options findOptionById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Options option = (Options)session.get(Options.class,id);
@@ -48,13 +71,14 @@ public class OptionsDao extends HibernateDaoSupport implements IOptionsDao {
     }
 
     @Override
-    public List<Options> findOptionsForQuestion(final Integer questionId) {
+    public List<Options> findOptionsByQuestionId(final Integer questionId) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(Options.class);
         criteria.createAlias("question","question", JoinType.INNER_JOIN);
-        criteria.add(Restrictions.eq("question.id", questionId));
+        criteria.add(Restrictions.eq("question.questionId", questionId));
         List<Options> options = (List<Options>) criteria.list();
+        session.clear();
         transaction.commit();
         return options;
     }

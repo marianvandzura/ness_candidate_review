@@ -96,6 +96,8 @@
           <span class="input-group-btn">
             <button class="btn btn-default glyphicon glyphicon-remove" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
             <button ng-click="item.addOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" ng-click="item.removeOption(option)" aria-hidden="true" type="button"></button>
+            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-check" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-cog" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
           </span>
           </div>
         </div>

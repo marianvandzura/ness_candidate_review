@@ -14,7 +14,7 @@ public class CandidatesReports {
 
     @Id
     @Column(name = "report_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer reportId;
 
     @Column(name = "candidate_name")
@@ -38,31 +38,6 @@ public class CandidatesReports {
 
     public CandidatesReports() {
         //default
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        CandidatesReports candidatesReport = (CandidatesReports) obj;
-        return (this.reportId == candidatesReport.getReportId())
-                && (this.email != null && this.email.equals(candidatesReport.getEmail())
-                && (this.testName != null && this.testName.equals(candidatesReport.getTestName()))
-                && (this.date.getTime() == candidatesReport.getDate().getTime()));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + reportId;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (testName != null ? testName.hashCode() : 0);
-        return result;
     }
 
     public Integer getReportId() {
