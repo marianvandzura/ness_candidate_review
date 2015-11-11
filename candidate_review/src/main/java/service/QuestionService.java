@@ -75,7 +75,7 @@ public class QuestionService {
                 singleOption.setOptionId(optionId);
             }
         }
-        return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(question));
+        return questionAssembler.extractDtoFromDomain(questionsDao.addQuestion(question));
     }
 
     /**
