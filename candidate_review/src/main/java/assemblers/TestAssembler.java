@@ -47,13 +47,13 @@ public class TestAssembler {
         testDto.setPosition(domain.getPosition());
         testDto.setVisible(domain.getVisible());
         testDto.setName(domain.getName());
-//        testDto.setUserId(domain.getUser().getUserId());
+        testDto.setUserId(domain.getUser().getUserId());
         testDto.setQuestions(questionAssembler.extractDtosListFromDomain(domain.getQuestions()));
         return testDto;
     }
 
 
-    public List<ListTestDto> extractDtoListFromDomain(final Collection<Tests> domain) {
+    public List<ListTestDto> extractListTestDtoFromDomain(final Collection<Tests> domain) {
         List<ListTestDto> testsDtoArrayList = new ArrayList<ListTestDto>();
         ListTestDto testDto;
         for (Tests test : domain) {
@@ -76,7 +76,7 @@ public class TestAssembler {
         domain.setPosition(testDto.getPosition());
         domain.setName(testDto.getName());
         domain.setTestId(testDto.getId());
-//        domain.setUser(usersDao.findUserById(testDto.getUserId()));
+        domain.setUser(usersDao.findUserById(testDto.getUserId()));
         List<Questions> catDomains = new ArrayList<Questions>();
         for (QuestionDto quest : testDto.getQuestions()) {
             catDomains.add(questionAssembler.populateDomainFromDto(quest));

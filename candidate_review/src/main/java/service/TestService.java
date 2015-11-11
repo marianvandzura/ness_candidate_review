@@ -5,11 +5,7 @@ import assemblers.TestAssembler;
 import dao.IQuestionsDao;
 import dao.ITestsDao;
 import dto.ListTestDto;
-import dto.OptionDto;
-import dto.QuestionDto;
 import dto.TestDto;
-import model.Tests;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +35,7 @@ public class TestService {
      * @return list of dtos
      */
     public List<ListTestDto> getTests() {
-        return this.testsAssembler.extractDtoListFromDomain(testsDao.getAllTests());
+        return this.testsAssembler.extractListTestDtoFromDomain(testsDao.getAllTests());
     }
 
     /**
@@ -47,7 +43,7 @@ public class TestService {
      * @return list of dtos
      */
     public List<ListTestDto> getMyTests(Integer id) {
-        return this.testsAssembler.extractDtoListFromDomain(testsDao.getTestsByUserId(id));
+        return this.testsAssembler.extractListTestDtoFromDomain(testsDao.getTestsByUserId(id));
     }
 
     /**
@@ -59,16 +55,30 @@ public class TestService {
         return testsAssembler.extractDtoFromDomain(testsDao.findById(id));
     }
 
-
+    /**
+     * allegendly it save test
+     * @param testDto test to be saved
+     * @return saved test or null
+     */
     public TestDto saveTest(TestDto testDto) {
         return testsAssembler.extractDtoFromDomain(testsDao.addTest(testsAssembler.populateDtoFromDomain(testDto)));
     }
 
+    /**
+     * Edit and update an existing test
+     * @param testDto updated test
+     * @return updated test or not
+     */
     public TestDto editTest(TestDto testDto) {
         return testsAssembler.extractDtoFromDomain(testsDao.updateTest(testsAssembler.populateDtoFromDomain(testDto)));
     }
 
-    public TestDto deleteTest(TestDto testDto) {
-        return testsAssembler.extractDtoFromDomain(testsDao.deleteTest(testsAssembler.populateDtoFromDomain(testDto)));
+    /**
+     * Deletes test
+     * @param id id of test
+     * @return updated test or not
+     */
+    public TestDto deleteTest(Integer id) {
+        return testsAssembler.extractDtoFromDomain(testsDao.deleteTest(testsAssembler.populateDtoFromDomain(getTestById(id))));
     }
 }

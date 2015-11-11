@@ -110,7 +110,7 @@ public class TestController {
      */
     @RequestMapping(value = "/deletetest/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<TestDto> deleteTets(@PathVariable(value = "id") Integer id) {
-        TestDto deletedTest = testService.deleteTest(testService.getTestById(id));
+        TestDto deletedTest = testService.deleteTest(id);
         return new ResponseEntity<TestDto>(deletedTest, HttpStatus.OK);
     }
 }
