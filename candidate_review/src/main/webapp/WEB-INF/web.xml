@@ -13,9 +13,7 @@
 
 	<servlet-mapping>
 		<servlet-name>mvc-dispatcher</servlet-name>
-		<url-pattern>/</url-pattern>
-		<!-- supported extensions e.x below-->
-		<!--<url-pattern>*.html</url-pattern>-->
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- application context file-->
