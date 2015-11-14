@@ -39,6 +39,9 @@ public class QuestionDto {
     @JsonProperty("categories")
     private CategoryDto category;
 
+    @JsonProperty("action")
+    private String action;
+
 
     @JsonProperty("options")
     private List<OptionDto> options;
@@ -121,5 +124,13 @@ public class QuestionDto {
 
     public void setOptions(List<OptionDto> options) {
         this.options = options;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }

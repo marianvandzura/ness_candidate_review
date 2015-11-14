@@ -77,11 +77,12 @@ public class TestAssembler {
         domain.setName(testDto.getName());
         domain.setTestId(testDto.getId());
         domain.setUser(usersDao.findUserById(testDto.getUserId()));
-        List<Questions> catDomains = new ArrayList<Questions>();
-        for (QuestionDto quest : testDto.getQuestions()) {
-            catDomains.add(questionAssembler.populateDomainFromDto(quest));
-        }
-        domain.setQuestions(catDomains);
+//        List<Questions> catDomains = new ArrayList<Questions>();
+//        for (QuestionDto quest : testDto.getQuestions()) {
+//            catDomains.add(questionAssembler.populateDomainFromDto(quest));
+//        }
+//        domain.setQuestions(catDomains);
+        domain.setQuestions(questionAssembler.populateDomainFromDto(testDto.getQuestions()));
         return domain;
     }
 

@@ -7,6 +7,7 @@ import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import service.QuestionService;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -20,7 +21,7 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
     public Tests addTest(Tests test) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        test.setTestId(null);
+
         session.save(test);
         transaction.commit();
         return test;
@@ -29,7 +30,7 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
     public Tests updateTest(Tests test) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.update(test);
+        session.saveOrUpdate(test);
         transaction.commit();
         return test;
     }
@@ -69,6 +70,11 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
 
         test.setQuestions(test.getQuestions());
         test.setUser(test.getUser());
+
+        for(Questions quest : test.getQuestions())
+        {
+            Hibernate.initialize(quest.getOptions());
+        }
 
         transaction.commit();
         return test;

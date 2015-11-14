@@ -27,7 +27,7 @@ public class Tests {
     @Column(name = "info")
     private String info;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "test_questions",
             joinColumns = @JoinColumn(name = "test_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "question_id", nullable = false))

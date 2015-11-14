@@ -3,6 +3,8 @@ package dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.beans.Transient;
+
 /**
  * Created by Peter on 4.11.2015.
  */
@@ -16,6 +18,9 @@ public class OptionDto {
 
     @JsonProperty("truth")
     private Boolean truth;
+
+    @JsonProperty("action")
+    private String action;
 
     public Integer getId() {
         return id;
@@ -41,4 +46,11 @@ public class OptionDto {
         this.truth = truth;
     }
 
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 }

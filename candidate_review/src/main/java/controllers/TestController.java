@@ -2,10 +2,7 @@ package controllers;
 
 import dao.IQuestionsDao;
 import dto.ListTestDto;
-import dto.QuestionDto;
 import dto.TestDto;
-import model.Tests;
-import org.bouncycastle.util.test.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import service.OptionService;
 import service.TestService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +33,7 @@ public class TestController {
      *
      * @return all tests
      */
-    @RequestMapping(value = "/gettests", method = RequestMethod.GET)
+    @RequestMapping(value = "/tests", method = RequestMethod.GET)
     public
     @ResponseBody
     List<ListTestDto> getTests() {
@@ -50,7 +46,7 @@ public class TestController {
      * @param userId user id
      * @return my tests
      */
-    @RequestMapping(value = "/getmytests/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/mytests/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     List<ListTestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
@@ -63,15 +59,11 @@ public class TestController {
      * @param id id of a test
      * @return
      */
-    @RequestMapping(value = "/gettest/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/test/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     TestDto getTest(@PathVariable(value = "id") Integer id) {
         TestDto testDto = testService.getTestById(id);
-        List<QuestionDto> ListOfQuestDto = new ArrayList<QuestionDto>();
-        for (QuestionDto questDto : testDto.getQuestions()) {
-            //TODO put options to questions, option controller
-        }
         return testDto;
     }
 
@@ -82,11 +74,11 @@ public class TestController {
      * @param Dto of new test thats to be saved
      * @return ResponseEntity
      */
-    @RequestMapping(value = "/savetest", method = RequestMethod.POST)
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
     public ResponseEntity<TestDto> save(@RequestBody TestDto Dto) {
-        //TODO save new question to database
         TestDto testDto = testService.saveTest(Dto);
-        return new ResponseEntity<TestDto>(testDto, HttpStatus.OK);
+        return new ResponseEntity<>(testDto, HttpStatus.OK);
+
     }
 
     /**
@@ -95,10 +87,10 @@ public class TestController {
      * @param newTestDto updates Dto of test
      * @return ResponseEntity
      */
-    @RequestMapping(value = "/edittest", method = RequestMethod.PUT)
+    @RequestMapping(value = "/test", method = RequestMethod.PUT)
     public ResponseEntity<TestDto> edit(@RequestBody TestDto newTestDto) {
-        TestDto updatedTest = testService.editTest(newTestDto);
-        return new ResponseEntity<TestDto>(updatedTest, HttpStatus.OK);
+        TestDto updatedTest = testService.updateTest(newTestDto);
+        return new ResponseEntity<>(updatedTest, HttpStatus.OK);
     }
 
 
@@ -108,10 +100,10 @@ public class TestController {
      * @param id id of test
      * @return ResponseEntity
      */
-    @RequestMapping(value = "/deletetest/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/test/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<TestDto> deleteTets(@PathVariable(value = "id") Integer id) {
         TestDto deletedTest = testService.deleteTest(id);
-        return new ResponseEntity<TestDto>(deletedTest, HttpStatus.OK);
+        return new ResponseEntity<>(deletedTest, HttpStatus.OK);
     }
 }
 

@@ -70,6 +70,7 @@ public class QuestionAssembler {
      * @return updated question
      */
     public QuestionDto updateDto(final QuestionDto question, final QuestionDto newQuestion) {
+        question.setId(question.getId());
         question.setCode(newQuestion.getCode());
         question.setImageUrl(newQuestion.getImageUrl());
         question.setLanguage(newQuestion.getLanguage());
@@ -90,6 +91,7 @@ public class QuestionAssembler {
      */
     public Questions populateDomainFromDto(final QuestionDto dto) {
         Questions domain = new Questions();
+        domain.setQuestionId(dto.getId());
         domain.setCode(dto.getCode());
         domain.setImageUrl(dto.getImageUrl());
         domain.setLanguage(dto.getLanguage());
