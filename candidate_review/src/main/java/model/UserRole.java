@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_roles", catalog = "test",
         uniqueConstraints = @UniqueConstraint(
-                columnNames = {"role", "user"}))
+                columnNames = {"role", "email"}))
 public class UserRole {
 
     @Id
@@ -19,7 +19,6 @@ public class UserRole {
     @Column(name = "role", nullable = false, length = 45)
     private String role;
 
-    @Column(name = "user")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email", nullable = false)
     private User user;

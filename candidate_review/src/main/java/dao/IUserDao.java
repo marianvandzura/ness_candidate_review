@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface IUserDao {
 
-    void addUser(User user);
-
-    List<User> getAllUsers();
+//    void addUser(User user);
+//
+//    List<User> getAllUsers();
 
     User findUserByEmail(String email);
 }

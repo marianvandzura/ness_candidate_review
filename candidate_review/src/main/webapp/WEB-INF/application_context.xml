@@ -99,7 +99,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="usersDao" class="dao.impl.UserDao">
+    <bean id="userDao" class="dao.impl.UserDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
