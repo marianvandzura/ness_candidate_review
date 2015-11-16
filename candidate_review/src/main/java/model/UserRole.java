@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_roles", catalog = "test",
         uniqueConstraints = @UniqueConstraint(
-                columnNames = {"role", "email"}))
+                columnNames = {"role", "user_name"}))
 public class UserRole {
 
     @Id
