@@ -4,10 +4,9 @@ import assemblers.QuestionAssembler;
 import assemblers.TestAssembler;
 import dao.IQuestionsDao;
 import dao.ITestsDao;
-import dto.ListTestDto;
+import dto.OptionDto;
 import dto.QuestionDto;
 import dto.TestDto;
-import model.Tests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ public class TestService {
      *
      * @return list of dtos
      */
-    public List<ListTestDto> getTests() {
+    public List<TestDto> getTests() {
         return this.testsAssembler.extractListTestDtoFromDomain(testsDao.getAllTests());
     }
 
@@ -50,7 +49,7 @@ public class TestService {
      *
      * @return list of dtos
      */
-    public List<ListTestDto> getMyTests(Integer id) {
+    public List<TestDto> getMyTests(Integer id) {
         return this.testsAssembler.extractListTestDtoFromDomain(testsDao.getTestsByUserId(id));
     }
 
@@ -61,16 +60,25 @@ public class TestService {
      * @return
      */
     public TestDto getTestById(Integer id) {
-        return testsAssembler.extractDtoFromDomain(testsDao.findById(id));
+        TestDto testDto = testsAssembler.extractDtoFromDomain(testsDao.findById(id));
+        for (QuestionDto question : testDto.getQuestions()) {
+            for (OptionDto options : question.getOptions()) {
+                options.setTruth(null);
+            }
+            question.setCategory(null);
+        }
+        return testDto;
     }
 
     /**
-     * allegendly it save test
+     * allegedly it saves or updates the test,
+     * if id is null it saves new test
+     * if id is integer it tries to update test with this id
      *
-     * @param testDto test to be saved
+     * @param testDto test to be saved (or updated)
      * @return saved test or null
      */
-    public TestDto saveTest(TestDto testDto) {
+    public TestDto saveOrUpdateTest(TestDto testDto) {
         TestDto testToSave;
         List<QuestionDto> listOfQuestions = new ArrayList<QuestionDto>();
         for (QuestionDto questDto : testDto.getQuestions()) {
@@ -86,23 +94,23 @@ public class TestService {
         return testToSave;
     }
 
-    /**
-     * Edit and update an existing test
-     *
-     * @param testDto updated test
-     * @return updated test or not
-     */
-    public TestDto updateTest(TestDto testDto) {
-        List<QuestionDto> listOfQuestions = new ArrayList<QuestionDto>();
-        for (QuestionDto questDto : testDto.getQuestions()) {
-            if (questDto.getId() != null) {
-                listOfQuestions.add(questionService.updateQuestion(questDto));
-            } else {
-                listOfQuestions.add(questionService.addQuestion(questDto));
-            }
-        }
-        return testsAssembler.extractDtoFromDomain(testsDao.updateTest(testsAssembler.populateDtoFromDomain(testDto)));
-    }
+//    /**
+//     * Edit and update an existing test
+//     *
+//     * @param testDto updated test
+//     * @return updated test or not
+//     */
+//    public TestDto updateTest(TestDto testDto) {
+//        List<QuestionDto> listOfQuestions = new ArrayList<QuestionDto>();
+//        for (QuestionDto questDto : testDto.getQuestions()) {
+//            if (questDto.getId() != null) {
+//                listOfQuestions.add(questionService.updateQuestion(questDto));
+//            } else {
+//                listOfQuestions.add(questionService.addQuestion(questDto));
+//            }
+//        }
+//        return testsAssembler.extractDtoFromDomain(testsDao.updateTest(testsAssembler.populateDtoFromDomain(testDto)));
+//    }
 
     /**
      * Deletes test

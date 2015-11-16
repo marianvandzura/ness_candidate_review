@@ -19,8 +19,6 @@ public class OptionDto {
     @JsonProperty("truth")
     private Boolean truth;
 
-    @JsonProperty("action")
-    private String action;
 
     public Integer getId() {
         return id;
@@ -46,11 +44,4 @@ public class OptionDto {
         this.truth = truth;
     }
 
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
 }

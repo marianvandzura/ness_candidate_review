@@ -1,7 +1,6 @@
 package controllers;
 
 import dao.IQuestionsDao;
-import dto.ListTestDto;
 import dto.TestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,7 @@ public class TestController {
     @RequestMapping(value = "/tests", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<ListTestDto> getTests() {
+    List<TestDto> getTests() {
         return testService.getTests();
     }
 
@@ -49,7 +48,7 @@ public class TestController {
     @RequestMapping(value = "/mytests/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<ListTestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
+    List<TestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
         return testService.getMyTests(userId);
     }
 
@@ -76,7 +75,7 @@ public class TestController {
      */
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public ResponseEntity<TestDto> save(@RequestBody TestDto Dto) {
-        TestDto testDto = testService.saveTest(Dto);
+        TestDto testDto = testService.saveOrUpdateTest(Dto);
         return new ResponseEntity<>(testDto, HttpStatus.OK);
 
     }
@@ -89,7 +88,7 @@ public class TestController {
      */
     @RequestMapping(value = "/test", method = RequestMethod.PUT)
     public ResponseEntity<TestDto> edit(@RequestBody TestDto newTestDto) {
-        TestDto updatedTest = testService.updateTest(newTestDto);
+        TestDto updatedTest = testService.saveOrUpdateTest(newTestDto);
         return new ResponseEntity<>(updatedTest, HttpStatus.OK);
     }
 

@@ -65,17 +65,16 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         Tests test = (Tests) session.get(Tests.class, id);
 
         //TODO something to do with lazy initialization
-        Hibernate.initialize(test.getQuestions());
-        Hibernate.initialize(test.getUser());
+        if (test != null) {
+            Hibernate.initialize(test.getQuestions());
+            Hibernate.initialize(test.getUser());
+            test.setQuestions(test.getQuestions());
+            test.setUser(test.getUser());
 
-        test.setQuestions(test.getQuestions());
-        test.setUser(test.getUser());
-
-        for(Questions quest : test.getQuestions())
-        {
-            Hibernate.initialize(quest.getOptions());
+            for (Questions quest : test.getQuestions()) {
+                Hibernate.initialize(quest.getOptions());
+            }
         }
-
         transaction.commit();
         return test;
     }

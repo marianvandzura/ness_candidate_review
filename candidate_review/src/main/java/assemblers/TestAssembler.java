@@ -3,10 +3,7 @@ package assemblers;
 import dao.IQuestionsDao;
 import dao.ITestsDao;
 import dao.IUsersDao;
-import dto.ListTestDto;
-import dto.QuestionDto;
 import dto.TestDto;
-import model.Questions;
 import model.Tests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,11 +50,11 @@ public class TestAssembler {
     }
 
 
-    public List<ListTestDto> extractListTestDtoFromDomain(final Collection<Tests> domain) {
-        List<ListTestDto> testsDtoArrayList = new ArrayList<ListTestDto>();
-        ListTestDto testDto;
+    public List<TestDto> extractListTestDtoFromDomain(final Collection<Tests> domain) {
+        List<TestDto> testsDtoArrayList = new ArrayList<TestDto>();
+        TestDto testDto;
         for (Tests test : domain) {
-            testDto = new ListTestDto();
+            testDto = new TestDto();
             testDto.setId(test.getTestId());
             testDto.setInfo(test.getInfo());
             testDto.setPosition(test.getPosition());
