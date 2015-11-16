@@ -41,7 +41,7 @@ public class UserDao extends HibernateDaoSupport implements IUserDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public User findUserByEmail(String email) {
+    public User findUserByUserName(String userName) {
 //        List<User> users = new ArrayList<User>();
 //
 //        users = sessionFactory.getCurrentSession()
@@ -57,7 +57,7 @@ public class UserDao extends HibernateDaoSupport implements IUserDao {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(User.class);
-        criteria.add(Restrictions.eq("user.email", email));
+        criteria.add(Restrictions.eq("userName", userName));
         List<User> users = (List<User>) criteria.list();
         session.clear();
         transaction.commit();

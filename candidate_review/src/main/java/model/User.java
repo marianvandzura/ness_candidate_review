@@ -12,10 +12,7 @@ import java.util.Collection;
 public class User {
 
     @Id
-    @Column(name = "email", unique = true, nullable = false, length = 45)
-    private String email;
-
-    @Column(name = "user_name")
+    @Column(name = "user_name", unique = true, nullable = false, length = 45)
     private String userName;
 
     @Column(name = "password", nullable = false, length = 60)
@@ -24,6 +21,9 @@ public class User {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @Column(name = "email")
+    private String email;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Collection<UserRole> userRole;
 
@@ -31,15 +31,15 @@ public class User {
         //default
     }
 
-    public User(String email, String password, boolean enabled) {
-        this.email = email;
+    public User(String userName, String password, boolean enabled) {
+        this.userName = userName;
         this.password = password;
         this.enabled = enabled;
     }
 
-    public User(String email, String password,
+    public User(String userName, String password,
                 boolean enabled, Collection<UserRole> userRole) {
-        this.email = email;
+        this.userName = userName;
         this.password = password;
         this.enabled = enabled;
         this.userRole = userRole;

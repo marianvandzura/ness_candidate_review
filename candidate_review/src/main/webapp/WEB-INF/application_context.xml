@@ -103,4 +103,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
+    <bean id="userRoleDao" class="dao.impl.UserRoleDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
 </beans>

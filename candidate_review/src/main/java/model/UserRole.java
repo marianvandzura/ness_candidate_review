@@ -20,7 +20,7 @@ public class UserRole {
     private String role;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email", nullable = false)
+    @JoinColumn(name = "user_name", nullable = false)
     private User user;
 
     public UserRole() {

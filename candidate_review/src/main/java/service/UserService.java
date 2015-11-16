@@ -27,9 +27,9 @@ public class UserService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
 
-        model.User user = userDao.findUserByEmail(email);
+        model.User user = userDao.findUserByUserName(userName);
         List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
 
         return buildUserForAuthentication(user, authorities);
@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService {
     // Converts model.User user to
     // org.springframework.security.core.userdetails.User
     private User buildUserForAuthentication(model.User user, List<GrantedAuthority> authorities) {
-        return new User(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
+        return new User(user.getUserName(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
     }
 
     private List<GrantedAuthority> buildUserAuthority(Collection<UserRole> userRoles) {

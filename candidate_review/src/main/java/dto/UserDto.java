@@ -2,44 +2,42 @@
 
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import model.UserRole;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by Lubomir on 11/3/2015.
  */
 public class UserDto {
-    @JsonProperty("userid")
-    private Integer userid;
+    @JsonProperty("user_name")
+    private String userName;
 
-    @JsonProperty("account")
-    private String account;
-
-    @JsonProperty("password")
+    @JsonIgnore
     private String password;
 
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("permissions")
-    private Integer permissions;
+    @JsonProperty("enabled")
+    private boolean enabled;
 
+    @JsonProperty("user_role")
+    private Collection<String> userRoles;
 
-    public Integer getUserid() {
-        return userid;
+    public UserDto(){
+        //default
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -58,13 +56,20 @@ public class UserDto {
         this.email = email;
     }
 
-    public Integer getPermissions() {
-        return permissions;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setPermissions(Integer permissions) {
-        this.permissions = permissions;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
+    public Collection<String> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Collection<String> userRoles) {
+        this.userRoles = userRoles;
+    }
 }
 
