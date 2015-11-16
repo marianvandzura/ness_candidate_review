@@ -16,8 +16,10 @@ public class Tests {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users userId;
+    private Users user;
 
+    @Column(name = "name")
+    private String name;
     @Column(name = "visible")
     private Boolean visible;
     @Column(name = "position")
@@ -25,7 +27,7 @@ public class Tests {
     @Column(name = "info")
     private String info;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "test_questions",
             joinColumns = @JoinColumn(name = "test_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "question_id", nullable = false))
@@ -43,12 +45,12 @@ public class Tests {
         this.testId = testId;
     }
 
-    public Users getUserId() {
-        return userId;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(Users userId) {
-        this.userId = userId;
+    public void setUser(Users userId) {
+        this.user = userId;
     }
 
     public Boolean getVisible() {
@@ -81,5 +83,13 @@ public class Tests {
 
     public void setQuestions(Collection<Questions> questions) {
         this.questions = questions;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

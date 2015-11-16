@@ -1,5 +1,6 @@
 package service;
 
+import assemblers.OptionAssembler;
 import assemblers.QuestionAssembler;
 import dao.IQuestionsDao;
 import dto.OptionDto;
@@ -15,7 +16,7 @@ import java.util.List;
 
 /**
  * Question service.
- * <p>
+ * <p/>
  * Created by Peter.
  */
 @Service
@@ -26,6 +27,12 @@ public class QuestionService {
 
     @Autowired
     QuestionAssembler questionAssembler;
+
+    @Autowired
+    OptionService optionService;
+
+    @Autowired
+    OptionAssembler optionAssembler;
 
     public QuestionService() {
         //default
@@ -70,7 +77,8 @@ public class QuestionService {
         int i = 0;
         for (Options singleOption : options) {
             OptionDto optionDto = questionOptions.get(i++);
-            int optionId = optionDto == null ? -1 : optionDto.getId();
+            int optionId = (optionDto == null) ? -1 : optionDto.getId();
+
             if (optionId != -1) {
                 singleOption.setOptionId(optionId);
             }
