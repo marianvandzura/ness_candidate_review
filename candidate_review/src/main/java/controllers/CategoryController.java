@@ -1,11 +1,13 @@
 package controllers;
 
+
 import assemblers.CategoryAssembler;
 import dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import service.CategoryService;
 
@@ -16,7 +18,7 @@ import java.util.List;
  * <p>
  * Created by Marian_Vandzura on 7.11.2015.
  */
-@Component
+@Controller
 public class CategoryController {
 
     @Autowired
@@ -51,7 +53,7 @@ public class CategoryController {
     public ResponseEntity saveCategory(@RequestBody CategoryDto category) {
         //add category
         CategoryDto savedCategory = categoryService.addCategory(category);
-        return new ResponseEntity<CategoryDto>(savedCategory, HttpStatus.OK);
+        return new ResponseEntity<>(savedCategory, HttpStatus.OK);
     }
 
     /**
@@ -63,8 +65,8 @@ public class CategoryController {
     @RequestMapping(value = "/category/", method = RequestMethod.PUT)
     public ResponseEntity updateCategory(@RequestBody CategoryDto category) {
         //update category
-        CategoryDto savedCategory = categoryService.addCategory(category);
-        return new ResponseEntity<CategoryDto>(savedCategory, HttpStatus.OK);
+        CategoryDto updatedCategory = categoryService.updateCategory(category);
+        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 
     /**
@@ -79,7 +81,9 @@ public class CategoryController {
         CategoryDto categoryToDelete = categoryService.getCategoryById(categoryId);
         if (categoryToDelete != null) {
             categoryService.deleteCategory(categoryToDelete);
+            return new ResponseEntity("Category deleted", HttpStatus.OK);
+        }else {
+            return new ResponseEntity("Category NOT FOUND", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<CategoryDto>(categoryToDelete, HttpStatus.OK);
     }
 }

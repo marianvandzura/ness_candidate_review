@@ -14,10 +14,6 @@ public class Options {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer optionId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id")
-    private Questions question;
-
     @Column(name = "option")
     private String option;
     @Column(name = "truth")
@@ -26,28 +22,6 @@ public class Options {
 
     public Options() {
         //default
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        Options option = (Options) obj;
-        return (this.optionId == option.getOptionId())
-                && (this.option != null && this.option.equals(option.getOption()));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + optionId;
-        result = 31 * result + (option != null ? option.hashCode() : 0);
-        return result;
     }
 
     public Integer getOptionId() {
@@ -74,11 +48,4 @@ public class Options {
         this.truth = truth;
     }
 
-    public Questions getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Questions question) {
-        this.question = question;
-    }
 }

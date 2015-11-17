@@ -25,9 +25,9 @@ public interface IQuestionsDao {
 
     /**
      * delete question
-     * @param question
+     * @param questionId
      */
-    void deleteQuestion(Questions question);
+    void deleteQuestion(int questionId);
 
     /**
      * Add multiple questions to DB

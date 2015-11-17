@@ -26,12 +26,21 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
     }
 
     @Override
-    public void deleteCategory(Categories category) {
+    public Categories updateCategory(Categories category) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.delete(category);
+        session.update(category);
         transaction.commit();
-        session.clear();
+        return category;
+    }
+
+    @Override
+    public void deleteCategory(int categoryId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("delete Categories where categoryId = :id").setParameter("id", categoryId);
+        query.executeUpdate();
+        transaction.commit();
     }
 
     @Override
@@ -44,22 +53,6 @@ public class CategoriesDao extends HibernateDaoSupport implements ICategoriesDao
         transaction.commit();
         return categories;
     }
-
-//    @Override
-//    public List<Categories> findCategoriesByQuestion(final Integer questionId) {
-//        Session session = getSessionFactory().getCurrentSession();
-//        Transaction transaction = session.beginTransaction();
-//        Criteria criteria = session.createCriteria(Categories.class);
-//        /**
-//         * Joining Questions table based on the name of the property in {@link Categories}.
-//         * For getting id of qustion use question.id again name of the property in model class.
-//         */
-//        criteria.createAlias("questions","question", JoinType.INNER_JOIN);
-//        criteria.add(Restrictions.eq("question.id", questionId));
-//        List<Categories> catList = (List<Categories>) criteria.list();
-//        transaction.commit();
-//        return catList;
-//    }
 
     @Override
     public Categories findById(final Integer id) {

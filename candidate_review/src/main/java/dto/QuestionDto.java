@@ -39,6 +39,8 @@ public class QuestionDto {
     @JsonProperty("categories")
     private CategoryDto category;
 
+
+
     @JsonProperty("options")
     private List<OptionDto> options;
 
@@ -121,4 +123,6 @@ public class QuestionDto {
     public void setOptions(List<OptionDto> options) {
         this.options = options;
     }
+
+
 }

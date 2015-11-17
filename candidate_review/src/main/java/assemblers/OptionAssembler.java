@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,9 +32,9 @@ public class OptionAssembler {
         dto.setId(domain.getOptionId());
         dto.setOption(domain.getOption());
         dto.setTruth(domain.getTruth());
-        dto.setQuestion(questionAssembler.extractDtoFromDomain(domain.getQuestion()));
         return dto;
     }
+
 
     /**
      * update questionDto with new values
@@ -45,7 +46,6 @@ public class OptionAssembler {
     public OptionDto updateDto(final OptionDto option, final OptionDto newOption) {
         option.setOption(newOption.getOption());
         option.setTruth(newOption.getTruth());
-        option.setQuestion(newOption.getQuestion());
         return option;
     }
 
@@ -54,7 +54,7 @@ public class OptionAssembler {
      * @param domains
      * @return List of OptionDto objects
      */
-    public List<OptionDto> extractDtoFromDomain(final List<Options> domains) {
+    public List<OptionDto> extractDtoFromDomain(final Collection<Options> domains) {
         List<OptionDto> dtos = new ArrayList<OptionDto>();
         for(Options domain : domains) {
             dtos.add(this.extractDtoFromDomain(domain));
@@ -71,7 +71,6 @@ public class OptionAssembler {
         Options domain = new Options();
         domain.setOption(dto.getOption());
         domain.setTruth(dto.getTruth());
-        domain.setQuestion(questionAssembler.populateDomainFromDto(dto.getQuestion()));
         return domain;
     }
 

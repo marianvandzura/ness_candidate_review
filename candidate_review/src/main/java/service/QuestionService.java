@@ -1,16 +1,22 @@
 package service;
 
+import assemblers.OptionAssembler;
 import assemblers.QuestionAssembler;
 import dao.IQuestionsDao;
+import dto.OptionDto;
 import dto.QuestionDto;
+import model.Options;
+import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Question service.
- * <p>
+ * <p/>
  * Created by Peter.
  */
 @Service
@@ -22,17 +28,15 @@ public class QuestionService {
     @Autowired
     QuestionAssembler questionAssembler;
 
+    @Autowired
+    OptionService optionService;
+
+    @Autowired
+    OptionAssembler optionAssembler;
+
     public QuestionService() {
         //default
     }
-
-//    /**
-//     * get all available questions
-//     * @return List of questions
-//     */
-//    public List<QuestionDto> getAllQuestions(){
-//        return questionAssembler.extractDtoListFromDomain(questionsDao.getAllQuestions());
-//    }
 
     /**
      * get question with ID
@@ -41,7 +45,11 @@ public class QuestionService {
      * @return QuestionDto object
      */
     public QuestionDto getQuestionById(final Integer id) {
-        return questionAssembler.extractDtoFromDomain(questionsDao.findQuestionById(id));
+        Questions questions = null;
+        if ((questions = questionsDao.findQuestionById(id)) != null) {
+            return questionAssembler.extractDtoFromDomain(questions);
+        }
+        return null;
     }
 
     /**
@@ -56,11 +64,26 @@ public class QuestionService {
 
     /**
      * update question
+     *
      * @param questionDto
      * @return updated question
      */
-    public QuestionDto updateQuestion(final QuestionDto questionDto){
-        return questionAssembler.extractDtoFromDomain(questionsDao.updateQuestion(questionAssembler.populateDomainFromDto(questionDto)));
+    public QuestionDto updateQuestion(final QuestionDto questionDto) {
+        List<OptionDto> questionOptions = questionDto.getOptions();
+        int questionId = questionDto.getId();
+        Questions question = questionAssembler.populateDomainFromDto(questionDto);
+        question.setQuestionId(questionId);
+        Collection<Options> options = question.getOptions();
+        int i = 0;
+        for (Options singleOption : options) {
+            OptionDto optionDto = questionOptions.get(i++);
+            int optionId = (optionDto == null) ? -1 : optionDto.getId();
+
+            if (optionId != -1) {
+                singleOption.setOptionId(optionId);
+            }
+        }
+        return questionAssembler.extractDtoFromDomain(questionsDao.addQuestion(question));
     }
 
     /**
@@ -69,11 +92,12 @@ public class QuestionService {
      * @param questionDto
      */
     public void deleteQuestion(final QuestionDto questionDto) {
-        questionsDao.deleteQuestion(questionAssembler.populateDomainFromDto(questionDto));
+        questionsDao.deleteQuestion(questionDto.getId());
     }
 
     /**
      * update questionDto
+     *
      * @param question
      * @param newQuestion
      * @return
@@ -89,6 +113,11 @@ public class QuestionService {
      * @return List of questions
      */
     public List<QuestionDto> getQuestionsByCategoryId(final Integer categoryId) {
-        return questionAssembler.extractDtoListFromDomain(questionsDao.findQuestionsByCategory(categoryId));
+        List<Questions> questions = questionsDao.findQuestionsByCategory(categoryId);
+        if (questions != null) {
+            return questionAssembler.extractDtoListFromDomain(questions);
+        } else {
+            return null;
+        }
     }
 }

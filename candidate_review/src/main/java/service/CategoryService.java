@@ -3,6 +3,7 @@ package service;
 import assemblers.CategoryAssembler;
 import dao.ICategoriesDao;
 import dto.CategoryDto;
+import model.Categories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,8 +45,23 @@ public class CategoryService {
         return categoryAssembler.extractDtoFromDomain(categoriesDao.addCategory(categoryAssembler.populateDomainFromDto(categoryDto)));
     }
 
+    /**
+     * update category
+     * @param categoryDto
+     * @return updatedCategory
+     */
+    public CategoryDto updateCategory(CategoryDto categoryDto){
+        Categories category = categoryAssembler.populateDomainFromDto(categoryDto);
+        category.setCategoryId(categoryDto.getId());
+        return categoryAssembler.extractDtoFromDomain(categoriesDao.addCategory(category));
+    }
+
+    /**
+     * delete category
+     * @param categoryDto
+     */
     public void deleteCategory(CategoryDto categoryDto){
-        categoriesDao.deleteCategory(categoryAssembler.populateDomainFromDto(categoryDto));
+        categoriesDao.deleteCategory(categoryDto.getId());
     }
 
     /**

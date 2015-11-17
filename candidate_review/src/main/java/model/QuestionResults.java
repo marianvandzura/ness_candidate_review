@@ -26,30 +26,6 @@ public class QuestionResults {
         //default
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-
-        if (obj == null || obj.getClass() != this.getClass() || !(obj instanceof Questions)) {
-            return false;
-        }
-        QuestionResults questionResult = (QuestionResults) obj;
-        return (this.questionResultId == questionResult.getQuestionResultId())
-                && (this.time == questionResult.getTime())
-                && (this.googleTime == questionResult.getGoogleTime());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 0;
-        result = 31 * result + questionResultId;
-        result = 31 * result + (time != null ? time.hashCode() : 0);
-        result = 31 * result + (googleTime != null ? googleTime.hashCode() : 0);
-        return result;
-    }
-
     public Integer getQuestionResultId() {
         return questionResultId;
     }
