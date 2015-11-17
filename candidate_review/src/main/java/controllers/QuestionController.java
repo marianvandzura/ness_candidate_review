@@ -58,6 +58,31 @@ public class QuestionController {
     }
 
     /**
+     * get questions with array of ids passed as param
+     *
+     * @param questionIds
+     * @return List of requested questions
+     */
+    @RequestMapping(value = "/user/questions/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<QuestionDto> getQuestionsForUserWithIds(@PathVariable(value = "id") List<Integer> questionIds) {
+        //init arrayList because of performance
+        List<QuestionDto> result = new ArrayList<QuestionDto>(questionIds.size());
+        //get all questions
+        for (int questionId : questionIds) {
+            QuestionDto question = questionService.getQuestionById(questionId);
+            if (question != null) {
+                result.add(question);
+                List<OptionDto> questionOptions = question.getOptions();
+                for (OptionDto option : questionOptions) {
+                    option.setTruth(null);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
      * get questions by category
      *
      * @param categoryId
@@ -67,6 +92,25 @@ public class QuestionController {
     @ResponseBody
     public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
+        return questionsByCategory;
+    }
+
+    /**
+     * get questions by category
+     *
+     * @param categoryId
+     * @return List of questions related to category
+     */
+    @RequestMapping(value = "/user/questions/category/{categoryId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<QuestionDto> getQuestionsForUserByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
+        List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
+        for (QuestionDto question : questionsByCategory) {
+            List<OptionDto> questionOptions = question.getOptions();
+            for (OptionDto option : questionOptions) {
+                option.setTruth(null);
+            }
+        }
         return questionsByCategory;
     }
 
