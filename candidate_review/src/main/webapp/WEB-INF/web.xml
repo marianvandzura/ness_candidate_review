@@ -3,7 +3,7 @@
 		 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 		 version="3.1">
 
-	<display-name>Spring MVC Application</display-name>
+	<display-name>NESS Candidates review</display-name>
 
     <servlet>
 		<servlet-name>mvc-dispatcher</servlet-name>
@@ -30,6 +30,11 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
 
 	<!-- Spring Security -->
 	<filter>
