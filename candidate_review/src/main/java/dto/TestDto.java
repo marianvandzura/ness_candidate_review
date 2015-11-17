@@ -1,5 +1,6 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.Questions;
 import model.Users;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by Lubomir on 11/3/2015.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TestDto {
     @JsonProperty("id")
     private Integer id;

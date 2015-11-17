@@ -11,6 +11,7 @@ import java.util.List;
  *
  * Created by Peter.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionDto {
 
     @JsonProperty("id")
