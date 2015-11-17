@@ -41,7 +41,14 @@ public class TestService {
      * @return list of dtos
      */
     public List<TestDto> getTests() {
-        return this.testsAssembler.extractListTestDtoFromDomain(testsDao.getAllTests());
+        List<TestDto> listDto = new ArrayList<TestDto>();
+        for (TestDto tDto : this.testsAssembler.extractListTestDtoFromDomain(testsDao.getAllTests())) {
+            if (tDto.getVisible()) {
+                tDto.setVisible(null);
+                listDto.add(tDto);
+            }
+        }
+        return listDto;
     }
 
     /**
@@ -50,7 +57,12 @@ public class TestService {
      * @return list of dtos
      */
     public List<TestDto> getMyTests(Integer id) {
-        return this.testsAssembler.extractListTestDtoFromDomain(testsDao.getTestsByUserId(id));
+        List<TestDto> listDto = new ArrayList<TestDto>();
+        for (TestDto tDto : this.testsAssembler.extractListTestDtoFromDomain(testsDao.getTestsByUserId(id))) {
+            tDto.setVisible(null);
+            listDto.add(tDto);
+        }
+        return listDto;
     }
 
     /**

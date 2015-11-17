@@ -59,7 +59,7 @@ public class TestAssembler {
             testDto.setInfo(test.getInfo());
             testDto.setPosition(test.getPosition());
             testDto.setName(test.getName());
-            if(test.getVisible())
+            testDto.setVisible(test.getVisible());
             testsDtoArrayList.add(testDto);
         }
         return testsDtoArrayList;
