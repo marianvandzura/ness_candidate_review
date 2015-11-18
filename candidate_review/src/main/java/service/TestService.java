@@ -59,7 +59,6 @@ public class TestService {
     public List<TestDto> getMyTests(Integer id) {
         List<TestDto> listDto = new ArrayList<TestDto>();
         for (TestDto tDto : this.testsAssembler.extractListTestDtoFromDomain(testsDao.getTestsByUserId(id))) {
-            tDto.setVisible(null);
             listDto.add(tDto);
         }
         return listDto;
