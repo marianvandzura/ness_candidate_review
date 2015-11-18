@@ -73,6 +73,7 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
 
             for (Questions quest : test.getQuestions()) {
                 Hibernate.initialize(quest.getOptions());
+                quest.setOptions(quest.getOptions());
             }
         }
         transaction.commit();
