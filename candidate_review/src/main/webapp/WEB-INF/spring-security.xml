@@ -78,11 +78,21 @@
     <!-- auth. manager with hardcoded user-->
     <authentication-manager alias="authenticationManager" xmlns="http://www.springframework.org/schema/security">
         <authentication-provider>
+             <!--Select users and user_roles from database -->
+            <!--<jdbc-user-service data-source-ref="dataSource"-->
+                               <!--users-by-username-query=-->
+                                       <!--"select user_name,password, enabled from users where user_name=?"-->
+                               <!--authorities-by-username-query=-->
+                                       <!--"select user_name, role from user_roles where user_name =?  " />-->
             <user-service id="userDetailsService">
                 <user name="admin" password="admin" authorities="ROLE_ADMIN"/>
             </user-service>
+            <password-encoder ref="encoder"/>
         </authentication-provider>
     </authentication-manager>
+
+    <!-- encoder-->
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
     <!-- client details user service-->
     <bean id="clientDetailsUserService"
@@ -93,6 +103,7 @@
     <!-- Token Store  -->
     <bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.InMemoryTokenStore"/>
 
+    <!-- token service-->
     <bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
         <property name="tokenStore" ref="tokenStore"/>
         <property name="supportRefreshToken" value="true"/>
@@ -101,6 +112,7 @@
         <property name="accessTokenValiditySeconds" value="300"/>
     </bean>
 
+    <!-- user approval handler-->
     <bean id="userApprovalHandler"
           class="org.springframework.security.oauth2.provider.approval.TokenServicesUserApprovalHandler">
         <property name="tokenServices" ref="tokenServices"/>
