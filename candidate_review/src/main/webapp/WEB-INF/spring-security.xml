@@ -3,7 +3,6 @@
        xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
        xmlns:sec="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-
        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/security
        http://www.springframework.org/schema/security/spring-security-3.2.xsd
@@ -36,25 +35,30 @@
                 ref="oauthAccessDeniedHandler"/>
     </http>
 
+    <!-- oauth entry point-->
     <bean id="oauthAuthenticationEntryPoint"
           class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
         <property name="realmName" value="test"/>
     </bean>
 
+    <!-- client auth. entry point-->
     <bean id="clientAuthenticationEntryPoint"
           class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
         <property name="realmName" value="test/client"/>
         <property name="typeName" value="Basic"/>
     </bean>
 
+    <!-- access denied handler-->
     <bean id="oauthAccessDeniedHandler"
           class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler"/>
 
+    <!-- client credentials token endpoint-->
     <bean id="clientCredentialsTokenEndpointFilter"
           class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
         <property name="authenticationManager" ref="clientAuthenticationManager"/>
     </bean>
 
+    <!-- access decision manager-->
     <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased"
           xmlns="http://www.springframework.org/schema/beans">
         <constructor-arg>
@@ -71,6 +75,7 @@
         <authentication-provider user-service-ref="clientDetailsUserService"/>
     </authentication-manager>
 
+    <!-- auth. manager with hardcoded user-->
     <authentication-manager alias="authenticationManager" xmlns="http://www.springframework.org/schema/security">
         <authentication-provider>
             <user-service id="userDetailsService">
@@ -79,6 +84,7 @@
         </authentication-provider>
     </authentication-manager>
 
+    <!-- client details user service-->
     <bean id="clientDetailsUserService"
           class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
         <constructor-arg ref="clientDetails"/>

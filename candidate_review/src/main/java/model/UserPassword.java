@@ -1,5 +1,8 @@
 package model;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 
 /**
@@ -46,6 +49,8 @@ public class UserPassword {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        //encode password
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
     }
 }
