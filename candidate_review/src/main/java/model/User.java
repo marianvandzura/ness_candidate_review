@@ -1,5 +1,8 @@
 package model;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -15,8 +18,8 @@ public class User {
     @Column(name = "user_name", unique = true, nullable = false, length = 45)
     private String userName;
 
-    @Column(name = "password", nullable = false, length = 60)
-    private String password;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private UserPassword userPassword;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -24,25 +27,14 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private Collection<UserRole> userRole;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_name", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "user_role_id", nullable = false))
+    private Collection<UserRole> userRoles;
 
     public User() {
         //default
-    }
-
-    public User(String userName, String password, boolean enabled) {
-        this.userName = userName;
-        this.password = password;
-        this.enabled = enabled;
-    }
-
-    public User(String userName, String password,
-                boolean enabled, Collection<UserRole> userRole) {
-        this.userName = userName;
-        this.password = password;
-        this.enabled = enabled;
-        this.userRole = userRole;
     }
 
     public String getEmail() {
@@ -61,14 +53,6 @@ public class User {
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
@@ -77,11 +61,19 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Collection<UserRole> getUserRole() {
-        return userRole;
+    public Collection<UserRole> getUserRoles() {
+        return userRoles;
     }
 
-    public void setUserRole(Collection<UserRole> userRole) {
-        this.userRole = userRole;
+    public void setUserRoles(Collection<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public UserPassword getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(UserPassword userPassword) {
+        this.userPassword = userPassword;
     }
 }

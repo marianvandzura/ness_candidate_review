@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
 
         model.User user = userDao.findUserByUserName(userName);
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
+        List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRoles());
 
         return buildUserForAuthentication(user, authorities);
     }
@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService {
     // Converts model.User user to
     // org.springframework.security.core.userdetails.User
     private User buildUserForAuthentication(model.User user, List<GrantedAuthority> authorities) {
-        return new User(user.getUserName(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
+        return new User(user.getUserName(), user.getUserPassword().getPassword(), user.isEnabled(), true, true, true, authorities);
     }
 
     private List<GrantedAuthority> buildUserAuthority(Collection<UserRole> userRoles) {

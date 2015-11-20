@@ -1,14 +1,13 @@
 package model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Created by Marian_Vandzura on 14.11.2015.
  */
 @Entity
-@Table(name = "user_roles", catalog = "test",
-        uniqueConstraints = @UniqueConstraint(
-                columnNames = {"role", "user_name"}))
+@Table(name = "user_roles")
 public class UserRole {
 
     @Id
@@ -19,17 +18,12 @@ public class UserRole {
     @Column(name = "role", nullable = false, length = 45)
     private String role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_name", nullable = false)
-    private User user;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userRoles")
+    public Collection<User> users;
+
 
     public UserRole() {
         //default
-    }
-
-    public UserRole(User user, String role) {
-        this.user = user;
-        this.role = role;
     }
 
     public Integer getUserRoleId() {
@@ -48,11 +42,11 @@ public class UserRole {
         this.role = role;
     }
 
-    public User getUser() {
-        return user;
+    public Collection<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(Collection<User> users) {
+        this.users = users;
     }
 }

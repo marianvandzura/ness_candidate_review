@@ -4,6 +4,7 @@ package dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import model.UserPassword;
 import model.UserRole;
 
 import java.util.Collection;
@@ -17,7 +18,7 @@ public class UserDto {
     private String userName;
 
     @JsonIgnore
-    private String password;
+    private UserPassword userPassword;
 
     @JsonProperty("email")
     private String email;
@@ -40,12 +41,12 @@ public class UserDto {
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public UserPassword getUserPassword() {
+        return userPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserPassword(UserPassword userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getEmail() {
