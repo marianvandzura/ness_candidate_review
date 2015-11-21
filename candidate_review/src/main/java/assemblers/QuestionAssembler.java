@@ -56,10 +56,12 @@ public class QuestionAssembler {
         dto.setQuestion(domain.getQuestion());
         dto.setType(domain.getType());
         dto.setOptions(optionAssembler.extractDtoFromDomain(domain.getOptions()));
-        //TODO (majov) question specific for test has not category, fix it
-        CategoryDto category = categoryAssembler.extractDtoFromDomain(domain.getCategory());
-        dto.setCategory(category);
-        dto.setCategoryId(category.getId());
+        //question specific for test has not category
+        if(domain.getCategory()!=null) {
+            CategoryDto category = categoryAssembler.extractDtoFromDomain(domain.getCategory());
+            dto.setCategory(category);
+            dto.setCategoryId(category.getId());
+        }
         return dto;
     }
 
