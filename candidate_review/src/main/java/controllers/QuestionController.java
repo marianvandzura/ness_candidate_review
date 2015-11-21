@@ -106,6 +106,10 @@ public class QuestionController {
     public List<QuestionDto> getQuestionsForUserByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
         for (QuestionDto question : questionsByCategory) {
+            if(question.getId()!=null) {
+                int questionOccurrenceInTests = questionService.countQuestionOccurrenceInAllTests(question.getId());
+                question.setQuestionInAllTestsOccurrence(questionOccurrenceInTests);
+            }
             List<OptionDto> questionOptions = question.getOptions();
             for (OptionDto option : questionOptions) {
                 option.setTruth(null);

@@ -124,4 +124,13 @@ public class QuestionService {
             return null;
         }
     }
+
+    /**
+     * count question occurrence in all tests
+     * @param questionId
+     * @return count of test which include question
+     */
+    public int countQuestionOccurrenceInAllTests(final int questionId){
+        return questionsDao.countQuestionOccurrenceInAllTests(questionId);
+    }
 }

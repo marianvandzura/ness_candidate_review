@@ -16,7 +16,7 @@ import java.util.List;
 @Transactional
 public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
 
-    public QuestionsDao(){
+    public QuestionsDao() {
         //default
     }
 
@@ -55,8 +55,7 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         Query query = session.createQuery("from Questions ");
 
         List<Questions> questions = query.list();
-        for(Questions question : questions)
-        {
+        for (Questions question : questions) {
             Hibernate.initialize(question.getOptions());
         }
 
@@ -87,12 +86,23 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         criteria.createAlias("category", "category", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("category.categoryId", categoryId));
         List<Questions> categoriesList = (List<Questions>) criteria.list();
-        for(Questions question : categoriesList)
-        {
+        for (Questions question : categoriesList) {
             Hibernate.initialize(question.getOptions());
         }
         transaction.commit();
         return categoriesList;
+    }
+
+    @Override
+    public int countQuestionOccurrenceInAllTests(int questionId) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Integer testCount = (Integer) session.createQuery("select count(*) as cnt from Tests test " +
+                "where test.testId in(select tests.testId from Questions question " +
+                "inner join question.tests tests where question.questionId=:questionId)")
+                .setParameter("questionId", questionId).uniqueResult();
+        transaction.commit();
+        return testCount;
     }
 
 }

@@ -34,6 +34,9 @@ public class Questions {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Collection<Options> options;
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "questions")
+    public Collection<Tests> tests;
+
 
     public Questions() {
         //default
@@ -111,4 +114,11 @@ public class Questions {
         this.options = options;
     }
 
+    public Collection<Tests> getTests() {
+        return tests;
+    }
+
+    public void setTests(Collection<Tests> tests) {
+        this.tests = tests;
+    }
 }

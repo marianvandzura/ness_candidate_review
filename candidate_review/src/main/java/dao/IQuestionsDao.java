@@ -48,4 +48,11 @@ public interface IQuestionsDao {
      * @return List of questions with matched category
      */
     List<Questions> findQuestionsByCategory(Integer categoryId);
+
+    /**
+     * count question occurrence in all tests
+     * @param questionId
+     * @return count of test which include question
+     */
+    int countQuestionOccurrenceInAllTests(int questionId);
 }

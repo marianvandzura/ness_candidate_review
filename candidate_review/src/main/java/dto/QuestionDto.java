@@ -41,10 +41,11 @@ public class QuestionDto {
     @JsonProperty("categories")
     private CategoryDto category;
 
-
-
     @JsonProperty("options")
     private List<OptionDto> options;
+
+    @JsonProperty("quesionInAllTestsOccurrence")
+    private int questionInAllTestsOccurrence;
 
     public Integer getId() {
         return id;
@@ -126,5 +127,11 @@ public class QuestionDto {
         this.options = options;
     }
 
+    public int getQuestionInAllTestsOccurrence() {
+        return questionInAllTestsOccurrence;
+    }
 
+    public void setQuestionInAllTestsOccurrence(int questionInAllTestsOccurrence) {
+        this.questionInAllTestsOccurrence = questionInAllTestsOccurrence;
+    }
 }
