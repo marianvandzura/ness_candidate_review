@@ -1,6 +1,5 @@
 package controllers;
 
-import dto.OptionDto;
 import dto.QuestionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

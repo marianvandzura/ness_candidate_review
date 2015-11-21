@@ -87,7 +87,7 @@
             <user-service id="userDetailsService">
                 <user name="admin" password="admin" authorities="ROLE_ADMIN"/>
             </user-service>
-            <password-encoder ref="encoder"/>
+            <!--<password-encoder ref="encoder"/>-->
         </authentication-provider>
     </authentication-manager>
 

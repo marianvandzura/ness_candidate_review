@@ -1,8 +1,6 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -13,7 +11,6 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "users")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
 
     @Id
