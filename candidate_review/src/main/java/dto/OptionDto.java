@@ -18,7 +18,7 @@ public class OptionDto {
     @JsonProperty("option")
     private String option;
 
-    @JsonProperty("truth")
+    @JsonProperty("truly")
     private Boolean truth;
 
 

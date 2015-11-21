@@ -70,6 +70,7 @@ public class QuestionService {
      */
     public QuestionDto updateQuestion(final QuestionDto questionDto) {
         List<OptionDto> questionOptions = questionDto.getOptions();
+        //TODO (majov) new added question has id null - fix it
         int questionId = questionDto.getId();
         Questions question = questionAssembler.populateDomainFromDto(questionDto);
         question.setQuestionId(questionId);
@@ -77,6 +78,7 @@ public class QuestionService {
         int i = 0;
         for (Options singleOption : options) {
             OptionDto optionDto = questionOptions.get(i++);
+            //TODO (majov) new added option has id null - fix it
             int optionId = (optionDto == null) ? -1 : optionDto.getId();
 
             if (optionId != -1) {
