@@ -14,7 +14,7 @@ import java.util.Collection;
 public class User {
 
     @Id
-    @Column(name = "user_name", unique = true, nullable = false, length = 45)
+    @Column(name = "user_name", unique = true)
     private String userName;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)

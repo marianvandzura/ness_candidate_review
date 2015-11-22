@@ -21,44 +21,13 @@ import java.util.*;
  */
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
-    //get user from the database, via Hibernate
     @Autowired
     private IUserDao userDao;
 
     @Autowired
     private UserAssembler userAssembler;
-
-    @Transactional(readOnly = true)
-    @Override
-    public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
-
-        model.User user = userDao.findUserByUserName(userName);
-        List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRoles());
-
-        return buildUserForAuthentication(user, authorities);
-    }
-
-    // Converts model.User user to
-    // org.springframework.security.core.userdetails.User
-    private User buildUserForAuthentication(model.User user, List<GrantedAuthority> authorities) {
-        return new User(user.getUserName(), user.getUserPassword().getPassword(), user.isEnabled(), true, true, true, authorities);
-    }
-
-    private List<GrantedAuthority> buildUserAuthority(Collection<UserRole> userRoles) {
-
-        Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
-
-        // Build user's authorities
-        for (UserRole userRole : userRoles) {
-            setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
-        }
-
-        List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
-
-        return Result;
-    }
 
     /**
      * get user by user_name

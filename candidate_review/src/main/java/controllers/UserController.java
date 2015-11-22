@@ -58,7 +58,7 @@ public class UserController {
      * @return saved UserDto object
      */
     @RequestMapping(value = "/admin/user/", method = RequestMethod.POST)
-    public ResponseEntity saveQuestion(@RequestBody final UserDto user) {
+    public ResponseEntity saveUser(@RequestBody final UserDto user) {
         UserDto savedUser = userService.addUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
     }

@@ -44,10 +44,10 @@ public class UserAssembler {
         dto.setUserPassword(domain.getUserPassword());
         dto.setEmail(domain.getEmail());
         dto.setEnabled(domain.isEnabled());
-        List<String> roles = new ArrayList<>(1);
+        List<UserRole> roles = new ArrayList<>(1);
         Collection<UserRole> userRoles = domain.getUserRoles();
         for (UserRole role : userRoles) {
-            roles.add(role.getRole());
+            roles.add(role);
         }
         dto.setUserRoles(roles);
         return dto;
@@ -65,13 +65,8 @@ public class UserAssembler {
         domain.setUserPassword(dto.getUserPassword());
         domain.setEmail(dto.getEmail());
         domain.setEnabled(dto.isEnabled());
-        List<UserRole> userRoles = new ArrayList<>(1);
-        Collection<String> roles = dto.getUserRoles();
-        for(String roleName: roles){
-            UserRole role = userRoleService.getUserRoleByName(roleName);
-            userRoles.add(role);
-        }
-        domain.setUserRoles(userRoles);
+        List<UserRole> roles = dto.getUserRoles();
+        domain.setUserRoles(roles);
         return domain;
     }
 }

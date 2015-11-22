@@ -29,7 +29,7 @@ public class UserDto {
     private boolean enabled;
 
     @JsonProperty("user_role")
-    private Collection<String> userRoles;
+    private List<UserRole> userRoles;
 
     public UserDto(){
         //default
@@ -67,11 +67,11 @@ public class UserDto {
         this.enabled = enabled;
     }
 
-    public Collection<String> getUserRoles() {
+    public List<UserRole> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(Collection<String> userRoles) {
+    public void setUserRoles(List<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
 }
