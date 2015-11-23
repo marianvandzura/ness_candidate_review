@@ -18,9 +18,6 @@ import java.util.List;
 @Transactional
 public class UserDao extends HibernateDaoSupport implements IUserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
     @Override
     public User addUser(User user) {
         Session session = getSessionFactory().getCurrentSession();

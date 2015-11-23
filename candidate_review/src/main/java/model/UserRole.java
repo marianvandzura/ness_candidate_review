@@ -18,7 +18,7 @@ public class UserRole {
     @Column(name = "user_role_id", unique = true, nullable = false)
     private Integer userRoleId;
 
-    @Column(name = "role", nullable = false, length = 45)
+    @Column(name = "role", nullable = false, length = 45, columnDefinition = "varchar(255) default 'ROLE_USER'")
     private String role;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "userRoles")

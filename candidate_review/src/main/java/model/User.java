@@ -14,7 +14,11 @@ import java.util.Collection;
 public class User {
 
     @Id
-    @Column(name = "user_name", unique = true)
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer userId;
+
+    @Column(name = "user_name", unique = true,nullable = false, columnDefinition = "varchar(255) default 'abc'")
     private String userName;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
@@ -27,9 +31,10 @@ public class User {
     private String email;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_name", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "user_role_id", nullable = false))
+//    @JoinTable(name = "user_roles",
+//            joinColumns = @JoinColumn(name = "user_name", nullable = false),
+//            inverseJoinColumns = @JoinColumn(name = "user_role_id", nullable = false))
+    @JoinTable
     private Collection<UserRole> userRoles;
 
     public User() {
