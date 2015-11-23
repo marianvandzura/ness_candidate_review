@@ -1,7 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -30,10 +28,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(name = "user_roles",
-//            joinColumns = @JoinColumn(name = "user_name", nullable = false),
-//            inverseJoinColumns = @JoinColumn(name = "user_role_id", nullable = false))
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable
     private Collection<UserRole> userRoles;
 

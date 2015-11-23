@@ -83,20 +83,20 @@ public class HelloController {
 		question.setQuestion("Ako byt dobry?");
 		question.setType("checkbox");
 
-		//create admin user
-		UserPassword userPassword = new UserPassword();
-		userPassword.setPassword("admin");
-		UserRole userRole = new UserRole();
-		userRole.setRole(UserRole.ROLE_ADMIN);
-		UserDto user = new UserDto();
-		user.setUserName("admin");
-		user.setUserPassword(userPassword);
-		user.setEnabled(true);
-		List<UserRole> userRolesList = new ArrayList<>(1);
-		userRolesList.add(userRole);
-		user.setUserRoles(userRolesList);
-		user.setEmail("admin@ness.sk");
-		UserDto savedUser = userService.addUser(user);
+//		//create admin user
+//		UserPassword userPassword = new UserPassword();
+//		userPassword.setPassword("admin");
+//		UserRole userRole = new UserRole();
+//		userRole.setRole(UserRole.ROLE_ADMIN);
+//		UserDto user = new UserDto();
+//		user.setUserName("admin");
+//		user.setUserPassword(userPassword);
+//		user.setEnabled(true);
+//		List<UserRole> userRolesList = new ArrayList<>(1);
+//		userRolesList.add(userRole);
+//		user.setUserRoles(userRolesList);
+//		user.setEmail("admin@ness.sk");
+//		UserDto savedUser = userService.addUser(user);
 
 		//List<QuestionDto> fromDb = questionService.getQuestionsByCategoryId(20);
 

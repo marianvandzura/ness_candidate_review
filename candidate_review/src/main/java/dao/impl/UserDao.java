@@ -36,24 +36,12 @@ public class UserDao extends HibernateDaoSupport implements IUserDao {
         transaction.commit();
     }
 
-//    @Override
-//    public List<User> getAllUsers() {
-//        Session session = getSessionFactory().getCurrentSession();
-//        Transaction transaction = session.beginTransaction();
-//        Query query = session.createQuery("from User ");
-//        List<User> users = query.list();
-//        transaction.commit();
-//        return users;
-//    }
-
-    @SuppressWarnings("unchecked")
     @Override
     public User findUserByUserName(String userName) {
-//        List<User> users = new ArrayList<User>();
-//
-//        users = sessionFactory.getCurrentSession()
-//                .createQuery("from User where email=?")
-//                .setParameter(0, email)
+//        List<User> users;
+//        users = getSessionFactory().getCurrentSession()
+//                .createQuery("from User where userName=?")
+//                .setParameter(0, userName)
 //                .list();
 //
 //        if (users.size() > 0) {
@@ -61,7 +49,9 @@ public class UserDao extends HibernateDaoSupport implements IUserDao {
 //        } else {
 //            return null;
 //        }
-        Session session = getSessionFactory().getCurrentSession();
+
+        SessionFactory sessionFactory = getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.eq("userName", userName));

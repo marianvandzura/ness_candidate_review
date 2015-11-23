@@ -15,5 +15,5 @@ public interface IUserDao {
 //
 //    List<User> getAllUsers();
 
-    User findUserByUserName(String email);
+    User findUserByUserName(String userName);
 }

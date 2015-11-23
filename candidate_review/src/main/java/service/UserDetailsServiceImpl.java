@@ -1,6 +1,5 @@
 package service;
 
-import assemblers.UserAssembler;
 import dao.IUserDao;
 import model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import java.util.*;
 /**
  * Created by Marian_Vandzura on 22.11.2015.
  */
+@Transactional(readOnly = true)
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -25,7 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private IUserDao userDao;
 
-    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(final String userName) throws UsernameNotFoundException {
         model.User user = userDao.findUserByUserName(userName);
