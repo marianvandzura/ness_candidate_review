@@ -81,6 +81,7 @@ public class HelloController {
 		question.setLevel(2);
 		question.setLanguage("SK");
 		question.setQuestion("Ako byt dobry?");
+
 		question.setType("checkbox");
 
 		//create admin user if not exist
@@ -102,6 +103,7 @@ public class HelloController {
 		}
 
 		//List<QuestionDto> fromDb = questionService.getQuestionsByCategoryId(20);
+
 
 //		ObjectMapper mapper = new ObjectMapper();
 //		String jason = new String();

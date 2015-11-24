@@ -1,14 +1,13 @@
 package dao.impl;
 
 import dao.ITestsDao;
+import model.Questions;
 import model.Tests;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import service.QuestionService;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -22,7 +21,24 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
     public Tests addTest(Tests test) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
+
+        session.save(test);
+        transaction.commit();
+        return test;
+    }
+
+    public Tests updateTest(Tests test) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(test);
+        transaction.commit();
+        return test;
+    }
+
+    public Tests deleteTest(Tests test) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(test);
         transaction.commit();
         return test;
     }
@@ -31,18 +47,50 @@ public class TestsDao extends HibernateDaoSupport implements ITestsDao {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Tests ");
-
         List<Tests> tests = query.list();
+
+        for (Tests test : tests) {
+            Hibernate.initialize(test.getQuestions());
+            Hibernate.initialize(test.getUser());
+        }
+
         transaction.commit();
         return tests;
     }
 
-    @Override
+
     public Tests findById(final Integer id) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Tests test = (Tests)session.get(Tests.class,id);
+        Tests test = (Tests) session.get(Tests.class, id);
+
+        //TODO something to do with lazy initialization
+        if (test != null) {
+            Hibernate.initialize(test.getQuestions());
+            Hibernate.initialize(test.getUser());
+            test.setQuestions(test.getQuestions());
+            test.setUser(test.getUser());
+
+            for (Questions quest : test.getQuestions()) {
+                Hibernate.initialize(quest.getOptions());
+                quest.setOptions(quest.getOptions());
+            }
+        }
         transaction.commit();
         return test;
     }
+
+    public List<Tests> getTestsByUserId(Integer userid) {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+
+        Criteria criteria = session.createCriteria(Tests.class);
+        criteria.createAlias("user", "user", JoinType.INNER_JOIN);
+        criteria.add(Restrictions.eq("user.userId", userid));
+
+        List<Tests> testList = (List<Tests>) criteria.list();
+        transaction.commit();
+        return testList;
+    }
+
 }

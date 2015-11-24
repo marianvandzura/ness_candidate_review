@@ -2,10 +2,7 @@ package dao.impl;
 
 import dao.IQuestionsDao;
 import model.Questions;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
@@ -38,6 +35,7 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         Transaction transaction = session.beginTransaction();
         session.update(question);
         transaction.commit();
+        session.flush();
         return question;
     }
 
@@ -57,6 +55,11 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         Query query = session.createQuery("from Questions ");
 
         List<Questions> questions = query.list();
+        for(Questions question : questions)
+        {
+            Hibernate.initialize(question.getOptions());
+        }
+
         transaction.commit();
         return questions;
     }
@@ -66,6 +69,7 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Questions question = (Questions) session.get(Questions.class, id);
+        Hibernate.initialize(question.getOptions());
         transaction.commit();
         return question;
 
@@ -83,7 +87,12 @@ public class QuestionsDao extends HibernateDaoSupport implements IQuestionsDao {
         criteria.createAlias("category", "category", JoinType.INNER_JOIN);
         criteria.add(Restrictions.eq("category.categoryId", categoryId));
         List<Questions> categoriesList = (List<Questions>) criteria.list();
+        for(Questions question : categoriesList)
+        {
+            Hibernate.initialize(question.getOptions());
+        }
         transaction.commit();
         return categoriesList;
     }
+
 }

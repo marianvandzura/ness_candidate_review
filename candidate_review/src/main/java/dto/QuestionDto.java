@@ -1,5 +1,6 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import java.util.List;
  *
  * Created by Peter.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionDto {
 
     @JsonProperty("id")
@@ -38,6 +40,8 @@ public class QuestionDto {
 
     @JsonProperty("categories")
     private CategoryDto category;
+
+
 
     @JsonProperty("options")
     private List<OptionDto> options;
@@ -121,4 +125,6 @@ public class QuestionDto {
     public void setOptions(List<OptionDto> options) {
         this.options = options;
     }
+
+
 }

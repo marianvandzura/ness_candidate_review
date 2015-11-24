@@ -65,4 +65,21 @@ public class UserDao extends HibernateDaoSupport implements IUserDao {
         }
     }
 
+    @Override
+    public User findUserById(int userId) {
+        SessionFactory sessionFactory = getSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Criteria criteria = session.createCriteria(User.class);
+        criteria.add(Restrictions.eq("userId", userId));
+        List<User> users = (List<User>) criteria.list();
+        session.clear();
+        transaction.commit();
+        if (users.size() > 0) {
+            return users.get(0);
+        } else {
+            return null;
+        }
+    }
+
 }

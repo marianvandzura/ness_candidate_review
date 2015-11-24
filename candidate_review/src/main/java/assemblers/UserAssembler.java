@@ -1,16 +1,12 @@
 package assemblers;
 
 import dao.IUserDao;
-import dto.QuestionDto;
 import dto.UserDto;
-import model.Categories;
-import model.Questions;
 import model.User;
 import model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.UserRoleService;
-import service.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;

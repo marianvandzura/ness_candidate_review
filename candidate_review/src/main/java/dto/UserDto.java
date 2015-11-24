@@ -1,5 +1,3 @@
-
-
 package dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import model.UserPassword;
 import model.UserRole;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -75,4 +72,3 @@ public class UserDto {
         this.userRoles = userRoles;
     }
 }
-

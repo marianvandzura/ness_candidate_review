@@ -36,6 +36,14 @@ public class User {
         //default
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public String getEmail() {
         return email;
     }

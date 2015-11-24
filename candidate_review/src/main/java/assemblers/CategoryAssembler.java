@@ -1,6 +1,7 @@
 package assemblers;
 
 import dto.CategoryDto;
+import dto.QuestionDto;
 import model.Categories;
 import model.Questions;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ public class CategoryAssembler {
         categoryDto.setCategoryName(domain.getCategoryName());
         return categoryDto;
     }
+
 
     /**
      * Extract List of DTOs from domain.

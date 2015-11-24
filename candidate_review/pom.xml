@@ -213,6 +213,11 @@
             <version>${jasperreports.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.7</version>
+        </dependency>
     </dependencies>
 
     <build>
