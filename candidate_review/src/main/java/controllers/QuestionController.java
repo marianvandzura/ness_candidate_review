@@ -42,7 +42,7 @@ public class QuestionController {
      * @param questionIds
      * @return List of requested questions
      */
-    @RequestMapping(value = "/rest/admin/questions/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/questions/{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<QuestionDto> getQuestionsWithIds(@PathVariable(value = "id") List<Integer> questionIds) {
         //init arrayList because of performance
@@ -63,7 +63,7 @@ public class QuestionController {
      * @param questionIds
      * @return List of requested questions
      */
-    @RequestMapping(value = "/rest/user/questions/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/questions/{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<QuestionDto> getQuestionsForUserWithIds(@PathVariable(value = "id") List<Integer> questionIds) {
         //init arrayList because of performance
@@ -88,7 +88,7 @@ public class QuestionController {
      * @param categoryId
      * @return List of questions related to category
      */
-    @RequestMapping(value = "/rest/admin/questions/category/{categoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/questions/category/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
     public List<QuestionDto> getQuestionsByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
@@ -101,7 +101,7 @@ public class QuestionController {
      * @param categoryId
      * @return List of questions related to category
      */
-    @RequestMapping(value = "/rest/user/questions/category/{categoryId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/questions/category/{categoryId}", method = RequestMethod.GET)
     @ResponseBody
     public List<QuestionDto> getQuestionsForUserByCategoryId(@PathVariable(value = "categoryId") int categoryId) {
         List<QuestionDto> questionsByCategory = questionService.getQuestionsByCategoryId(categoryId);
@@ -120,7 +120,7 @@ public class QuestionController {
      * @param question
      * @return saved question
      */
-    @RequestMapping(value = "/rest/admin/question", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/question", method = RequestMethod.POST)
     public ResponseEntity saveQuestion(@RequestBody final QuestionDto question) {
         QuestionDto savedQuestion = questionService.addQuestion(question);
         return new ResponseEntity<>(savedQuestion, HttpStatus.OK);
@@ -132,7 +132,7 @@ public class QuestionController {
      * @param question
      * @return HTTP response
      */
-    @RequestMapping(value = "/rest/admin/question", method = RequestMethod.PUT)
+    @RequestMapping(value = "/admin/question", method = RequestMethod.PUT)
     public ResponseEntity updateQuestion(@RequestBody QuestionDto question) {
         //update question
         QuestionDto questionToUpdate = questionService.getQuestionById(question.getId());
@@ -147,7 +147,7 @@ public class QuestionController {
      * @param questionId
      * @return HTTP response
      */
-    @RequestMapping(value = "/rest/admin/question/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/admin/question/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteQuestion(@PathVariable(value = "id") int questionId) {
         //get existing question
         QuestionDto questionToDelete = questionService.getQuestionById(questionId);

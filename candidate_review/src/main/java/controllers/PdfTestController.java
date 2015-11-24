@@ -18,7 +18,7 @@ import java.util.Date;
 @Controller
 public class PdfTestController {
 
-    @RequestMapping(value = "/rest/pdf/test", method = RequestMethod.GET)
+    @RequestMapping(value = "/pdf/test", method = RequestMethod.GET)
     @ResponseBody
     public String createPdf(){
 

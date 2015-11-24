@@ -32,7 +32,7 @@ public class TestController {
      *
      * @return all tests
      */
-    @RequestMapping(value = "/rest/admin/tests", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/tests", method = RequestMethod.GET)
     @ResponseBody
     public List<TestDto> getTests() {
         return testService.getTests();
@@ -44,7 +44,7 @@ public class TestController {
      * @param userId user id
      * @return my tests
      */
-    @RequestMapping(value = "/rest/admin/mytests/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/mytests/{id}", method = RequestMethod.GET)
     @ResponseBody
     public List<TestDto> getMyTests(@PathVariable(value = "id") Integer userId) {
         return testService.getMyTests(userId);
@@ -56,7 +56,7 @@ public class TestController {
      * @param id id of a test
      * @return
      */
-    @RequestMapping(value = "/rest/user/test/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/test/{id}", method = RequestMethod.GET)
     @ResponseBody
     public TestDto getTestForUser(@PathVariable(value = "id") Integer id) {
         TestDto testDto = testService.getTestByIdForUser(id);
@@ -70,7 +70,7 @@ public class TestController {
      * @param Dto of new test thats to be saved
      * @return ResponseEntity
      */
-    @RequestMapping(value = "/rest/admin/test", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/test", method = RequestMethod.POST)
     public ResponseEntity<TestDto> save(@RequestBody TestDto Dto) {
         TestDto testDto = testService.saveOrUpdateTest(Dto);
         return new ResponseEntity<>(testDto, HttpStatus.OK);
@@ -83,7 +83,7 @@ public class TestController {
      * @param newTestDto updates Dto of test
      * @return ResponseEntity
      */
-    @RequestMapping(value = "/rest/admin/test", method = RequestMethod.PUT)
+    @RequestMapping(value = "/admin/test", method = RequestMethod.PUT)
     public ResponseEntity<TestDto> edit(@RequestBody TestDto newTestDto) {
         TestDto updatedTest = testService.saveOrUpdateTest(newTestDto);
         return new ResponseEntity<>(updatedTest, HttpStatus.OK);
@@ -96,7 +96,7 @@ public class TestController {
      * @param id id of test
      * @return ResponseEntity
      */
-    @RequestMapping(value = "/rest/admin/test/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/admin/test/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<TestDto> deleteTest(@PathVariable(value = "id") Integer id) {
         TestDto deletedTest = testService.deleteTest(id);
         return new ResponseEntity<>(deletedTest, HttpStatus.OK);
