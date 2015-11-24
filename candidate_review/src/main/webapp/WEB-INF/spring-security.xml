@@ -10,9 +10,9 @@
        http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd">
 
     <!-- Definition of the Authentication Service -->
-    <http pattern="/oauth/token" create-session="stateless" authentication-manager-ref="clientAuthenticationManager"
+    <http pattern="/rest/oauth/token" create-session="stateless" authentication-manager-ref="clientAuthenticationManager"
           xmlns="http://www.springframework.org/schema/security">
-        <intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
+        <intercept-url pattern="/rest/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
         <anonymous enabled="false"/>
         <http-basic entry-point-ref="clientAuthenticationEntryPoint"/>
         <!-- include this only if you need to authenticate clients via request parameters -->
