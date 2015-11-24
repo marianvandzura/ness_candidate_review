@@ -4,6 +4,10 @@ import dao.ICategoriesDao;
 import dao.IPersonDao;
 import dto.CategoryDto;
 import dto.QuestionDto;
+import dto.UserDto;
+import model.User;
+import model.UserPassword;
+import model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import service.CategoryService;
 import service.PersonService;
 import service.QuestionService;
+import service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -36,15 +41,8 @@ public class HelloController {
 	@Autowired
 	ICategoriesDao categoriesDao;
 
-
-	@RequestMapping(value = "/esta", method = RequestMethod.POST)
-	public void handleRequest(HttpServletRequest request)
-	{
-
-
-
-	}
-
+	@Autowired
+	UserService userService;
 
 	@RequestMapping(value = "/" , method = RequestMethod.GET)
 	public @ResponseBody CategoryDto printWelcome() {
@@ -86,6 +84,23 @@ public class HelloController {
 
 		question.setType("checkbox");
 
+		//create admin user if not exist
+		String userName = "admin";
+		if(userService.getUserByUserName(userName) == null) {
+			UserPassword userPassword = new UserPassword();
+			userPassword.setPassword(userName);
+			UserRole userRole = new UserRole();
+			userRole.setRole(UserRole.ROLE_ADMIN);
+			UserDto user = new UserDto();
+			user.setUserName("admin");
+			user.setUserPassword(userPassword);
+			user.setEnabled(true);
+			List<UserRole> userRolesList = new ArrayList<>(1);
+			userRolesList.add(userRole);
+			user.setUserRoles(userRolesList);
+			user.setEmail("admin@ness.sk");
+			UserDto savedUser = userService.addUser(user);
+		}
 
 		//List<QuestionDto> fromDb = questionService.getQuestionsByCategoryId(20);
 

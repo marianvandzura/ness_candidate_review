@@ -1,32 +1,68 @@
 package assemblers;
 
+import dao.IUserDao;
 import dto.UserDto;
-import model.Users;
+import model.User;
+import model.UserRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import service.UserRoleService;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * Created by Lubomir on 11/3/2015.
+ * Created by Marian_Vandzura on 15.11.2015.
  */
 @Component
 public class UserAssembler {
 
-    public Users populateDtoFromDomain(final UserDto userDto){
-        Users domain = new Users();
-        domain.setUserId(userDto.getUserid());
-        domain.setAccount(userDto.getAccount());
-        domain.setEmail(userDto.getEmail());
-        domain.setPassword(userDto.getPassword());
-        domain.setPermissions(userDto.getPermissions());
-        return domain;
+    @Autowired
+    IUserDao userDao;
+
+    @Autowired
+    UserRoleService userRoleService;
+
+    public UserAssembler() {
+        //default
     }
 
-    public UserDto extractDtoFromDomain(final Users domain){
-        UserDto uDto = new UserDto();
-        uDto.setPermissions(domain.getPermissions());
-        uDto.setPassword(domain.getPassword());
-        uDto.setEmail(domain.getEmail());
-        uDto.setAccount(domain.getAccount());
-        uDto.setUserid(domain.getUserId());
-        return uDto;
+    /**
+     * create UserDto object from domain model User
+     *
+     * @param domain User model
+     * @return UserDto object
+     */
+    public UserDto extractDtoFromDomain(final User domain) {
+        UserDto dto = new UserDto();
+        dto.setUserName(domain.getUserName());
+        dto.setUserPassword(domain.getUserPassword());
+        dto.setEmail(domain.getEmail());
+        dto.setEnabled(domain.isEnabled());
+        List<UserRole> roles = new ArrayList<>(1);
+        Collection<UserRole> userRoles = domain.getUserRoles();
+        for (UserRole role : userRoles) {
+            roles.add(role);
+        }
+        dto.setUserRoles(roles);
+        return dto;
+    }
+
+    /**
+     * create domain object from DTO
+     *
+     * @param dto
+     * @return domain object
+     */
+    public User populateDomainFromDto(final UserDto dto) {
+        User domain = new User();
+        domain.setUserName(dto.getUserName());
+        domain.setUserPassword(dto.getUserPassword());
+        domain.setEmail(dto.getEmail());
+        domain.setEnabled(dto.isEnabled());
+        List<UserRole> roles = dto.getUserRoles();
+        domain.setUserRoles(roles);
+        return domain;
     }
 }

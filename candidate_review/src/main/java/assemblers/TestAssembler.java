@@ -2,7 +2,7 @@ package assemblers;
 
 import dao.IQuestionsDao;
 import dao.ITestsDao;
-import dao.IUsersDao;
+import dao.IUserDao;
 import dto.TestDto;
 import model.Tests;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class TestAssembler {
     IQuestionsDao questionDao;
 
     @Autowired
-    IUsersDao usersDao;
+    IUserDao usersDao;
 
     @Autowired
     QuestionAssembler questionAssembler;

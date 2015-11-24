@@ -2,11 +2,6 @@ package dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import model.Questions;
-import model.Users;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
