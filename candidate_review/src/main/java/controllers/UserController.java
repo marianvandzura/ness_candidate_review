@@ -54,6 +54,19 @@ public class UserController {
     }
 
     /**
+     * get user by id
+     *
+     * @param userId
+     * @return UserDto object
+     */
+    @RequestMapping(value = "/admin/user/{user_id}", method = RequestMethod.GET)
+    @ResponseBody
+    public UserDto getUser(@PathVariable(value = "user_id") int userId) {
+        UserDto userDto = userService.getUserById(userId);
+        return userDto;
+    }
+
+    /**
      * get all user
      *
      * @return list of UserDto objects
