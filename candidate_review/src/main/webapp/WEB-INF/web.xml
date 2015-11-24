@@ -3,7 +3,7 @@
 		 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 		 version="3.1">
 
-	<display-name>Spring MVC Application</display-name>
+	<display-name>NESS Candidates review</display-name>
 
     <servlet>
 		<servlet-name>mvc-dispatcher</servlet-name>
@@ -13,18 +13,36 @@
 
 	<servlet-mapping>
 		<servlet-name>mvc-dispatcher</servlet-name>
-		<url-pattern>/</url-pattern>
-		<!-- supported extensions e.x below-->
-		<!--<url-pattern>*.html</url-pattern>-->
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- application context file-->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>WEB-INF/application_context.xml</param-value>
+		<param-value>
+			WEB-INF/application_context.xml
+			WEB-INF/spring-security.xml
+		</param-value>
 	</context-param>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+
+	<!-- Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 </web-app>

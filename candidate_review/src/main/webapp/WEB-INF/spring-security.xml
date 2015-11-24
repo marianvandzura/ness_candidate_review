@@ -1,0 +1,167 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security-3.2.xsd
+       http://www.springframework.org/schema/security/oauth2
+       http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd">
+
+    <import resource="classpath*:/application-context.xml"/>
+
+    <!-- Definition of the Authentication Service -->
+    <http pattern="/rest/oauth/token" create-session="stateless"
+          authentication-manager-ref="clientAuthenticationManager"
+          xmlns="http://www.springframework.org/schema/security">
+        <intercept-url pattern="/rest/oauth/token" access="IS_AUTHENTICATED_FULLY"/>
+        <anonymous enabled="false"/>
+        <http-basic entry-point-ref="clientAuthenticationEntryPoint"/>
+        <!-- include this only if you need to authenticate clients via request parameters -->
+        <custom-filter ref="clientCredentialsTokenEndpointFilter" after="BASIC_AUTH_FILTER"/>
+        <access-denied-handler ref="oauthAccessDeniedHandler"/>
+    </http>
+
+    <!-- Protected resources -->
+    <http pattern="/rest/admin/**"
+          create-session="never"
+          entry-point-ref="oauthAuthenticationEntryPoint"
+          access-decision-manager-ref="accessDecisionManager"
+          xmlns="http://www.springframework.org/schema/security">
+        <anonymous enabled="false"/>
+        <intercept-url pattern="/rest/admin/**"
+                       access="ROLE_ADMIN"/>
+        <custom-filter ref="resourceServerFilter"
+                       before="PRE_AUTH_FILTER"/>
+        <access-denied-handler
+                ref="oauthAccessDeniedHandler"/>
+    </http>
+
+    <!-- oauth entry point-->
+    <bean id="oauthAuthenticationEntryPoint"
+          class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="realmName" value="test"/>
+    </bean>
+
+    <!-- client auth. entry point-->
+    <bean id="clientAuthenticationEntryPoint"
+          class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+        <property name="realmName" value="test/client"/>
+        <property name="typeName" value="Basic"/>
+    </bean>
+
+    <!-- access denied handler-->
+    <bean id="oauthAccessDeniedHandler"
+          class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler"/>
+
+    <!-- client credentials token endpoint-->
+    <bean id="clientCredentialsTokenEndpointFilter"
+          class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+        <property name="authenticationManager" ref="clientAuthenticationManager"/>
+    </bean>
+
+    <!-- access decision manager-->
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.UnanimousBased"
+          xmlns="http://www.springframework.org/schema/beans">
+        <constructor-arg>
+            <list>
+                <bean class="org.springframework.security.oauth2.provider.vote.ScopeVoter"/>
+                <bean class="org.springframework.security.access.vote.RoleVoter"/>
+                <bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- Authentication in config file -->
+    <authentication-manager id="clientAuthenticationManager" xmlns="http://www.springframework.org/schema/security">
+        <authentication-provider user-service-ref="clientDetailsUserService"/>
+    </authentication-manager>
+
+    <!-- auth. manager with hardcoded user-->
+    <authentication-manager alias="authenticationManager" xmlns="http://www.springframework.org/schema/security">
+        <!-- TODO user custom user detail service-->
+        <authentication-provider user-service-ref="userDetailsServiceImpl"/>
+
+        <!--<authentication-provider>-->
+        <!--&lt;!&ndash;Select users and user_roles from database &ndash;&gt;-->
+        <!--&lt;!&ndash;<jdbc-user-service data-source-ref="dataSource"&ndash;&gt;-->
+        <!--&lt;!&ndash;users-by-username-query=&ndash;&gt;-->
+        <!--&lt;!&ndash;"select user_name,password, enabled from users where user_name=?"&ndash;&gt;-->
+        <!--&lt;!&ndash;authorities-by-username-query=&ndash;&gt;-->
+        <!--&lt;!&ndash;"select user_name, role from user_roles where user_name =?  " />&ndash;&gt;-->
+        <!--<user-service id="userDetailsService">-->
+        <!--<user name="admin" password="admin" authorities="ROLE_ADMIN"/>-->
+        <!--</user-service>-->
+        <!--&lt;!&ndash;<password-encoder ref="encoder"/>&ndash;&gt;-->
+        <!--</authentication-provider>-->
+    </authentication-manager>
+
+    <!-- user detail service impl-->
+    <bean id="userDetailsServiceImpl" class="service.UserDetailsServiceImpl"/>
+
+    <!-- encoder-->
+    <bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <!-- client details user service-->
+    <bean id="clientDetailsUserService"
+          class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+        <constructor-arg ref="clientDetails"/>
+    </bean>
+
+    <!-- Token Store  -->
+    <bean id="tokenStore" class="org.springframework.security.oauth2.provider.token.InMemoryTokenStore"/>
+
+    <!-- token service-->
+    <bean id="tokenServices" class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+        <property name="tokenStore" ref="tokenStore"/>
+        <property name="supportRefreshToken" value="true"/>
+        <property name="clientDetailsService" ref="clientDetails"/>
+        <!-- VIV -->
+        <property name="accessTokenValiditySeconds" value="300"/>
+    </bean>
+
+    <!-- user approval handler-->
+    <bean id="userApprovalHandler"
+          class="org.springframework.security.oauth2.provider.approval.TokenServicesUserApprovalHandler">
+        <property name="tokenServices" ref="tokenServices"/>
+    </bean>
+
+    <!-- Token management -->
+    <oauth:authorization-server client-details-service-ref="clientDetails" token-services-ref="tokenServices"
+                                user-approval-handler-ref="userApprovalHandler">
+        <oauth:authorization-code/>
+        <oauth:implicit/>
+        <oauth:refresh-token/>
+        <oauth:client-credentials/>
+        <oauth:password/>
+    </oauth:authorization-server>
+
+    <oauth:resource-server id="resourceServerFilter"
+                           resource-id="test"
+                           token-services-ref="tokenServices"/>
+
+    <!-- Client Definition -->
+    <oauth:client-details-service id="clientDetails">
+
+        <oauth:client client-id="ness-candidates-review"
+                      authorized-grant-types="password,authorization_code,refresh_token,implicit,redirect"
+                      authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT"
+                      redirect-uri="/web"
+                      scope="read,write,trust"
+                      access-token-validity="300"
+                      refresh-token-validity="3600"/>
+
+    </oauth:client-details-service>
+
+
+    <sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true">
+        <sec:expression-handler ref="oauthExpressionHandler"/>
+    </sec:global-method-security>
+    <oauth:expression-handler id="oauthExpressionHandler"/>
+    <oauth:web-expression-handler id="oauthWebExpressionHandler"/>
+
+    <!-- /oauth/token?grant_type=password&client_id=ness-admin&username=admin&password=admin -->
+    <!-- /oauth/token?grant_type=refresh_token&refresh_token=a8960176-e73f-4358-a6d8-ae74478719bc&client_id=ness-admin -->
+    <!-- /rest/admin/questions/category/1?access_token=f350a25e-6525-49fa-85d8-f8981e5054ce -->
+</beans>

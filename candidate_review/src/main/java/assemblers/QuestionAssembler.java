@@ -1,26 +1,21 @@
 package assemblers;
 
 import dao.ICategoriesDao;
-
 import dto.CategoryDto;
-
 import dto.QuestionDto;
 import model.Categories;
 import model.Questions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import service.CategoryService;
-import service.QuestionService;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Class for assembling Question objects to DTO(Data Transprt Objects) from domain and vice versa.
- * <p>
- * Created by Peter.
+ * Class for assembling Question objects to DTO from domain and vice versa.
+ *
+ * Created by Marian_Vandzura on 15.11.2015.
  */
 
 @Component
@@ -34,7 +29,6 @@ public class QuestionAssembler {
 
     @Autowired
     OptionAssembler optionAssembler;
-
 
     public QuestionAssembler() {
         //default
@@ -56,9 +50,12 @@ public class QuestionAssembler {
         dto.setQuestion(domain.getQuestion());
         dto.setType(domain.getType());
         dto.setOptions(optionAssembler.extractDtoFromDomain(domain.getOptions()));
-        CategoryDto category = categoryAssembler.extractDtoFromDomain(domain.getCategory());
-        dto.setCategory(category);
-        dto.setCategoryId(category.getId());
+        //question specific for test has not category
+        if(domain.getCategory()!=null) {
+            CategoryDto category = categoryAssembler.extractDtoFromDomain(domain.getCategory());
+            dto.setCategory(category);
+            dto.setCategoryId(category.getId());
+        }
         return dto;
     }
 
@@ -111,7 +108,6 @@ public class QuestionAssembler {
      * @param domain
      * @return extracted DTOs
      */
-
     public List<QuestionDto> extractDtoListFromDomain(final Collection<Questions> domain) {
         List<QuestionDto> questionDtoArrayList = new ArrayList<QuestionDto>();
         for (Questions question : domain) {

@@ -2,7 +2,7 @@ package assemblers;
 
 import dao.IQuestionsDao;
 import dao.ITestsDao;
-import dao.IUsersDao;
+import dao.IUserDao;
 import dto.TestDto;
 import model.Tests;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class TestAssembler {
     IQuestionsDao questionDao;
 
     @Autowired
-    IUsersDao usersDao;
+    IUserDao usersDao;
 
     @Autowired
     QuestionAssembler questionAssembler;
@@ -37,6 +37,12 @@ public class TestAssembler {
         // default
     }
 
+    /**
+     * create TestDto object from domain model Test
+     *
+     * @param domain Test model
+     * @return TestDto object
+     */
     public TestDto extractDtoFromDomain(final Tests domain) {
         TestDto testDto = new TestDto();
         testDto.setId(domain.getTestId());
@@ -49,7 +55,12 @@ public class TestAssembler {
         return testDto;
     }
 
-
+    /**
+     * Extract List of DTOs from domain.
+     *
+     * @param domain
+     * @return extracted DTOs
+     */
     public List<TestDto> extractListTestDtoFromDomain(final Collection<Tests> domain) {
         List<TestDto> testsDtoArrayList = new ArrayList<TestDto>();
         TestDto testDto;
@@ -59,13 +70,18 @@ public class TestAssembler {
             testDto.setInfo(test.getInfo());
             testDto.setPosition(test.getPosition());
             testDto.setName(test.getName());
-            if(test.getVisible())
+            testDto.setVisible(test.getVisible());
             testsDtoArrayList.add(testDto);
         }
         return testsDtoArrayList;
     }
 
-
+    /**
+     * create domain object from DTO
+     *
+     * @param testDto
+     * @return domain object
+     */
     public Tests populateDtoFromDomain(final TestDto testDto) {
         Tests domain = new Tests();
         domain.setInfo(testDto.getInfo());
@@ -83,7 +99,12 @@ public class TestAssembler {
         return domain;
     }
 
-
+    /**
+     * create domain objects from DTO List
+     *
+     * @param testDtos
+     * @return List of domain objects
+     */
     public List<Tests> populateDtoListFromDomain(final List<TestDto> testDtos) {
         List<Tests> testsList = new ArrayList<Tests>();
         for (TestDto testDto : testDtos) {

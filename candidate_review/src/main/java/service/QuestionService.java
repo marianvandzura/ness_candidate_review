@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Question service.
- * <p/>
+ * <p>
  * Created by Peter.
  */
 @Service
@@ -70,14 +70,18 @@ public class QuestionService {
      */
     public QuestionDto updateQuestion(final QuestionDto questionDto) {
         List<OptionDto> questionOptions = questionDto.getOptions();
-        int questionId = questionDto.getId();
+        //new added question has id null
+        int questionId = questionDto.getId() != null ? questionDto.getId() : -1;
         Questions question = questionAssembler.populateDomainFromDto(questionDto);
-        question.setQuestionId(questionId);
+        if(questionId != -1) {
+            question.setQuestionId(questionId);
+        }
         Collection<Options> options = question.getOptions();
         int i = 0;
         for (Options singleOption : options) {
             OptionDto optionDto = questionOptions.get(i++);
-            int optionId = (optionDto == null) ? -1 : optionDto.getId();
+            //new added option has id null
+            int optionId = (optionDto == null || optionDto.getId() == null) ? -1 : optionDto.getId();
 
             if (optionId != -1) {
                 singleOption.setOptionId(optionId);

@@ -16,7 +16,7 @@ public class Tests {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     @Column(name = "name")
     private String name;
@@ -45,12 +45,12 @@ public class Tests {
         this.testId = testId;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users userId) {
-        this.user = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Boolean getVisible() {

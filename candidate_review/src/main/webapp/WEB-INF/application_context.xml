@@ -32,7 +32,7 @@
                 <value>model.Questions</value>
                 <value>model.Settings</value>
                 <value>model.Tests</value>
-                <value>model.Users</value>
+                <value>model.User</value>
             </list>
         </property>
 
@@ -99,7 +99,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="usersDao" class="dao.impl.UsersDao">
+    <bean id="userDao" class="dao.impl.UserDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="userRoleDao" class="dao.impl.UserRoleDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 

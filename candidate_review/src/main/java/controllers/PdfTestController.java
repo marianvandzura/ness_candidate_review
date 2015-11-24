@@ -19,7 +19,8 @@ import java.util.Date;
 public class PdfTestController {
 
     @RequestMapping(value = "/pdf/test", method = RequestMethod.GET)
-    public @ResponseBody String createPdf(){
+    @ResponseBody
+    public String createPdf(){
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         CandidateDto candidate = new CandidateDto ();

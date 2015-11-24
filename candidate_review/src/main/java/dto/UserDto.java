@@ -1,51 +1,63 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import model.UserPassword;
+import model.UserRole;
 
 import java.util.List;
 
 /**
  * Created by Lubomir on 11/3/2015.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
-    @JsonProperty("userid")
-    private Integer userid;
 
-    @JsonProperty("account")
-    private String account;
+    @JsonProperty("user_id")
+    private int userId;
 
-    @JsonProperty("password")
-    private String password;
+    @JsonProperty("user_name")
+    private String userName;
+
+    @JsonIgnore
+    private UserPassword userPassword;
 
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("permissions")
-    private Integer permissions;
+    @JsonProperty("enabled")
+    private boolean enabled;
 
+    @JsonProperty("user_role")
+    private List<UserRole> userRoles;
 
-    public Integer getUserid() {
-        return userid;
+    public UserDto() {
+        //default
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public int getUserId() {
+        return userId;
     }
 
-    public String getAccount() {
-        return account;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getPassword() {
-        return password;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public UserPassword getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(UserPassword userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getEmail() {
@@ -56,12 +68,19 @@ public class UserDto {
         this.email = email;
     }
 
-    public Integer getPermissions() {
-        return permissions;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setPermissions(Integer permissions) {
-        this.permissions = permissions;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
+    public List<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
 }

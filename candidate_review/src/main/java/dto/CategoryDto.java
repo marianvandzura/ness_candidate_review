@@ -1,6 +1,7 @@
 package dto;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import model.Questions;
 
@@ -12,6 +13,7 @@ import java.util.Set;
  *
  * Created by Peter.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryDto implements Serializable{
 
     @JsonProperty("id")
