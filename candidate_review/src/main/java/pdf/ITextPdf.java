@@ -1,17 +1,26 @@
 package pdf;
 
+import com.itextpdf.awt.PdfGraphics2D;
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.codec.PngImage;
 import dto.CandidateDto;
 import dto.OptionDto;
 import dto.PdfTestDto;
 import dto.QuestionDto;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
 
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.text.DecimalFormat;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -19,11 +28,27 @@ import java.util.List;
  */
 public class ITextPdf {
 
+    private enum QuestionType {
+            RADIO, CHECK, CODE, WRITEDOWN
+    }
+
+    private enum QuestionState {
+        CORRECT,PARTIALY_CORRECT,INCORRECT
+    }
+
     private final static String FONT_AR = ".\\candidate_review\\arial.ttf";
 
     private final static String FONT_AR_BD = ".\\candidate_review\\arialbd.ttf";
 
-    private String logoPath = ".\\candidate_review\\ness_logo.png";
+    private final static String LOGO_PATH = ".\\candidate_review\\ness-logo.png";
+
+    private final static String CORRECT_PATH = ".\\candidate_review\\correct.png";
+
+    private final static String MARKED_CORRECT_PATH = ".\\candidate_review\\marked-correct.png";
+
+    private final static String MARKED_INCORRECT_PATH = ".\\candidate_review\\marked-incorrect.png";
+
+    private final static Integer TAB_DISTANCE = 25;
 
     private BaseFont baseArial;
 
@@ -41,7 +66,17 @@ public class ITextPdf {
 
     private Font arialBoldFont14;
 
+    private Image correctImg;
+
+    private Image markedCorrectImg;
+
+    private Image markedIncorrectImg;
+
     private Document document;
+
+    private Integer numOfCorrect;
+    private Integer numOfPartiallyCorr;
+    private Integer numOfIncorrect;
 
     public ITextPdf() throws IOException, DocumentException {
         this.baseArial=  BaseFont.createFont(FONT_AR, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
@@ -57,15 +92,56 @@ public class ITextPdf {
 
         this.document = new Document();
         this.document.setMargins(60,60,70,70);
+
+        correctImg = Image.getInstance(CORRECT_PATH);
+        correctImg.setAlignment(Image.LEFT| Image.TEXTWRAP);
+        correctImg.scaleAbsolute(new Rectangle(10,10));
+
+        markedCorrectImg = Image.getInstance(MARKED_CORRECT_PATH);
+        markedCorrectImg.setAlignment(Image.LEFT| Image.TEXTWRAP);
+        markedCorrectImg.scaleAbsolute(new Rectangle(10,10));
+
+        markedIncorrectImg = Image.getInstance(MARKED_INCORRECT_PATH);
+        markedIncorrectImg.setAlignment(Image.LEFT| Image.TEXTWRAP);
+        markedIncorrectImg.scaleAbsolute(new Rectangle(10,10));
+    }
+
+    public String createPdf(final CandidateDto candidate)
+            throws DocumentException, IOException {
+
+        String documentPath = System.getProperty("user.home") + "\\" + candidate.getFirstName() + "_" +
+                candidate.getLastName() + "_CAT.pdf";
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(documentPath));
+
+        document.open();
+        drawHeader();
+        PdfTestDto test = initDto();
+        PdfContentByte cbPie = writer.getDirectContent();
+        PdfTemplate pie = cbPie.createTemplate(PageSize.A4.getWidth(), 300);
+        Graphics2D pieChartG2D = new PdfGraphics2D(pie, PageSize.A4.getWidth(), 300);
+        Rectangle2D pieChartR2D = new Rectangle2D.Double(0, 0, PageSize.A4.getWidth(), 300);
+        JFreeChart pieChart= generatePieChart(test);
+        pieChart.draw(pieChartG2D, pieChartR2D);
+        pieChart.setBackgroundPaint(Color.WHITE);
+        pieChartG2D.dispose();
+        cbPie.addTemplate(pie, 0, 0);
+
+        drawCandidateInfos(candidate, test);
+
+        printQuestions(test.getQuestions(),test.getMarkedAnswers());
+
+        document.close();
+        return documentPath;
     }
 
     private void drawHeader() throws DocumentException, IOException {
-        Paragraph ph = new Paragraph(new Phrase("NESS Kosice Development Centre", arialFont12));
+        Paragraph ph = new Paragraph(new Phrase("NESS KE", arialFont12));
         PdfPCell cell = new PdfPCell(ph);
         cell.setBorder(Rectangle.BOTTOM);
         cell.setBorderColor(BaseColor.BLACK);
         cell.setBorderWidth(1f);
-        Image logoImage = PngImage.getImage(logoPath);
+        Image logoImage = PngImage.getImage(LOGO_PATH);
+        logoImage.scaleAbsolute(new Rectangle(50,50));
         logoImage.setAbsolutePosition(document.getPageSize().getWidth()-110
                 ,document.getPageSize().getHeight()- 84);
         logoImage.scaleAbsolute(50, 50);
@@ -77,96 +153,245 @@ public class ITextPdf {
         document.add(table);
     }
 
-    private void drawCandidateInfos(final CandidateDto candidate) throws DocumentException {
-        Paragraph namePhagraph = new Paragraph("Canidate name: ", arialFont12);
-        namePhagraph.setTabSettings(new TabSettings(56f));
-        namePhagraph.add(Chunk.TABBING);
-        namePhagraph.add(new Chunk(candidate.getFirstName() + " " + candidate.getLastName()));
-        document.add(namePhagraph);
+    private void drawCandidateInfos(final CandidateDto candidate, final PdfTestDto test) throws DocumentException {
+        Paragraph titleParagraph = new Paragraph("Skills Evaluation", arialBoldFont12);
+        titleParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(titleParagraph);
 
-        Paragraph mailPhagraph = new Paragraph("Mail: \t" + candidate.getEmail(), arialFont12);
-        document.add(mailPhagraph);
+        Paragraph nameParagraph = new Paragraph(candidate.getFirstName() + " " + candidate.getLastName(), arialFont12);
+        nameParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(nameParagraph);
 
-        Paragraph datePhagraph = new Paragraph("Date: \t" + candidate.getDate(), arialFont12);
-        document.add(datePhagraph);
+        Paragraph dateParagraph = new Paragraph("Date: ", arialFont12);
+        dateParagraph.setTabSettings(new TabSettings(150f));
+        dateParagraph.add(Chunk.TABBING);
+        if (candidate.getDate() != null) {
+            dateParagraph.add(new Chunk(candidate.getDate()));
+        } else {
+            dateParagraph.add(new Chunk("NA"));
+        }
+        document.add(dateParagraph);
 
-        Paragraph descPhagraph = new Paragraph("Test description: \t" + candidate.getTestName(), arialFont12);
-        document.add(descPhagraph);
+        if (candidate.getTotalTime() != null) {
+            Paragraph timeParagraph = new Paragraph("Time: ", arialFont12);
+            timeParagraph.setTabSettings(new TabSettings(150f));
+            timeParagraph.add(Chunk.TABBING);
+            timeParagraph.add(new Chunk(candidate.getTotalTime() + " Minutes"));
+            document.add(timeParagraph);
+        }
 
-        Paragraph resultPhagraph = new Paragraph("Result: \t" + candidate.getTestResult(), arialFont12);
-        document.add(resultPhagraph);
+        Paragraph numberOfQuestParagraph = new Paragraph("Number of questions: ",
+                arialFont12);
+        numberOfQuestParagraph.setTabSettings(new TabSettings(150f));
+        numberOfQuestParagraph.add(Chunk.TABBING);
+        numberOfQuestParagraph.add(new Chunk(Integer.toString(test.getQuestions().size())));
+        document.add(numberOfQuestParagraph);
+
+        //if (preview) {
+        Paragraph validatedParagraph = new Paragraph("Validated questions: ", arialFont12);
+        validatedParagraph.setTabSettings(new TabSettings(150f));
+        validatedParagraph.add(Chunk.TABBING);
+        validatedParagraph.add(new Chunk(Integer.toString(getNumOfValidatedQuestions(test.getQuestions()))));
+        document.add(validatedParagraph);
+
+        DecimalFormat df = new DecimalFormat(".##");
+        Paragraph percentageParagraph = new Paragraph("Success rate: ", arialFont12);
+        percentageParagraph.setTabSettings(new TabSettings(150f));
+        percentageParagraph.add(Chunk.TABBING);
+        percentageParagraph.add(new Chunk(df.format(getSuccessRate(test.getQuestions(), test.getMarkedAnswers())) + "%"));
+        document.add(percentageParagraph);
+//            }
+        Paragraph descParagraph = new Paragraph("Test description: ", arialFont12);
+        descParagraph.setTabSettings(new TabSettings(150f));
+        descParagraph.add(Chunk.TABBING);
+        descParagraph.add(new Chunk(candidate.getTestName()));
+        document.add(descParagraph);
+
+
+        Paragraph resultParagraph = new Paragraph("Result: ", arialFont12);
+        resultParagraph.setTabSettings(new TabSettings(150f));
+        resultParagraph.add(Chunk.TABBING);
+        if (candidate.getTestResult() != null) {
+            resultParagraph.add(new Chunk(candidate.getTestResult()));
+        } else {
+            resultParagraph.add(new Chunk("NA"));
+        }
+        document.add(resultParagraph);
 
     }
 
-    public void createPdf(final CandidateDto candidate)
+
+    private int countQuestionsByState(final QuestionState state, final List<QuestionDto> questions,
+                                                final Map<Integer, List<Integer>> markedAnswers){
+        int count = 0;
+        int numberOfCorrectOpt = 0;
+        int numberOfCorrectMarked = 0;
+        int numberOfIncorrectMarked = 0;
+        for(QuestionDto question : questions) {
+            List<Integer> marked = markedAnswers.get(question.getId());
+            if(question.getOptions() != null) {
+            for (OptionDto option : question.getOptions()) {
+
+                if (marked.contains(option.getId())) {
+                    if (option.getTruth()) {
+                        numberOfCorrectMarked++;
+                    } else {
+                        numberOfIncorrectMarked++;
+                    }
+                }
+                if (option.getTruth()) {
+                    numberOfCorrectOpt++;
+                }
+            }
+        }
+            switch (state){
+                case CORRECT:
+                    if(numberOfCorrectOpt == numberOfCorrectMarked && numberOfIncorrectMarked == 0) {
+                        count++;
+                    }
+                    break;
+                case PARTIALY_CORRECT:
+                    if(numberOfIncorrectMarked < numberOfCorrectMarked && numberOfIncorrectMarked != 0) {
+                        count++;
+                    }
+                    break;
+                case INCORRECT:
+                    if(numberOfIncorrectMarked >= numberOfCorrectMarked || numberOfCorrectMarked == 0) {
+                        count++;
+                    }
+                    break;
+            }
+            numberOfCorrectOpt = 0;
+            numberOfCorrectMarked = 0;
+            numberOfIncorrectMarked = 0;
+        }
+        return count;
+    }
+
+    private int getNumOfValidatedQuestions(final List<QuestionDto> questions) {
+        int numberOfValidated = 0;
+        for(QuestionDto question : questions) {
+            if(question.getCode() == null) {
+                numberOfValidated++;
+            }
+        }
+        return numberOfValidated;
+    }
+
+    private double getSuccessRate(final List<QuestionDto> questions, final Map<Integer, List<Integer>> markedAnswers) {
+        float numberOfCorrectOpt = 0;
+        float numberOfCorrectMarked = 0;
+        float numberOfIncorrectMarked = 0;
+        double result = 0;
+        for(QuestionDto question : questions) {
+            List<Integer> marked = markedAnswers.get(question.getId());
+            if(question.getOptions() != null) {
+                for (OptionDto option : question.getOptions()) {
+
+                    if (marked.contains(option.getId())) {
+                        if (option.getTruth()) {
+                            numberOfCorrectMarked++;
+                        } else {
+                            numberOfIncorrectMarked++;
+                        }
+                    }
+                    if (option.getTruth()) {
+                        numberOfCorrectOpt++;
+                    }
+                }
+            }
+            if(numberOfCorrectMarked > numberOfIncorrectMarked) {
+                result += (numberOfCorrectMarked - numberOfIncorrectMarked) /  numberOfCorrectOpt;
+            }
+            numberOfCorrectOpt = 0;
+            numberOfCorrectMarked = 0;
+            numberOfIncorrectMarked = 0;
+        }
+        return (result / questions.size()) * 100;
+    }
+
+
+
+    private void printQuestions(final List<QuestionDto> questions, final Map<Integer, List<Integer>> markedAnswers)
             throws DocumentException, IOException {
-
-        PdfWriter.getInstance(document, new FileOutputStream("E:\\iText.pdf"));
-        document.open();
-        drawHeader();
-        drawCandidateInfos(candidate);
-
-        printQuestions(initDto());
-
-        Paragraph paragraph;
-
-        document.close();
-    }
-
-    private void printQuestions(PdfTestDto test) throws DocumentException {
-        Paragraph preface = new Paragraph("Hello World!",this.arialBoldFont12);
-        preface.setAlignment(Element.ALIGN_CENTER);
-        document.add(preface);
         document.newPage();
-
-        List<QuestionDto> questions = test.getQuestions();
-
         Paragraph questionParagraph;
         Paragraph optionParagraph;
-
-//        PdfPTable table = new PdfPTable(1);
-        PdfPCell cell1;
-        Chunk chunk;
-        PdfPCell cell2 = new PdfPCell();
-//        cell1.setFixedHeight((PageSize.A4.getHeight() / 2) - 70);
-//        cell1.setBorder(Rectangle.BOTTOM);
-//        cell1.setBorderColor(BaseColor.BLACK);
-//        cell1.addElement(new Paragraph("ssssss",this.arialBoldFont10));
-//        cell2.setFixedHeight((PageSize.A4.getHeight() / 2) - 70);
-//        cell2.setBorder(Rectangle.BOTTOM);
-//        cell2.setBorderColor(BaseColor.BLACK);
-//        cell2.addElement(new Paragraph("AAAAAA", this.arialBoldFont10));
-
-
+        PdfPCell questionCell;
+        List<QuestionDto> codeQuestions = new ArrayList<QuestionDto>();
         int questionCounter = 1;
         for(QuestionDto question : questions) {
-            PdfPTable table = new PdfPTable(1);
-            cell1 = new PdfPCell();
-            questionParagraph = new Paragraph(questionCounter++ + ". " + question.getQuestion(), this.arialBoldFont10);
-            cell1.addElement(questionParagraph);
-            cell1.addElement(Chunk.NEWLINE);
-            for(OptionDto option : question.getOptions()) {
-                //if(){
-                // chunk = new Chunk(option.getOption(),arialFont10);
-                // chunk.setBackground(BaseColor.RED);
-                // optionParagraph = new Paragraph(chunk);
-                // }else {
-                optionParagraph = new Paragraph();//option.getOption(), this.arialFont10);
-                optionParagraph.setTabSettings(new TabSettings(25f));
-                optionParagraph.add(Chunk.TABBING);
-                optionParagraph.add(new Chunk(option.getOption(),this.arialFont10));
-                //}
-               cell1.addElement(optionParagraph);
+            if (question.getCode() != null) {
+                codeQuestions.add(question);
             }
-            cell1.setFixedHeight((PageSize.A4.getHeight() / 2) - 70);
-            cell1.setBorder(Rectangle.BOTTOM);
-            cell1.setBorderColor(BaseColor.BLACK);
-            table.addCell(cell1);
-            document.add(table);
+            else {
+                PdfPTable table = new PdfPTable(1);
+                questionCell = new PdfPCell();
+                questionParagraph = new Paragraph(questionCounter++ + ". " + question.getQuestion() +"("+question.getType()+")", this.arialBoldFont10);
+                questionCell.addElement(questionParagraph);
+                questionCell.addElement(Chunk.NEWLINE);
+                List<Integer> marked = markedAnswers.get(question.getId());
+                for (OptionDto option : question.getOptions()) {
+                    optionParagraph = new Paragraph();
+
+                    if (marked.contains(option.getId())) {
+                        if (option.getTruth()) {
+                            optionParagraph.add(new Chunk(markedCorrectImg, 0, 0, true));
+                        } else {
+                            optionParagraph.add(new Chunk(markedIncorrectImg, 0, 0, true));
+                        }
+                    } else if (option.getTruth()) {
+                        optionParagraph.add(new Chunk(correctImg, 0, 0, true));
+                    }
+                    optionParagraph.setTabSettings(new TabSettings(25f));
+                    optionParagraph.add(Chunk.TABBING);
+                    optionParagraph.add(new Chunk(option.getOption(), this.arialFont10));
+
+                    questionCell.addElement(optionParagraph);
+                }
+                questionCell.setFixedHeight((PageSize.A4.getHeight() / 2) - 70);
+                questionCell.setBorder(Rectangle.BOTTOM);
+                questionCell.setBorderColor(BaseColor.BLACK);
+                table.addCell(questionCell);
+                document.add(table);
+            }
+        }
+        PdfPCell codeQuestionCell;
+
+        for(QuestionDto question : codeQuestions) {
+            PdfPTable codeTable = new PdfPTable(1);
+            codeQuestionCell = new PdfPCell();
+            codeQuestionCell.setFixedHeight((PageSize.A4.getHeight() - 140));
+            Paragraph codeQuestionParagraph = new Paragraph(question.getQuestion() + "("+question.getType()+")", arialFont10);
+            Paragraph code = new Paragraph(question.getCode(), arialFont10);
+            codeQuestionCell.addElement(codeQuestionParagraph);
+            codeQuestionCell.addElement(code);
+            codeQuestionCell.setBorder(Rectangle.NO_BORDER);
+            codeTable.addCell(codeQuestionCell);
+            document.add(codeTable);
         }
 
     }
 
+    public JFreeChart generatePieChart(final PdfTestDto test) {
+
+        int correct = countQuestionsByState(
+                QuestionState.CORRECT,test.getQuestions(),test.getMarkedAnswers());
+        int partialyCorrect = countQuestionsByState(
+                QuestionState.PARTIALY_CORRECT,test.getQuestions(),test.getMarkedAnswers());
+        int incorrect =  countQuestionsByState(
+                QuestionState.INCORRECT,test.getQuestions(),test.getMarkedAnswers());
+
+        DefaultPieDataset dataSet = new DefaultPieDataset();
+        dataSet.setValue("Correct questions = " + correct, correct);
+        dataSet.setValue("Partially correct questions = " + partialyCorrect, partialyCorrect);
+        dataSet.setValue("Incorrect question = " + incorrect, incorrect);
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "I don't know :)", dataSet, true, true, false);
+
+        return chart;
+    }
     private PdfTestDto initDto(){
         PdfTestDto test = new PdfTestDto();
         QuestionDto quest1 = new QuestionDto();
@@ -245,15 +470,14 @@ public class ITextPdf {
         quest6.setId(6);
         quest7.setId(7);
         quest8.setId(8);
-        quest7.setId(9);
-        quest8.setId(10);
-        quest9.setId(11);
-        quest10.setId(12);
-        quest11.setId(13);
-        quest12.setId(14);
-        quest13.setId(15);
+        quest9.setId(9);
+        quest10.setId(10);
+        quest11.setId(11);
+        quest12.setId(12);
+        quest13.setId(13);
 
         quest1.setQuestion("Which of these lines will compile? Select the four correct answers.");
+        quest1.setType(QuestionType.CHECK.toString());
         opt11.setId(11);
         opt11.setOption("short s = 20;");
         opt11.setTruth(true);
@@ -263,35 +487,37 @@ public class ITextPdf {
         opt12.setTruth(false);
 
         opt13.setId(13);
-        opt13.setOption("char c = 32");
+        opt13.setOption("char c = 32;");
         opt13.setTruth(true);
 
         opt14.setId(14);
-        opt14.setOption("double d = 1.4");
+        opt14.setOption("double d = 1.4;");
         opt14.setTruth(true);
 
 
-        quest2.setQuestion("Objekt pozost·va z:");
+        quest2.setQuestion("Objekt pozostÔøΩva z:");
+        quest2.setType(QuestionType.RADIO.toString());
         opt21.setId(21);
-        opt21.setOption("MetÛd a oper·ciÌ.");
+        opt21.setOption("MetÔøΩd a operÔøΩciÔøΩ.");
         opt21.setTruth(false);
 
         opt22.setId(22);
-        opt22.setOption("Atrib˙tov a premenn˝ch.");
+        opt22.setOption("AtribÔøΩtov a premennÔøΩch.");
         opt22.setTruth(false);
 
         opt23.setId(23);
-        opt23.setOption("Premenn˝ch a metÛd.");
+        opt23.setOption("PremennÔøΩch a metÔøΩd.");
         opt23.setTruth(true);
 
 
-        quest3.setQuestion("Kaûd˝ program v jazyku Java m· k dispozÌcii 3 ötandardnÈ I/O objekty. KtorÈ s˙ to?\n" +
-                "Vyberte aspoÚ jednu odpoveÔ.");
+        quest3.setQuestion("KaÔøΩdÔøΩ program v jazyku Java mÔøΩ k dispozÔøΩcii 3 ÔøΩtandardnÔøΩ I/O objekty. KtorÔøΩ sÔøΩ to?\n" +
+                "Vyberte aspoÔøΩ jednu odpoveÔøΩ.");
+        quest3.setType(QuestionType.RADIO.toString());
         opt31.setId(31);
         opt31.setOption("System1.out, System2.out, System3.out");
         opt31.setTruth(false);
 
-        opt32.setId(13);
+        opt32.setId(32);
         opt32.setOption("System.in, System.out, System.err");
         opt32.setTruth(true);
 
@@ -304,42 +530,45 @@ public class ITextPdf {
         opt34.setTruth(false);
 
 
-        quest4.setQuestion("KtorÈ z nasleduj˙cich tvrdenÌ je pravdivÈ o System.in?\n" +
-                "Vyberte aspoÚ jednu odpoveÔ.");
+        quest4.setQuestion("KtorÔøΩ z nasledujÔøΩcich tvrdenÔøΩ je pravdivÔøΩ o System.in?\n" +
+                "Vyberte aspoÔøΩ jednu odpoveÔøΩ.");
+        quest4.setType(QuestionType.RADIO.toString());
         opt41.setId(41);
-        opt41.setOption("Je to objekt typu InputStream predstavuj˙ci ötandardn˝ vstup.");
+        opt41.setOption("Je to objekt typu InputStream predstavujÔøΩci ÔøΩtandardnÔøΩ vstup.");
         opt41.setTruth(true);
 
         opt42.setId(42);
-        opt42.setOption("Je to objekt triedy FileReader predstavuj˙ci ötandardn˝ vstup.");
+        opt42.setOption("Je to objekt triedy FileReader predstavujÔøΩci ÔøΩtandardnÔøΩ vstup.");
         opt42.setTruth(false);
 
         opt43.setId(43);
-        opt43.setOption("Je to objekt typu InputStreamReader predstavuj˙ci ötandardn˝ vstup.");
-        opt34.setTruth(false);
+        opt43.setOption("Je to objekt typu InputStreamReader predstavujÔøΩci ÔøΩtandardnÔøΩ vstup.");
+        opt43.setTruth(false);
 
 
-        quest5.setQuestion("KtorÈ z nasleduj˙cich tvrdenÌ o serializ·cii objektov s˙ pravdivÈ.");
+        quest5.setQuestion("KtorÔøΩ z nasledujÔøΩcich tvrdenÔøΩ o serializÔøΩcii objektov sÔøΩ pravdivÔøΩ.");
+        quest5.setType(QuestionType.CHECK.toString());
         opt51.setId(51);
-        opt51.setOption("Trieda, ktorej objekt chceme serializovaù musÌ implementovaù rozhranie\n" +
+        opt51.setOption("Trieda, ktorej objekt chceme serializovaÔøΩ musÔøΩ implementovaÔøΩ rozhranie\n" +
                 "Serializable.");
         opt51.setTruth(true);
 
         opt52.setId(52);
-        opt52.setOption("Serializ·cia je proces transform·cie stavu objektu do serializovanej formy takej, aby\n" +
-                "bolo moûnÈ zrekonötruovaù objekt.");
+        opt52.setOption("SerializÔøΩcia je proces transformÔøΩcie stavu objektu do serializovanej formy takej, aby\n" +
+                "bolo moÔøΩnÔøΩ zrekonÔøΩtruovaÔøΩ objekt.");
         opt52.setTruth(true);
 
         opt53.setId(53);
-        opt53.setOption("Trieda, ktorej objekt chceme serializovaù musÌ dediù od triedy Serializable.");
+        opt53.setOption("Trieda, ktorej objekt chceme serializovaÔøΩ musÔøΩ dediÔøΩ od triedy Serializable.");
         opt53.setTruth(false);
 
         opt54.setId(54);
-        opt54.setOption("Objekty s veæk˝m poËtom metÛd nie je moûnÈ serializovaù.");
+        opt54.setOption("Objekty s veÔøΩkÔøΩm poÔøΩtom metÔøΩd nie je moÔøΩnÔøΩ serializovaÔøΩ.");
         opt54.setTruth(false);
 
 
-        quest6.setQuestion("KtorÈ z nasleduj˙cich kæ˙Ëov˝ch slov programovacieho jazyka Java indikuje dediËnosù?");
+        quest6.setQuestion("KtorÔøΩ z nasledujÔøΩcich kÔøΩÔøΩÔøΩovÔøΩch slov programovacieho jazyka Java indikuje dediÔøΩnosÔøΩ?");
+        quest6.setType(QuestionType.RADIO.toString());
         opt61.setId(61);
         opt61.setOption("extends");
         opt61.setTruth(true);
@@ -353,7 +582,8 @@ public class ITextPdf {
         opt63.setTruth(false);
 
 
-        quest7.setQuestion("Ktor· z nasleduj˙cich moûnostÌ vytv·ra objekt triedy Boat a priradÌ ho do premennej sailBoat typu Boat?");
+        quest7.setQuestion("KtorÔøΩ z nasledujÔøΩcich moÔøΩnostÔøΩ vytvÔøΩra objekt triedy Boat a priradÔøΩ ho do premennej sailBoat typu Boat?");
+        quest7.setType(QuestionType.RADIO.toString());
         opt71.setId(71);
         opt71.setOption("Boat sailBoat = new Boat();");
         opt71.setTruth(true);
@@ -371,22 +601,24 @@ public class ITextPdf {
         opt74.setTruth(false);
 
 
-        quest8.setQuestion("KtorÈ z nasleduj˙cich tvrdenÌ o abstraktn˝ch triedach s˙ pravdivÈ:");
+        quest8.setQuestion("KtorÔøΩ z nasledujÔøΩcich tvrdenÔøΩ o abstraktnÔøΩch triedach sÔøΩ pravdivÔøΩ:");
+        quest8.setType(QuestionType.RADIO.toString());
         opt81.setId(81);
-        opt81.setOption("Trieda mÙûe dediù od viacer˝ch abstraktn˝ch tried.");
+        opt81.setOption("Trieda mÔøΩÔøΩe dediÔøΩ od viacerÔøΩch abstraktnÔøΩch tried.");
         opt81.setTruth(false);
 
         opt82.setId(82);
-        opt82.setOption("Abstraktn· trieda mÙûe obsahovaù abstraktnÈ aj implementovanÈ metÛdy.");
+        opt82.setOption("AbstraktnÔøΩ trieda mÔøΩÔøΩe obsahovaÔøΩ abstraktnÔøΩ aj implementovanÔøΩ metÔøΩdy.");
         opt82.setTruth(true);
 
         opt83.setId(83);
-        opt83.setOption("Vöetky metÛdy uvedenÈ v abstraktnej triede s˙ abstraktnÈ.");
+        opt83.setOption("VÔøΩetky metÔøΩdy uvedenÔøΩ v abstraktnej triede sÔøΩ abstraktnÔøΩ.");
         opt83.setTruth(false);
 
 
-        quest9.setQuestion("Ako je moûnÈ sprÌstupniù posledn˝ element v nasleduj˙com poli?\n" +
+        quest9.setQuestion("Ako je moÔøΩnÔøΩ sprÔøΩstupniÔøΩ poslednÔøΩ element v nasledujÔøΩcom poli?\n" +
                 "int[] autoMobile = new int[13];");
+        quest9.setType(QuestionType.RADIO.toString());
         opt91.setId(91);
         opt91.setOption("autoMobile[13]");
         opt91.setTruth(false);
@@ -402,6 +634,19 @@ public class ITextPdf {
         opt94.setId(94);
         opt94.setOption("autoMobile[0]");
         opt94.setTruth(false);
+
+        quest10.setQuestion("ƒåo bude vyp√≠san√© na ≈°tandardn√Ω v√Ωstup?");
+        quest10.setCode("public class Foo {\n" +
+                "\tpublic static void main(String[]args) {\n" +
+                "\tString s = \"Hello\";\n" +
+                "modify(s);\n" +
+                "System.out.println(s);\n" +
+                "}\n" +
+                "public static void modify(String s) {\n" +
+                "s += \"World!\";\n" +
+                "}\n" +
+                "}");
+
 
         List<QuestionDto> questions = new LinkedList<QuestionDto>();
 
@@ -424,9 +669,22 @@ public class ITextPdf {
         questions.add(quest7);
         questions.add(quest8);
         questions.add(quest9);
+        questions.add(quest10);
 
         test.setQuestions(questions);
 
+        Map<Integer,List<Integer>> markedAnswers = new HashMap<Integer,List<Integer>>();
+
+        markedAnswers.put(1,Arrays.asList(11,12,13));
+        markedAnswers.put(2,Arrays.asList(23));
+        markedAnswers.put(3,Arrays.asList(32));
+        markedAnswers.put(4,Arrays.asList(41));
+        markedAnswers.put(5,Arrays.asList(51,52));
+        markedAnswers.put(6,Arrays.asList(61));
+        markedAnswers.put(7,Arrays.asList(71));
+        markedAnswers.put(8,Arrays.asList(81));
+        markedAnswers.put(9,Arrays.asList(92));
+        test.setMarkedAnswers(markedAnswers);
         return test;
     }
 

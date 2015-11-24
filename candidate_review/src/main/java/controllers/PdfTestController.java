@@ -30,16 +30,15 @@ public class PdfTestController {
         candidate.setTestName("Test for Java junior developer.");
         candidate.setTotalTime(40);
 
+        String filePath = null;
         try {
-            ITextPdf Itext = new ITextPdf();
-            Itext.createPdf(candidate);
+            ITextPdf IText = new ITextPdf();
+            filePath = IText.createPdf(candidate);
         } catch (DocumentException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        return "string";
+        return filePath;
     }
 }

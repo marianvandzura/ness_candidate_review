@@ -11,7 +11,7 @@ public class PdfTestDto extends TestDto {
     // Key represents Question ID and value represents
     // marked option.
     // Map will be used for creating test in PDF format.
-    Map<Integer, List<Integer>> markedAnswers;
+    private Map<Integer, List<Integer>> markedAnswers;
 
     private CandidateDto cadidate;
 
@@ -23,11 +23,11 @@ public class PdfTestDto extends TestDto {
         this.markedAnswers = markedAnswers;
     }
 
-//    public CandidateDto getCadidate() {
-//        return cadidate;
-//    }
-//
-//    public void setCadidate(CandidateDto cadidate) {
-//        this.cadidate = cadidate;
-//    }
+    public CandidateDto getCadidate() {
+        return cadidate;
+    }
+
+    public void setCadidate(CandidateDto cadidate) {
+        this.cadidate = cadidate;
+    }
 }
