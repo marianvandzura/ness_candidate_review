@@ -65,12 +65,12 @@ public class TestService {
     }
 
     /**
-     * Returns test by id
+     * Returns test by id without option answer
      *
      * @param id of test
      * @return
      */
-    public TestDto getTestById(Integer id) {
+    public TestDto getTestByIdForUser(Integer id) {
         TestDto testDto = testsAssembler.extractDtoFromDomain(testsDao.findById(id));
         for (QuestionDto question : testDto.getQuestions()) {
             for (OptionDto options : question.getOptions()) {
@@ -130,6 +130,6 @@ public class TestService {
      * @return updated test or not
      */
     public TestDto deleteTest(Integer id) {
-        return testsAssembler.extractDtoFromDomain(testsDao.deleteTest(testsAssembler.populateDtoFromDomain(getTestById(id))));
+        return testsAssembler.extractDtoFromDomain(testsDao.deleteTest(testsAssembler.populateDtoFromDomain(getTestByIdForUser(id))));
     }
 }
