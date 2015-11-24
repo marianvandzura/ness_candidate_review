@@ -28,12 +28,22 @@ public class UserDao extends HibernateDaoSupport implements IUserDao {
     }
 
     @Override
-    public void deleteUser(String userName) {
+    public void deleteUser(int userId) {
         Session session = getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("delete User where userName = :userName").setParameter("userName", userName);
+        Query query = session.createQuery("delete User where userId = :userId").setParameter("userId", userId);
         query.executeUpdate();
         transaction.commit();
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("from User");
+        List<User> users = query.list();
+        transaction.commit();
+        return users;
     }
 
     @Override

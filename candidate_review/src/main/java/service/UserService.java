@@ -44,6 +44,24 @@ public class UserService {
     }
 
     /**
+     * get user by user_id
+     *
+     * @param userId
+     * @return UserDto object
+     */
+    public UserDto getUserById(int userId) {
+        model.User user;
+        if ((user = userDao.findUserById(userId)) != null) {
+            return userAssembler.extractDtoFromDomain(user);
+        }
+        return null;
+    }
+
+    public List<UserDto> getAllUsers(){
+        return userAssembler.extractDtoFromDomain(userDao.getAllUsers());
+    }
+
+    /**
      * add user to DB
      *
      * @param userDto
@@ -69,6 +87,6 @@ public class UserService {
      * @param userDto
      */
     public void deleteUser(final UserDto userDto) {
-        userDao.deleteUser(userDto.getUserName());
+        userDao.deleteUser(userDto.getUserId());
     }
 }

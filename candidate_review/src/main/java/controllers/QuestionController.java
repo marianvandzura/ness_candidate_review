@@ -120,7 +120,7 @@ public class QuestionController {
      * @param question
      * @return saved question
      */
-    @RequestMapping(value = "/rest/admin/question/", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/admin/question", method = RequestMethod.POST)
     public ResponseEntity saveQuestion(@RequestBody final QuestionDto question) {
         QuestionDto savedQuestion = questionService.addQuestion(question);
         return new ResponseEntity<>(savedQuestion, HttpStatus.OK);
@@ -132,7 +132,7 @@ public class QuestionController {
      * @param question
      * @return HTTP response
      */
-    @RequestMapping(value = "/rest/admin/question/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/rest/admin/question", method = RequestMethod.PUT)
     public ResponseEntity updateQuestion(@RequestBody QuestionDto question) {
         //update question
         QuestionDto questionToUpdate = questionService.getQuestionById(question.getId());
@@ -159,5 +159,4 @@ public class QuestionController {
             return new ResponseEntity("Question NOT FOUND", HttpStatus.NOT_FOUND);
         }
     }
-
 }

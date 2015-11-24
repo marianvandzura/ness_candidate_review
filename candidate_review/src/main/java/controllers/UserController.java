@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import service.UserService;
 
+import java.util.List;
+
 /**
  * Created by Marian_Vandzura on 21.11.2015.
  */
@@ -52,6 +54,18 @@ public class UserController {
     }
 
     /**
+     * get all user
+     *
+     * @return list of UserDto objects
+     */
+    @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
+    @ResponseBody
+    public List<UserDto> getAllUser() {
+        List<UserDto> userDto = userService.getAllUsers();
+        return userDto;
+    }
+
+    /**
      * save user
      *
      * @param user
@@ -79,13 +93,13 @@ public class UserController {
     /**
      * delete user
      *
-     * @param userName
+     * @param userId
      * @return HTTP response
      */
-    @RequestMapping(value = "/admin/user/{user_name}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteUser(@PathVariable(value = "user_name") String userName) {
+    @RequestMapping(value = "/admin/user/{user_id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteUser(@PathVariable(value = "user_id") int userId) {
         //get existing question
-        UserDto userToDelete = userService.getUserByUserName(userName);
+        UserDto userToDelete = userService.getUserById(userId);
         if (userToDelete != null) {
             //delete question
             userService.deleteUser(userToDelete);

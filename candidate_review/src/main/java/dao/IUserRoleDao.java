@@ -7,5 +7,10 @@ import model.UserRole;
  */
 public interface IUserRoleDao {
 
+    /**
+     * get UserRole by name
+     * @param role
+     * @return
+     */
     UserRole findUserRoleByName(String role);
 }

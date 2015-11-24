@@ -13,6 +13,10 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
+
+    @JsonProperty("user_id")
+    private int userId;
+
     @JsonProperty("user_name")
     private String userName;
 
@@ -28,8 +32,16 @@ public class UserDto {
     @JsonProperty("user_role")
     private List<UserRole> userRoles;
 
-    public UserDto(){
+    public UserDto() {
         //default
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

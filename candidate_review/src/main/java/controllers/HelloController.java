@@ -5,7 +5,6 @@ import dao.IPersonDao;
 import dto.CategoryDto;
 import dto.QuestionDto;
 import dto.UserDto;
-import model.User;
 import model.UserPassword;
 import model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/") //urls accepted e.x /index -> define accepted extensions in web.xml
 public class HelloController {
 	//auto set from context
 	@Autowired

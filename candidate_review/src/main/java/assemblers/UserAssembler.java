@@ -36,6 +36,7 @@ public class UserAssembler {
      */
     public UserDto extractDtoFromDomain(final User domain) {
         UserDto dto = new UserDto();
+        dto.setUserId(domain.getUserId());
         dto.setUserName(domain.getUserName());
         dto.setUserPassword(domain.getUserPassword());
         dto.setEmail(domain.getEmail());
@@ -47,6 +48,20 @@ public class UserAssembler {
         }
         dto.setUserRoles(roles);
         return dto;
+    }
+
+    /**
+     * Extract List of DTOs from domain.
+     *
+     * @param domain
+     * @return extracted DTOs
+     */
+    public List<UserDto> extractDtoFromDomain(final Collection<User> domain) {
+        List<UserDto> usersDtoArrayList = new ArrayList<>();
+        for (User user : domain) {
+            usersDtoArrayList.add(extractDtoFromDomain(user));
+        }
+        return usersDtoArrayList;
     }
 
     /**

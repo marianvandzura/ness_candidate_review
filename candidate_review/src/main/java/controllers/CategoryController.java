@@ -36,7 +36,7 @@ public class CategoryController {
      *
      * @return List of categories
      */
-    @RequestMapping(value = "/rest/categories/", method = RequestMethod.GET)
+    @RequestMapping(value = "/rest/categories", method = RequestMethod.GET)
     @ResponseBody
     public List<CategoryDto> getAllCategories() {
         List<CategoryDto> result = categoryService.getAllCategories();
@@ -49,7 +49,7 @@ public class CategoryController {
      * @param category
      * @return HTTP response
      */
-    @RequestMapping(value = "/rest/admin/category/", method = RequestMethod.POST)
+    @RequestMapping(value = "/rest/admin/category", method = RequestMethod.POST)
     public ResponseEntity saveCategory(@RequestBody CategoryDto category) {
         //add category
         CategoryDto savedCategory = categoryService.addCategory(category);
@@ -62,7 +62,7 @@ public class CategoryController {
      * @param category
      * @return HTTP response
      */
-    @RequestMapping(value = "/rest/admin/category/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/rest/admin/category", method = RequestMethod.PUT)
     public ResponseEntity updateCategory(@RequestBody CategoryDto category) {
         //update category
         CategoryDto updatedCategory = categoryService.updateCategory(category);
