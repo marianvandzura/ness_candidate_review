@@ -57,6 +57,7 @@ public class UserController {
     public UserDto getUser(@PathVariable(value = "user_name") String userName) {
         UserDto userDto = userService.getUserByUserName(userName);
         //to prevent endless json
+        userDto.getUserPassword().setUser(null);
         List<UserRole> userRoles = userDto.getUserRoles();
         for(UserRole singleRole : userRoles){
             singleRole.setUsers(null);
@@ -75,6 +76,7 @@ public class UserController {
     public UserDto getUser(@PathVariable(value = "user_id") int userId) {
         UserDto userDto = userService.getUserById(userId);
         //to prevent endless json
+        userDto.getUserPassword().setUser(null);
         List<UserRole> userRoles = userDto.getUserRoles();
         for(UserRole singleRole : userRoles){
             singleRole.setUsers(null);
@@ -93,6 +95,7 @@ public class UserController {
         List<UserDto> userList = userService.getAllUsers();
         //to prevent endless json
         for(UserDto user: userList){
+            user.getUserPassword().setUser(null);
             List<UserRole> userRoles = user.getUserRoles();
             for(UserRole singleRole : userRoles){
                 singleRole.setUsers(null);
