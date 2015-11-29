@@ -1,5 +1,6 @@
 package model;
 
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -50,7 +51,7 @@ public class UserPassword {
 
     public void setPassword(String password) {
         //encode password
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+        Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+        this.password = passwordEncoder.encodePassword(password, null);
     }
 }
