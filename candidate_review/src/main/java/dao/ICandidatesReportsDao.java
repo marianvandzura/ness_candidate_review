@@ -5,10 +5,19 @@ import model.CandidatesReports;
 import java.util.List;
 
 /**
- * Created by Marian_Vandzura on 28.10.2015.
+ * Created by
  */
 public interface ICandidatesReportsDao {
 
+    /**
+     * add new report to DB
+     * @param candidatesReport
+     */
     void addCandidateReport(CandidatesReports candidatesReport);
+
+    /**
+     * get all reports from DB
+     * @return
+     */
     List<CandidatesReports> getAllCandidatesReports();
 }

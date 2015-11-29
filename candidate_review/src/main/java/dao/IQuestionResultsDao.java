@@ -9,7 +9,15 @@ import java.util.List;
  */
 public interface IQuestionResultsDao {
 
+    /**
+     * add question result
+     * @param questionResult
+     */
     void addQuestionResult(QuestionResults questionResult);
 
+    /**
+     * get all question results
+     * @return list of QuestionResults objects
+     */
     List<QuestionResults> getAllQuestionResults();
 }

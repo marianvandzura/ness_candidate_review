@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Question service.
  * <p>
- * Created by Peter.
+ * Created by Marian_Vandzura on 7.11.2015.
  */
 @Service
 public class QuestionService {

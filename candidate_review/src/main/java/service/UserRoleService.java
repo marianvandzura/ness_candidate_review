@@ -14,6 +14,11 @@ public class UserRoleService {
     @Autowired
     IUserRoleDao userRoleDao;
 
+    /**
+     * get UserRole based on its name
+     * @param role
+     * @return UserRole with requested name
+     */
     public UserRole getUserRoleByName(String role){
         return userRoleDao.findUserRoleByName(role);
     }

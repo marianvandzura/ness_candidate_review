@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by Peter on 4.11.2015.
+ * Created by Marian_Vandzura on 7.11.2015.
  */
 @Service
 public class OptionService {
