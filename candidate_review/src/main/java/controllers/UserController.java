@@ -71,7 +71,7 @@ public class UserController {
      * @param userId
      * @return UserDto object
      */
-    @RequestMapping(value = "/admin/user/{user_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/user/id/{user_id}", method = RequestMethod.GET)
     @ResponseBody
     public UserDto getUser(@PathVariable(value = "user_id") int userId) {
         UserDto userDto = userService.getUserById(userId);
