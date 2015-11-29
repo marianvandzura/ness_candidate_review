@@ -20,7 +20,7 @@ public class UserDto {
     @JsonProperty("user_name")
     private String userName;
 
-    @JsonIgnore
+    @JsonProperty("password")
     private UserPassword userPassword;
 
     @JsonProperty("email")

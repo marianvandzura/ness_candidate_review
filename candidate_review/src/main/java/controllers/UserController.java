@@ -1,6 +1,7 @@
 package controllers;
 
 import dto.UserDto;
+import model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,11 @@ public class UserController {
         if (userDto != null) {
             userDto.setUserPassword(null);
         }
+        //to prevent endless json
+        List<UserRole> userRoles = userDto.getUserRoles();
+        for(UserRole singleRole : userRoles){
+            singleRole.setUsers(null);
+        }
         return userDto;
     }
 
@@ -50,6 +56,11 @@ public class UserController {
     @ResponseBody
     public UserDto getUser(@PathVariable(value = "user_name") String userName) {
         UserDto userDto = userService.getUserByUserName(userName);
+        //to prevent endless json
+        List<UserRole> userRoles = userDto.getUserRoles();
+        for(UserRole singleRole : userRoles){
+            singleRole.setUsers(null);
+        }
         return userDto;
     }
 
@@ -63,6 +74,11 @@ public class UserController {
     @ResponseBody
     public UserDto getUser(@PathVariable(value = "user_id") int userId) {
         UserDto userDto = userService.getUserById(userId);
+        //to prevent endless json
+        List<UserRole> userRoles = userDto.getUserRoles();
+        for(UserRole singleRole : userRoles){
+            singleRole.setUsers(null);
+        }
         return userDto;
     }
 
@@ -74,8 +90,15 @@ public class UserController {
     @RequestMapping(value = "/admin/users", method = RequestMethod.GET)
     @ResponseBody
     public List<UserDto> getAllUser() {
-        List<UserDto> userDto = userService.getAllUsers();
-        return userDto;
+        List<UserDto> userList = userService.getAllUsers();
+        //to prevent endless json
+        for(UserDto user: userList){
+            List<UserRole> userRoles = user.getUserRoles();
+            for(UserRole singleRole : userRoles){
+                singleRole.setUsers(null);
+            }
+        }
+        return userList;
     }
 
     /**

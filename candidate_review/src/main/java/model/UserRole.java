@@ -1,11 +1,14 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.util.Collection;
 
 /**
  * Created by Marian_Vandzura on 14.11.2015.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "user_roles")
 public class UserRole {
@@ -20,6 +23,7 @@ public class UserRole {
 
     @Column(name = "role", nullable = false, columnDefinition = "varchar(255) default 'ROLE_USER'")
     private String role;
+
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "userRoles")
     public Collection<User> users;
