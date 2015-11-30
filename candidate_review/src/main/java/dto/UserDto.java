@@ -21,7 +21,7 @@ public class UserDto {
     private String userName;
 
     @JsonProperty("password")
-    private UserPassword userPassword;
+    private String userPassword;
 
     @JsonProperty("email")
     private String email;
@@ -30,7 +30,7 @@ public class UserDto {
     private boolean enabled;
 
     @JsonProperty("user_role")
-    private List<UserRole> userRoles;
+    private List<String> userRoles;
 
     public UserDto() {
         //default
@@ -52,14 +52,6 @@ public class UserDto {
         this.userName = userName;
     }
 
-    public UserPassword getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(UserPassword userPassword) {
-        this.userPassword = userPassword;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -76,11 +68,19 @@ public class UserDto {
         this.enabled = enabled;
     }
 
-    public List<UserRole> getUserRoles() {
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public List<String> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(List<UserRole> userRoles) {
+    public void setUserRoles(List<String> userRoles) {
         this.userRoles = userRoles;
     }
 }

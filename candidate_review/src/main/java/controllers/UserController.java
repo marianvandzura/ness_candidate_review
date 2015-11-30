@@ -38,11 +38,11 @@ public class UserController {
         if (userDto != null) {
             userDto.setUserPassword(null);
         }
-        //to prevent endless json
-        List<UserRole> userRoles = userDto.getUserRoles();
-        for(UserRole singleRole : userRoles){
-            singleRole.setUsers(null);
-        }
+//        //to prevent endless json
+//        List<UserRole> userRoles = userDto.getUserRoles();
+//        for(UserRole singleRole : userRoles){
+//            singleRole.setUsers(null);
+//        }
         return userDto;
     }
 
@@ -56,12 +56,12 @@ public class UserController {
     @ResponseBody
     public UserDto getUser(@PathVariable(value = "user_name") String userName) {
         UserDto userDto = userService.getUserByUserName(userName);
-        //to prevent endless json
-        userDto.getUserPassword().setUser(null);
-        List<UserRole> userRoles = userDto.getUserRoles();
-        for(UserRole singleRole : userRoles){
-            singleRole.setUsers(null);
-        }
+//        //to prevent endless json
+//        userDto.getUserPassword().setUser(null);
+//        List<UserRole> userRoles = userDto.getUserRoles();
+//        for(UserRole singleRole : userRoles){
+//            singleRole.setUsers(null);
+//        }
         return userDto;
     }
 
@@ -75,12 +75,12 @@ public class UserController {
     @ResponseBody
     public UserDto getUser(@PathVariable(value = "user_id") int userId) {
         UserDto userDto = userService.getUserById(userId);
-        //to prevent endless json
-        userDto.getUserPassword().setUser(null);
-        List<UserRole> userRoles = userDto.getUserRoles();
-        for(UserRole singleRole : userRoles){
-            singleRole.setUsers(null);
-        }
+//        //to prevent endless json
+//        userDto.getUserPassword().setUser(null);
+//        List<UserRole> userRoles = userDto.getUserRoles();
+//        for(UserRole singleRole : userRoles){
+//            singleRole.setUsers(null);
+//        }
         return userDto;
     }
 
@@ -93,14 +93,14 @@ public class UserController {
     @ResponseBody
     public List<UserDto> getAllUser() {
         List<UserDto> userList = userService.getAllUsers();
-        //to prevent endless json
-        for(UserDto user: userList){
-            user.getUserPassword().setUser(null);
-            List<UserRole> userRoles = user.getUserRoles();
-            for(UserRole singleRole : userRoles){
-                singleRole.setUsers(null);
-            }
-        }
+//        //to prevent endless json
+//        for(UserDto user: userList){
+//            user.getUserPassword().setUser(null);
+//            List<UserRole> userRoles = user.getUserRoles();
+//            for(UserRole singleRole : userRoles){
+//                singleRole.setUsers(null);
+//            }
+//        }
         return userList;
     }
 

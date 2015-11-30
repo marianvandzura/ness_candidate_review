@@ -53,7 +53,9 @@ public class UserPassword {
 
     public void setPassword(String password) {
         //encode password
-        Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
-        this.password = passwordEncoder.encodePassword(password, null);
+        //pwd is hashed in frontend because of rest
+//        Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+//        this.password = passwordEncoder.encodePassword(password, null);
+        this.password = password;
     }
 }
