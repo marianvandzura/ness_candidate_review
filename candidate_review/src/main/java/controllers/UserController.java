@@ -110,7 +110,7 @@ public class UserController {
      * @param user
      * @return saved UserDto object
      */
-    @RequestMapping(value = "/admin/user/", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/user", method = RequestMethod.POST)
     public ResponseEntity saveUser(@RequestBody final UserDto user) {
         UserDto savedUser = userService.addUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
@@ -122,7 +122,7 @@ public class UserController {
      * @param user
      * @return HTTP response
      */
-    @RequestMapping(value = "/admin/user/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/admin/user", method = RequestMethod.PUT)
     public ResponseEntity updateUser(@RequestBody UserDto user) {
         //update question
         UserDto updatedUser = userService.addUser(user);
