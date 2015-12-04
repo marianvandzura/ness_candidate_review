@@ -112,6 +112,16 @@ public class UserController {
      */
     @RequestMapping(value = "/admin/user", method = RequestMethod.POST)
     public ResponseEntity saveUser(@RequestBody final UserDto user) {
+        //check if user with user_name already exists
+        if (userService.getUserByUserName(user.getUserName()) != null) {
+            //user already exists
+            return new ResponseEntity<>("User with username: " + user.getUserName() + " already exists", HttpStatus.CONFLICT);
+        }
+        //check if username is passed
+        if (user.getUserName() == null || user.getUserName().isEmpty()) {
+            //username cannot be null
+            return new ResponseEntity<>("Username cannot be null or empty", HttpStatus.BAD_REQUEST);
+        }
         UserDto savedUser = userService.addUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
     }
@@ -124,8 +134,21 @@ public class UserController {
      */
     @RequestMapping(value = "/admin/user", method = RequestMethod.PUT)
     public ResponseEntity updateUser(@RequestBody UserDto user) {
+        UserDto userToUpdateDto = userService.getUserById(user.getUserId());
+        if (userToUpdateDto == null) {
+            //user not found
+            return new ResponseEntity<>("User with ID: " + user.getUserId() + " not found", HttpStatus.NOT_FOUND);
+        }
+        String nameInDb = userToUpdateDto.getUserName();
+        String newName = user.getUserName();
+        if (!nameInDb.equals(newName)) {
+            //username cannot be updated
+            return new ResponseEntity<>("Username cannot be changed", HttpStatus.BAD_REQUEST);
+        }
+
+        userToUpdateDto = userService.updateUserDto(userToUpdateDto, user);
         //update question
-        UserDto updatedUser = userService.addUser(user);
+        UserDto updatedUser = userService.updateUser(userToUpdateDto);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 

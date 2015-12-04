@@ -17,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
 
-    @Column(name = "user_name", unique = true, nullable = false, columnDefinition = "varchar(255) default 'user_name'")
+    @Column(name = "user_name", nullable = false, columnDefinition = "varchar(255) default 'user_name'")
     private String userName;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)

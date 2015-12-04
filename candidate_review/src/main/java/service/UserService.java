@@ -3,18 +3,12 @@ package service;
 import assemblers.UserAssembler;
 import dao.IUserDao;
 import dto.UserDto;
-import model.UserRole;
+import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Marian_Vandzura on 14.11.2015.
@@ -57,7 +51,7 @@ public class UserService {
         return null;
     }
 
-    public List<UserDto> getAllUsers(){
+    public List<UserDto> getAllUsers() {
         return userAssembler.extractDtoFromDomain(userDao.getAllUsers());
     }
 
@@ -78,7 +72,23 @@ public class UserService {
      * @return updated UserDto object
      */
     public UserDto updateUser(final UserDto userDto) {
-        return userAssembler.extractDtoFromDomain(userDao.addUser(userAssembler.populateDomainFromDto(userDto)));
+        User user = userAssembler.populateDomainFromDto(userDto);
+        int userId = userDto.getUserId() != null ? userDto.getUserId() : -1;
+        if(userId != -1){
+            user.setUserId(userId);
+        }
+        return userAssembler.extractDtoFromDomain(userDao.addUser(user));
+    }
+
+    /**
+     * update userDto object
+     *
+     * @param userDto
+     * @param newUserDto
+     * @return
+     */
+    public UserDto updateUserDto(final UserDto userDto, final UserDto newUserDto) {
+        return userAssembler.updateDto(userDto, newUserDto);
     }
 
     /**

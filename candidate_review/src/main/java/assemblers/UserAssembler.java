@@ -89,4 +89,21 @@ public class UserAssembler {
         domain.setUserRoles(userRoles);
         return domain;
     }
+
+    /**
+     * update userDto with new values
+     *
+     * @param user
+     * @param newUser
+     * @return updated user
+     */
+    public UserDto updateDto(final UserDto user, final UserDto newUser) {
+        user.setUserId(user.getUserId());
+        user.setUserName(user.getUserName());
+        user.setUserPassword(newUser.getUserPassword());
+        user.setEmail(newUser.getEmail());
+        user.setEnabled(newUser.isEnabled());
+        user.setUserRoles(newUser.getUserRoles());
+        return user;
+    }
 }

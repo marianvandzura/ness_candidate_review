@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDto {
 
     @JsonProperty("user_id")
-    private int userId;
+    private Integer userId;
 
     @JsonProperty("user_name")
     private String userName;
@@ -36,7 +36,7 @@ public class UserDto {
         //default
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
