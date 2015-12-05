@@ -82,6 +82,17 @@ public class TestService {
     }
 
     /**
+     * Returns test by id without option answer
+     *
+     * @param id of test
+     * @return
+     */
+    public TestDto getTestByIdForAdmin(Integer id) {
+        TestDto testDto = testsAssembler.extractDtoFromDomain(testsDao.findById(id));
+        return testDto;
+    }
+
+    /**
      * allegedly it saves or updates the test,
      * if id is null it saves new test
      * if id is integer it tries to update test with this id

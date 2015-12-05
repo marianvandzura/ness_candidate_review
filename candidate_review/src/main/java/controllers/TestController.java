@@ -32,7 +32,7 @@ public class TestController {
      *
      * @return all tests
      */
-    @RequestMapping(value = "/tests", method = RequestMethod.GET)
+    @RequestMapping(value = "/tests/", method = RequestMethod.GET)
     @ResponseBody
     public List<TestDto> getTests() {
         return testService.getTests();
@@ -56,10 +56,23 @@ public class TestController {
      * @param id id of a test
      * @return
      */
-    @RequestMapping(value = "/user/test/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/test/{id}", method = RequestMethod.GET)
     @ResponseBody
     public TestDto getTestForUser(@PathVariable(value = "id") Integer id) {
         TestDto testDto = testService.getTestByIdForUser(id);
+        return testDto;
+    }
+
+    /**
+     * Return test by id without options answers
+     *
+     * @param id id of a test
+     * @return
+     */
+    @RequestMapping(value = "/admin/test/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public TestDto getTestForAdmin(@PathVariable(value = "id") Integer id) {
+        TestDto testDto = testService.getTestByIdForAdmin(id);
         return testDto;
     }
 
