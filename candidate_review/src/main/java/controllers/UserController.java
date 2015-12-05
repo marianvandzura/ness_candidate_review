@@ -115,12 +115,12 @@ public class UserController {
         //check if user with user_name already exists
         if (userService.getUserByUserName(user.getUserName()) != null) {
             //user already exists
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>("User with username: " + user.getUserName() + " already exists", HttpStatus.CONFLICT);
         }
         //check if username is passed
         if (user.getUserName() == null || user.getUserName().isEmpty()) {
             //username cannot be null
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username cannot be null or empty", HttpStatus.BAD_REQUEST);
         }
         UserDto savedUser = userService.addUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
@@ -137,13 +137,13 @@ public class UserController {
         UserDto userToUpdateDto = userService.getUserById(user.getUserId());
         if (userToUpdateDto == null) {
             //user not found
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User with ID: " + user.getUserId() + " not found", HttpStatus.NOT_FOUND);
         }
         String nameInDb = userToUpdateDto.getUserName();
         String newName = user.getUserName();
         if (!nameInDb.equals(newName)) {
             //username cannot be updated
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username cannot be changed", HttpStatus.BAD_REQUEST);
         }
 
         userToUpdateDto = userService.updateUserDto(userToUpdateDto, user);
@@ -165,9 +165,9 @@ public class UserController {
         if (userToDelete != null) {
             //delete question
             userService.deleteUser(userToDelete);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity("User deleted", HttpStatus.OK);
         } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity("User NOT FOUND", HttpStatus.NOT_FOUND);
         }
     }
 }
