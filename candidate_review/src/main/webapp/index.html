@@ -41,9 +41,9 @@
 
 
 </head>
-  <body>
+  <body class="background">
     <div id="app" ng-app="NESS-TCFA">
-      <div class="container top">
+      <div class="container top" style="padding-top: 40px;">
         <div class="my-right">
           <button ng-if="settings.logged == false" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#loginModal">
             <span class="glyphicon glyphicon-user"></span> Login
@@ -92,16 +92,19 @@
         </div>
       </div>
 
-      <div  class="container" style="padding-left: 40px; padding-right: 40px">
+      <div  class="container" id="appContainer" ng-init="setHeight()">
         <div ng-if="connProblem.problem == true" class="alert alert-danger" role="alert">{{connProblem.message}}</div>
         <div ng-view></div>
 
         <br><br>
+      </div>
+      <div  class="container">
         <div class="my-center my-small">
           © 2015 Ness Technologies. All Rights Reserved<br><br>
           <a href="#/home/">
             <img src="media/logo_mini.jpg" alt="NESS KDC"></a>
         </div>
+        <br>
       </div>
     </div>
   </body>

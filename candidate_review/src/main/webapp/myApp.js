@@ -1,5 +1,11 @@
 angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ui.codemirror'])//App init
   .run(['$rootScope', '$http','$window',function($rootScope, $http, $window){
+    $rootScope.setHeight = function(){
+      $('#appContainer').css("min-height",$( window ).height() - 320);
+    };
+    $( window ).resize(function() {
+      $('#appContainer').css("min-height",$( window ).height() - 320);
+    });
     $rootScope.serverUrl = 'http://localhost:8080/rest/';
     $rootScope.settings = {
       logged: false,

@@ -13,6 +13,7 @@ angular.module('NESS-TCFA').controller('homeController',['$scope','$rootScope','
     }
   );
 
+  //$('#appContainer').css('min-height') = $($0).css('height') - 301;
   /*$scope.$on('$locationChangeStart', function( event ) {
    var answer = confirm("Are you sure you want to leave this page?")
    if (!answer) {
