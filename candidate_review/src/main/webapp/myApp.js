@@ -1,6 +1,6 @@
 angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ui.codemirror'])//App init
   .run(['$rootScope', '$http','$window',function($rootScope, $http, $window){
-    $rootScope.serverUrl = 'http://localhost:8080/rest/';
+    $rootScope.serverUrl = '/rest/';
     $rootScope.settings = {
       logged: false,
       autentificationFailed: false
