@@ -154,9 +154,9 @@ public class QuestionController {
         if (questionToDelete != null) {
             //delete question
             questionService.deleteQuestion(questionToDelete);
-            return new ResponseEntity("Question deleted", HttpStatus.OK);
+            return new ResponseEntity("[]", HttpStatus.OK);
         } else {
-            return new ResponseEntity("Question NOT FOUND", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("[]", HttpStatus.NOT_FOUND);
         }
     }
 }

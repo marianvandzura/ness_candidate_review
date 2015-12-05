@@ -165,9 +165,9 @@ public class UserController {
         if (userToDelete != null) {
             //delete question
             userService.deleteUser(userToDelete);
-            return new ResponseEntity("User deleted", HttpStatus.OK);
+            return new ResponseEntity("[]", HttpStatus.OK);
         } else {
-            return new ResponseEntity("User NOT FOUND", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("[]", HttpStatus.NOT_FOUND);
         }
     }
 }
