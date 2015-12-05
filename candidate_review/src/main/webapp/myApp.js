@@ -1,6 +1,6 @@
 angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ui.codemirror'])//App init
   .run(['$rootScope', '$http','$window',function($rootScope, $http, $window){
-    $rootScope.serverUrl = '/rest/';
+    $rootScope.serverUrl = 'http://localhost:8080/rest/';
     $rootScope.settings = {
       logged: false,
       autentificationFailed: false
@@ -17,18 +17,6 @@ angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ui.codemirror'])
           //ziskavanie tokenu
           $rootScope.settings.auth = response.data;
           $rootScope.settings.autentificationFailed = false;
-          if($rootScope.settings.auth.expires_in != 300)
-          $http.get($rootScope.serverUrl+'oauth/token?grant_type=refresh_token&client_id=ness-candidates-review&refresh_token='+$rootScope.settings.auth.refresh_token).then(
-            function(response){
-              $rootScope.settings.auth = response.data;
-              console.log(response.data);
-
-            },
-            function(){
-              console.log("Connecting problem!");
-              $rootScope.connProblem.problem = true;
-            }
-          );
           //automaticky update tokenu
           $rootScope.settings.passwordRefresher = setInterval(function(){
             ///rest/oauth/token?grant_type=refresh_token&refresh_token=a8960176-e73f-4358-a6d8-ae74478719bc&client_id=ness-candidates-review
@@ -55,7 +43,18 @@ angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ui.codemirror'])
                 surname: response.data.email
               };
               console.log(response.data);
+              //pretoze expire token je niekedy mensi nez 300
+              $http.get($rootScope.serverUrl+'oauth/token?grant_type=refresh_token&client_id=ness-candidates-review&refresh_token='+$rootScope.settings.auth.refresh_token).then(
+                function(response){
+                  $rootScope.settings.auth = response.data;
+                  console.log(response.data);
 
+                },
+                function(){
+                  console.log("Connecting problem!");
+                  $rootScope.connProblem.problem = true;
+                }
+              );
             },
             function(){
               console.log("Connecting problem!");
