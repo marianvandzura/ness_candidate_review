@@ -25,6 +25,19 @@
   <script src="js/md5-min.js" type="text/javascript"></script>
   <script src="js/moment-with-locales.js" type="text/javascript"></script>
   <script src="myApp.js"></script>
+  <script src="controllers/controlPanelController.js"></script>
+  <script src="controllers/editTestController.js"></script>
+  <script src="controllers/finishController.js"></script>
+  <script src="controllers/homeController.js"></script>
+  <script src="controllers/loginModalController.js"></script>
+  <script src="controllers/questionController.js"></script>
+  <script src="controllers/questionsControlController.js"></script>
+  <script src="controllers/resultsController.js"></script>
+  <script src="controllers/settingController.js"></script>
+  <script src="controllers/testController.js"></script>
+  <script src="controllers/testsControlController.js"></script>
+  <script src="controllers/usersController.js"></script>
+
 
 
 </head>
@@ -57,9 +70,9 @@
               </div>
               <div class="modal-body">
                 <form name="loginForm">
-                <div class="form-group" ng-class=" loginForm.$error.email ? 'has-error' : ''">
-                  <label for="loginEmail">Email address</label>
-                  <input ng-model="email" type="email" required class="form-control" id="loginEmail" placeholder="Email">
+                <div class="form-group">
+                  <label for="loginEmail">Username</label>
+                  <input ng-model="email" type="text" required class="form-control" id="loginEmail" placeholder="Username">
 
                   </div>
                   <div class="form-group">
@@ -67,10 +80,11 @@
                     <input ng-model="password" ng-keypress="enter($event)" type="password" class="form-control" id="loginPassword" placeholder="Password">
                   </div>
                 </form>
+                <div ng-if="settings.autentificationFailed == true" class="alert alert-danger" role="alert">Bad username or password</div>
               </div>
               <div class="modal-footer">
                 <br>
-                <button type="button" ng-disabled="!!(!myForm.$error.email && !password.length > 0)" class="btn btn-primary" ng-click="login()">Continue</button>
+                <button type="button" ng-disabled="password.length <= 0" class="btn btn-primary" ng-click="login(email,password)">Continue</button>
                 <button type="button" ng-click="email = ''; password = ''" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
             </div>
