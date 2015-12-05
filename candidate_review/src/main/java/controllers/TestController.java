@@ -32,7 +32,7 @@ public class TestController {
      *
      * @return all tests
      */
-    @RequestMapping(value = "/admin/tests", method = RequestMethod.GET)
+    @RequestMapping(value = "/tests", method = RequestMethod.GET)
     @ResponseBody
     public List<TestDto> getTests() {
         return testService.getTests();
