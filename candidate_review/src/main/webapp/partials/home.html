@@ -3,7 +3,7 @@
 <h2>How to</h2>
 <p>Abas dosndk paletiska. Tasp sadm wis aks paktis ospa hopaka hem tumelest hugm. Abas dosndk paletiska. Tasp sadm wis aks paktis ospa hopaka hem tumelest hugm. Abas dosndk paletiska. Tasp sadm wis aks paktis ospa hopaka hem tumelest hugm. </p>
 
-<h2>List of available tests</h2>
+<h2 ng-if="tests.length > 0">List of available tests</h2>
 <div class="list-group" >
   <a ng-repeat="test in tests" href="#/test/{{test.id}}" class="list-group-item">
     <h4 class="list-group-item-heading">{{test.name}}</h4>
