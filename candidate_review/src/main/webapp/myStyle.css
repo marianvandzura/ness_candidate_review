@@ -63,3 +63,10 @@ body{
   color: #333;
   white-space: nowrap;
 }
+
+.question-type-button{
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+

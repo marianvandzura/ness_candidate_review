@@ -1,10 +1,10 @@
-<div class="row" style="background-color: #f5f5f5; border-radius: 4px;">
+<div class="row" style="background-color: #f5f5f5; border-radius: 4px; margin-top: 24px;">
   <div class="col-md-6" ng-class="showRightBar == false ? 'col-md-12' : 'col-md-6'">
     <!-- Kategorie -->
     <H3>Categories options</H3>
     <label for="questionCategory">Select category</label>
     <select id="questionCategory" class="form-control input" ng-model="selectedCategory" ng-options="category as category.category_name for category in categories"
-      ng-change="showActionbar = true; getQuestions()">
+      ng-change="showActionbar = true; getQuestions()" style="margin-bottom: 8px">
       <option></option>
     </select>
     <div class="input-group-btn">
@@ -26,7 +26,7 @@
     <hr>
     <!-- Otazky -->
     <h4>Questions</h4>
-    <input type="text" class="form-control input-sm" ng-model="searchQ.question" placeholder="Search" style="margin-bottom: 5px;">
+    <input type="text" class="form-control input-sm" ng-model="searchQ.question" placeholder="Search" style="margin-bottom: 8px;">
     <table class="table table-striped">
       <tr>
         <td><b>Question name</b></td>
@@ -42,11 +42,11 @@
       </tr>
     </table>
     <h5><b>Add new question</b></h5>
-    <div class="btn-group"  role="group" aria-label="...">
-      <button type="button" class="btn btn-default" ng-click="addQuestion('checkbox')" ng-disabled="selectedCategory == null">Checkbox question</button>
-      <button type="button" class="btn btn-default" ng-click="addQuestion('combobox')" ng-disabled="selectedCategory == null">Combobox question</button>
-      <button type="button" class="btn btn-default" ng-click="addQuestion('text')" ng-disabled="selectedCategory == null">Text question</button>
-      <button type="button" class="btn btn-default" ng-click="initCodeQuestion()" ng-disabled="selectedCategory == null">Code question</button>
+    <div class="btn-group"  role="group" aria-label="..." style="margin-bottom: 16px">
+      <button type="button" class="btn btn-default question-type-button" ng-click="addQuestion('checkbox')" ng-disabled="selectedCategory == null">Checkbox question</button>
+      <button type="button" class="btn btn-default question-type-button" ng-click="addQuestion('combobox')" ng-disabled="selectedCategory == null">Combobox question</button>
+      <button type="button" class="btn btn-default question-type-button" ng-click="addQuestion('text')" ng-disabled="selectedCategory == null">Text question</button>
+      <button type="button" class="btn btn-default question-type-button" ng-click="initCodeQuestion()" ng-disabled="selectedCategory == null">Code question</button>
     </div>
   </div>
   <div class="col-md-6" style="border-left: 2px solid #cccccc; margin-top: 13px; margin-bottom: 13px;">
