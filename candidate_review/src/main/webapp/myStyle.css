@@ -7,8 +7,10 @@ body{
   padding-right: 50px;
 }
 #background{
-  background-size: 100% 100%;
-  background: url(media/background.png) no-repeat;
+    background-image: url(media/background.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 }
 .top {
   height: 200px;
