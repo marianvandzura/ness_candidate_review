@@ -2,12 +2,12 @@ angular.module('NESS-TCFA', ['ngCookies','ngAnimate','ngRoute','ui.codemirror'])
   .run(['$rootScope', '$http','$window',function($rootScope, $http, $window){
     $rootScope.setHeight = function(){
       $('background').css("min-height",$( window ).height());
-      $('#appContainer').css("min-height",$( window ).height() - 330);
+      $('#appContainer').css("min-height",$( window ).height() - 400);
 
     };
     $( window ).resize(function() {
       $('background').css("min-height",$( window ).height());
-      $('#appContainer').css("min-height",$( window ).height() - 330);
+      $('#appContainer').css("min-height",$( window ).height() - 400);
     });
     $rootScope.serverUrl = 'http://localhost:8080/rest/';
     $rootScope.settings = {
