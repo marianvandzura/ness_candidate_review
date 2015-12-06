@@ -42,70 +42,73 @@
 
 </head>
   <body id="background">
-    <div id="app" ng-app="NESS-TCFA">
-      <div class="container top" style="padding-top: 40px; margin-top: 120px;">
-        <div class="my-right">
-          <button ng-if="settings.logged == false" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#loginModal">
-            <span class="glyphicon glyphicon-user"></span> Login
-          </button>
-          <a href="#/controlPanel/" style="margin-left: 3px" ng-if="settings.logged == true" type="button" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-th-large"></span> Control Panel
+    <div id="app" ng-app="NESS-TCFA" style="margin-top:80px; ">
+      <div class="container" style="background-color: #FFFFFF; border-radius: 4px; box-shadow: 0px 0px 8px #1A1A1A; padding-left: 0px; padding-right: 0px;">
+        <div class="container top" style="padding-top: 40px;">
+          <div class="my-right">
+            <button ng-if="settings.logged == false" type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#loginModal">
+              <span class="glyphicon glyphicon-user"></span> Login
+            </button>
+            <a href="#/controlPanel/" style="margin-left: 3px" ng-if="settings.logged == true" type="button" class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-th-large"></span> Control Panel
+            </a>
+            <button ng-if="settings.logged == true" type="button" class="btn btn-default btn-sm" ng-click="logout()">
+              <span class="glyphicon glyphicon-user"></span> Logout!
+            </button>
+          </div>
+
+          <a href="#/home/">
+            <img class="img-responsive" alt="NESS KDC - Test Center for applicants" style="height: 122px;" src="media/logo.png" class="my-fluid">
           </a>
-          <button ng-if="settings.logged == true" type="button" class="btn btn-default btn-sm" ng-click="logout()">
-            <span class="glyphicon glyphicon-user"></span> Logout!
-          </button>
-        </div>
+          <strong ng-if="settings.logged == true">{{'You are logged as ' + settings.user.name + ' ' + settings.user.surname}}</strong>
+          <div class="my-right toptext my-wide">TEST CENTER FOR APPLICANTS</div>
+          <div class="modal fade" id="loginModal" role="dialog" >
+            <div class="modal-dialog" ng-controller="loginModalController">
+              <div class="modal-content" id="loginContent" >
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Sign in!</h4>
+                </div>
+                <div class="modal-body">
+                  <form name="loginForm">
+                    <div class="form-group">
+                      <label for="loginEmail">Username</label>
+                      <input ng-model="email" type="text" required class="form-control" id="loginEmail" placeholder="Username">
 
-        <a href="#/home/">
-          <img class="img-responsive" alt="NESS KDC - Test Center for applicants" style="height: 122px;" src="media/logo.png" class="my-fluid">
-        </a>
-        <strong ng-if="settings.logged == true">{{'You are logged as ' + settings.user.name + ' ' + settings.user.surname}}</strong>
-        <div class="my-right toptext my-wide">TEST CENTER FOR APPLICANTS</div>
-        <div class="modal fade" id="loginModal" role="dialog" >
-          <div class="modal-dialog" ng-controller="loginModalController">
-            <div class="modal-content" id="loginContent" >
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Sign in!</h4>
-              </div>
-              <div class="modal-body">
-                <form name="loginForm">
-                <div class="form-group">
-                  <label for="loginEmail">Username</label>
-                  <input ng-model="email" type="text" required class="form-control" id="loginEmail" placeholder="Username">
-
-                  </div>
-                  <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input ng-model="password" ng-keypress="enter($event)" type="password" class="form-control" id="loginPassword" placeholder="Password">
-                  </div>
-                </form>
-                <div ng-if="settings.autentificationFailed == true" class="alert alert-danger" role="alert">Bad username or password</div>
-              </div>
-              <div class="modal-footer">
-                <br>
-                <button type="button" ng-disabled="password.length <= 0" class="btn btn-primary" ng-click="login(email,password)">Continue</button>
-                <button type="button" ng-click="email = ''; password = ''" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="form-group">
+                      <label for="loginPassword">Password</label>
+                      <input ng-model="password" ng-keypress="enter($event)" type="password" class="form-control" id="loginPassword" placeholder="Password">
+                    </div>
+                  </form>
+                  <div ng-if="settings.autentificationFailed == true" class="alert alert-danger" role="alert">Bad username or password</div>
+                </div>
+                <div class="modal-footer">
+                  <br>
+                  <button type="button" ng-disabled="password.length <= 0" class="btn btn-primary" ng-click="login(email,password)">Continue</button>
+                  <button type="button" ng-click="email = ''; password = ''" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div  class="container" id="appContainer" ng-init="setHeight()">
-        <div ng-if="connProblem.problem == true" class="alert alert-danger" role="alert">{{connProblem.message}}</div>
-        <div ng-view></div>
+        <div  class="container" id="appContainer" ng-init="setHeight()">
+          <div ng-if="connProblem.problem == true" class="alert alert-danger" role="alert">{{connProblem.message}}</div>
+          <div ng-view></div>
 
-        <br><br>
-      </div>
-      <div  class="container">
-        <div class="my-center my-small">
-          © 2015 Ness Technologies. All Rights Reserved<br><br>
-          <a href="#/home/">
-            <img src="media/logo_mini.jpg" alt="NESS KDC"></a>
+          <br><br>
         </div>
-        <br>
+        <div  class="container">
+          <div class="my-center my-small">
+            © 2015 Ness Technologies. All Rights Reserved<br><br>
+            <a href="#/home/">
+              <img src="media/logo_mini.jpg" alt="NESS KDC"></a>
+          </div>
+          <br>
+        </div>
       </div>
+
     </div>
   </body>
 </html>

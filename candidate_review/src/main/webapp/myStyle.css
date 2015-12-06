@@ -2,15 +2,16 @@ body{
   background: #cccccc;
 }
 .container{
-  background: #FFFFFF;
+
   padding-left: 50px;
   padding-right: 50px;
 }
 #background{
-    background-image: url(media/background.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
+  background: url('media/background.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 .top {
   height: 200px;
