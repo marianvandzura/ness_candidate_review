@@ -9,6 +9,9 @@ import java.util.List;
  */
 public interface ICandidatesReportsDao {
 
-    void addCandidateReport(CandidatesReports candidatesReport);
+    CandidatesReports addCandidateReport(CandidatesReports candidatesReport);
     List<CandidatesReports> getAllCandidatesReports();
+    CandidatesReports findReportById(Integer id);
+
+    List<CandidatesReports> findByFullName(String firstName, String lastName);
 }

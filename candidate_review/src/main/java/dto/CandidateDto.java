@@ -1,5 +1,7 @@
 package dto;
 
+import java.sql.Timestamp;
+
 /**
  * Created by Peter on 7.11.2015.
  */
@@ -15,7 +17,7 @@ public class CandidateDto {
 
     private String testName;
 
-    private String date;
+    private Timestamp date;
 
     private Integer totalTime;
 
@@ -24,6 +26,8 @@ public class CandidateDto {
     private String testResult;
 
     private String testPath;
+
+    private byte[] pdf;
 
     public Integer getId() {
         return id;
@@ -41,11 +45,11 @@ public class CandidateDto {
         this.testName = testName;
     }
 
-    public String getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -103,6 +107,14 @@ public class CandidateDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(byte[] pdf) {
+        this.pdf = pdf;
     }
 
 }

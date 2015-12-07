@@ -17,7 +17,7 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -29,7 +29,9 @@ import java.util.List;
 public class ITextPdf {
 
     private enum QuestionType {
-            RADIO, CHECK, CODE, WRITEDOWN
+            RADIO, CHECK, CODE, WRITEDOWN;
+
+
     }
 
     private enum QuestionState {
@@ -74,6 +76,8 @@ public class ITextPdf {
 
     private Document document;
 
+    private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
     private Integer numOfCorrect;
     private Integer numOfPartiallyCorr;
     private Integer numOfIncorrect;
@@ -106,16 +110,16 @@ public class ITextPdf {
         markedIncorrectImg.scaleAbsolute(new Rectangle(10,10));
     }
 
-    public String createPdf(final CandidateDto candidate)
+    public byte[] createPdf(final CandidateDto candidate, final PdfTestDto test)
             throws DocumentException, IOException {
 
+
         String documentPath = System.getProperty("user.home") + "\\" + candidate.getFirstName() + "_" +
-                candidate.getLastName() + "_CAT.pdf";
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(documentPath));
+                candidate.getLastName() + "_"+test.getPosition()+".pdf";
+        PdfWriter writer = PdfWriter.getInstance(document,byteArrayOutputStream);
 
         document.open();
         drawHeader();
-        PdfTestDto test = initDto();
         PdfContentByte cbPie = writer.getDirectContent();
         PdfTemplate pie = cbPie.createTemplate(PageSize.A4.getWidth(), 300);
         Graphics2D pieChartG2D = new PdfGraphics2D(pie, PageSize.A4.getWidth(), 300);
@@ -131,7 +135,7 @@ public class ITextPdf {
         printQuestions(test.getQuestions(),test.getMarkedAnswers());
 
         document.close();
-        return documentPath;
+        return byteArrayOutputStream.toByteArray();
     }
 
     private void drawHeader() throws DocumentException, IOException {
@@ -166,7 +170,7 @@ public class ITextPdf {
         dateParagraph.setTabSettings(new TabSettings(150f));
         dateParagraph.add(Chunk.TABBING);
         if (candidate.getDate() != null) {
-            dateParagraph.add(new Chunk(candidate.getDate()));
+            dateParagraph.add(new Chunk(candidate.getDate().toString()));
         } else {
             dateParagraph.add(new Chunk("NA"));
         }
@@ -392,7 +396,7 @@ public class ITextPdf {
 
         return chart;
     }
-    private PdfTestDto initDto(){
+    public PdfTestDto initDto(){
         PdfTestDto test = new PdfTestDto();
         QuestionDto quest1 = new QuestionDto();
         QuestionDto quest2 = new QuestionDto();

@@ -33,8 +33,8 @@ public class CandidatesReports {
     private Integer numberOfQuestions;
     @Column(name = "test_result")
     private String testResult;
-    @Column(name = "test_report")
-    private byte[] testReport;
+    @Lob
+    private byte[] pdfResult;
 
     public CandidatesReports() {
         //default
@@ -112,13 +112,11 @@ public class CandidatesReports {
         this.testResult = testResult;
     }
 
-    public byte[] getTestReport() {
-        return testReport;
+    public byte[] getPdfResult() {
+        return pdfResult;
     }
 
-    public void setTestReport(byte[] testReport) {
-        this.testReport = testReport;
+    public void setPdfResult(final byte[] pdfResult) {
+        this.pdfResult = pdfResult;
     }
-
-
 }
