@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Peter on 4.11.2015.
+ * Created by Lubomir on 11/3/2015.
  */
 
 @Service
@@ -78,6 +78,17 @@ public class TestService {
             }
             question.setCategory(null);
         }
+        return testDto;
+    }
+
+    /**
+     * Returns test by id without option answer
+     *
+     * @param id of test
+     * @return
+     */
+    public TestDto getTestByIdForAdmin(Integer id) {
+        TestDto testDto = testsAssembler.extractDtoFromDomain(testsDao.findById(id));
         return testDto;
     }
 

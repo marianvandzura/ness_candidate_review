@@ -1,0 +1,65 @@
+<h2>Users</h2>
+<button class="btn btn-default btn-xs" ng-click="showCreateModal()"><span class="glyphicon glyphicon-plus"></span> Add new user</button>
+<br><br>
+<div class="modal fade" id="detailModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Detail of John Carrot</h4>
+      </div>
+      <div class="modal-body">
+        <label>Username</label>
+        <input type="text" ng-disabled="action == 'edit'" ng-model="info.user_name" class="form-control input-sm">
+        <label>Email</label>
+        <input type="text" ng-disabled="action == 'edit'" ng-model="info.email" class="form-control input-sm">
+        <label>Password</label>
+        <input type="text" ng-model="info.password_old" class="form-control input-sm">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="info.enabled">
+            Enabled
+          </label>
+        </div>
+        <!--div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="info.role">
+            ADMIN
+          </label>
+        </div-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" ng-if="info.user_id == null" class="btn btn-default" ng-click="createUser(info)">Add user</button>
+        <button type="button" ng-if="info.user_id != null" class="btn btn-default" ng-click="editUser(info)">Edit user</button>
+        <button type="button" class="btn btn-default" ng-click="hideModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<label for="filterInput">Filter:</label>
+<input type="text" class="form-control" id="filterInput" ng-model="search">
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>User ID</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Edit</th>
+    <th>Remove</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="user in users | filter: search">
+    <td>{{user.user_id}}</td>
+    <td>{{user.user_name}}</td>
+    <td>{{user.email}}</td>
+    <!--td>
+      <span ng-if="user.enabled == true" class="glyphicon glyphicon-ok"></span>
+      <span ng-if="user.enabled == false" class="glyphicon glyphicon-remove"></span>
+    </td-->
+    <td><span ng-click="showEditModal(user)" class="glyphicon glyphicon-user"></span></td>
+    <td><span ng-click="deleteUser(user)" class="glyphicon glyphicon-remove"></span></td>
+  </tr>
+
+  </tbody>
+</table>

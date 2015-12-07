@@ -9,7 +9,15 @@ import java.util.List;
  */
 public interface ISettingsDao {
 
+    /**
+     * add new setting
+     * @param setting
+     */
     void addSetting(Settings setting);
 
+    /**
+     * get all settings
+     * @return
+     */
     List<Settings> getAllSettings();
 }

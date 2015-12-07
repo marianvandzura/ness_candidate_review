@@ -1,0 +1,20 @@
+    <h2>Test control</h2>
+    <p>Create, edit and manage tests for applicants.</p>
+
+    <h2>Your tests</h2>
+    <span class="label label-primary">Your tests: {{tests.length}} </span>
+    <span class="label label-success">Active tests: {{activeTests()}} </span>
+    <span class="label label-warning">Inactive tests: {{tests.length - activeTests()}} </span>
+    <a href="#/editTest/0" class="btn my-right btn-primary">Create new test!</a>
+    <br><br>
+    <div class="list-group">
+      <a href="#/editTest/{{test.id}}" class="list-group-item" ng-class="test.visible ? 'success' : 'warning'" ng-repeat="test in tests">
+        <div ng-click="removeTest(test)">
+          <span class="glyphicon glyphicon-remove my-right" ng-click="removeTest(test)"></span>
+        </div>
+        <h4 class="list-group-item-heading">{{test.name}} </h4>
+        <b>{{test.position}}</b>
+        <p class="list-group-item-text">{{test.info}}</p>
+      </a>
+    </div>
+

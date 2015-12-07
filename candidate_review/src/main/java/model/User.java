@@ -2,6 +2,7 @@ package model;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Created by Marian_Vandzura on 27.10.2015.
@@ -16,7 +17,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
 
-    @Column(name = "user_name", unique = true,nullable = false, columnDefinition = "varchar(255) default 'abc'")
+    @Column(name = "user_name", nullable = false, columnDefinition = "varchar(255) default 'user_name'")
     private String userName;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
@@ -28,9 +29,25 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable
     private Collection<UserRole> userRoles;
+
+    @PreRemove
+    private void onUserRemoved() {
+        for (UserRole role : userRoles) {
+            //remove reference from role to user
+            Collection<User> allUsers = role.getUsers();
+            Iterator<User> iterator = allUsers.iterator();
+            while (iterator.hasNext()) {
+                User user = iterator.next();
+                if (user.equals(this)) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+    }
 
     public User() {
         //default

@@ -1,0 +1,33 @@
+<div class="well">
+  <strong>{{question.question}}</strong>
+  <form>
+    <div ng-show="question.type == 'checkbox'" ng-repeat="item in question.options">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" ng-model="item.truly">
+          {{item.option}}
+          {{item.truly}}
+        </label>
+      </div>
+    </div>
+    <div ng-show="question.type == 'combobox'" ng-repeat="item in question.options">
+      <div class="radio">
+        <label>
+          <input type="radio" name="radioButtons" ng-model="item.truly">
+          {{item.option}}
+          {{item.truly}}
+        </label>
+      </div>
+    </div>
+    <input type="text" ng-show="question.type == 'text'" class="form-control" placeholder="Here ..." ng-model="question.result">
+    <div ng-show="question.type == 'code'">
+      <textarea ui-codemirror="cmOption" ng-model="code.code"></textarea>
+
+    </div>
+  </form>
+</div>
+<button ng-click="showScopes()">scopes </button>
+<a ng-if="isLast()" href="#/finish/" class="btn btn-success my-right">Finish</a>
+<a ng-if="!isLast()" href="#/question/{{questionId+1}}" class="btn btn-primary my-right">Next</a>
+<a ng-if="!isFirst()" href="#/question/{{questionId-1}}" class="btn btn-primary my-right">Previous</a>
+

@@ -96,9 +96,12 @@ public class QuestionAssembler {
         domain.setQuestion(dto.getQuestion());
         domain.setType(dto.getType());
         domain.setOptions(optionAssembler.populateDomainFromDto(dto.getOptions()));
-        int categoryId = dto.getCategoryId();
-        Categories category = categoriesDao.findById(categoryId);
-        domain.setCategory(category);
+        dto.getCategoryId();
+        if(dto.getCategoryId() != null){
+            int categoryId = dto.getCategoryId();
+            Categories category = categoriesDao.findById(categoryId);
+            domain.setCategory(category);
+        }
         return domain;
     }
 

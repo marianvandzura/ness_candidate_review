@@ -1,0 +1,18 @@
+<h2>About</h2>
+<p>Ness is a leading, global provider of software engineering services, enabling companies to expand their share of
+    the digital economy by providing award-winning user experience design, high-performance products & platforms,
+    and data analytics solutions utilizing today's most advanced tools and agile methods.</p>
+<h2>How to</h2>
+<p>This app is for testing candidates.</p>
+<p>To start please choose one of available tests below for domain you are applying. Contact administrator if you can't see any of tests.</p>
+
+<h2 ng-if="tests.length > 0">List of available tests</h2>
+<div class="list-group" >
+  <a ng-repeat="test in tests" href="#/test/{{test.id}}" class="list-group-item">
+    <h4 class="list-group-item-heading">{{test.name}}</h4>
+    <p class="list-group-item-text">{{test.info}}</p>
+  </a>
+
+</div>
+
+

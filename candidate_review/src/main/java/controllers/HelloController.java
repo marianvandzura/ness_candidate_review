@@ -8,6 +8,7 @@ import dto.UserDto;
 import model.UserPassword;
 import model.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -85,16 +86,14 @@ public class HelloController {
 		//create admin user if not exist
 		String userName = "admin";
 		if(userService.getUserByUserName(userName) == null) {
-			UserPassword userPassword = new UserPassword();
-			userPassword.setPassword(userName);
-			UserRole userRole = new UserRole();
-			userRole.setRole(UserRole.ROLE_ADMIN);
 			UserDto user = new UserDto();
 			user.setUserName("admin");
-			user.setUserPassword(userPassword);
+			Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+			String pwd = passwordEncoder.encodePassword(userName, null);
+			user.setUserPassword(pwd);
 			user.setEnabled(true);
-			List<UserRole> userRolesList = new ArrayList<>(1);
-			userRolesList.add(userRole);
+			List<String> userRolesList = new ArrayList<>(1);
+			userRolesList.add(UserRole.ROLE_ADMIN);
 			user.setUserRoles(userRolesList);
 			user.setEmail("admin@ness.sk");
 			UserDto savedUser = userService.addUser(user);

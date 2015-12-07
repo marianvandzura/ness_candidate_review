@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by Peter on 4.11.2015.
+ * Created by Marian_Vandzura on 6.11.2015.
  */
 @Component
 public class OptionAssembler {

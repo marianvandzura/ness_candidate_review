@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -8,6 +10,7 @@ import javax.persistence.*;
 /**
  * Created by Marian_Vandzura on 20.11.2015.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "user_password")
 public class UserPassword {
@@ -50,7 +53,9 @@ public class UserPassword {
 
     public void setPassword(String password) {
         //encode password
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+        //pwd is hashed in frontend because of rest
+//        Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+//        this.password = passwordEncoder.encodePassword(password, null);
+        this.password = password;
     }
 }

@@ -1,0 +1,72 @@
+body{
+  background: #cccccc;
+}
+.container{
+
+  padding-left: 50px;
+  padding-right: 50px;
+}
+#background{
+  background: url('media/background.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.top {
+  height: 200px;
+  padding-top: 20px;
+  line-height: 50px;
+  overflow: hidden;
+  font-size: 15px;
+}
+.my-fluid {
+  max-width: 100%;
+  height: auto;
+}
+.my-wide {
+  font-family: "Segoe UI",Arial,sans-serif !important;
+  letter-spacing: 4px;
+}
+.my-right {
+  float: right !important;
+}
+.my-center {
+  text-align: center !important;
+}
+.my-small {
+  font-size: 12px !important;
+}
+.list-group-item.success{
+  z-index: 2;
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.list-group-item.warning{
+  z-index: 2;
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.dropdown-menu>li>div:hover {
+  color: #262626;
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+.dropdown-menu>li>div {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+
+.question-type-button{
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+

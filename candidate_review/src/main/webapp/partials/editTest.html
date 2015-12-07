@@ -1,0 +1,185 @@
+<div class="row" style="background-color: #f5f5f5; border-radius: 4px;">
+  <div class="col-md-6" ng-class="showRightBar == false ? 'col-md-12' : 'col-md-6'">
+    <br>
+    <div class="form-group">
+      <button type="button" ng-show="showRightBar == false" ng-click="showRightBar = true" class="btn btn-link my-right">
+        Show <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      </button>
+      <label for="name">Test name:</label>
+      <input type="text" class="form-control" id="name" ng-model="test.name">
+    </div>
+    <div class="form-group">
+      <label for="name">Position:</label>
+      <input type="text" class="form-control" id="position" ng-model="test.position">
+    </div>
+    <div class="form-group">
+      <label for="visible">Visible:</label><br>
+      <input type="checkbox" id="visible" ng-model="test.visible">
+    </div>
+    <div class="form-group">
+      <label for="info">Information about test:</label>
+      <textarea rows="3" class="form-control" id="info" ng-model="test.info"></textarea>
+    </div>
+    <hr>
+
+    <div ng-repeat="item in test.questions">
+      <div ng-if="item.type == 'combobox'"><!-- Form to create combo box question -->
+        <span class="my-right">
+          <small style="color: #cccccc">Question used in 4 tests</small>
+          <span class="glyphicon glyphicon-chevron-down" ng-show="item.show == false" ng-click="item.show = !item.show"></span>
+          <span class="glyphicon glyphicon-chevron-up" ng-show="item.show == true" ng-click="item.show = !item.show"></span>
+        </span>
+
+        <span><small style="color: #cccccc">Combobox question</small></span>
+        <div class="input-group" ng-init="item.show = true">
+          <input ng-disabled="item.copied" type="text" class="form-control" id="usr" ng-model="item.question">
+          <div class="input-group-btn">
+            <button type="button" ng-disabled="item.show != true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Copy and edit question</a></li>
+              <li><a ng-click="item.addNewOption()" href="">Add option</a></li>
+              <li><a href="">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="test.removeQuestion(item)" href="">Remove question from this test</a></li>
+            </ul>
+          </div>
+        </div>
+        <div ng-repeat="option in item.options" ng-show="item.show == true && !item.copied">
+          <div class="input-group" style="margin: 2px;">
+            <input type="text" class="form-control" style="margin-left: 15px;" ng-model="option.option">
+          <span class="input-group-btn">
+            <button class="btn btn-default glyphicon glyphicon-remove" ng-click="option.removeOption(option)" aria-hidden="true" type="button"></button>
+            <button ng-click="item.addNewOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" aria-hidden="true" type="button"></button>
+            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="question.changeCheck(); option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+          </span>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div ng-if="item.type == 'checkbox'"><!-- Form to create combo box question -->
+        <span class="my-right">
+          <small style="color: #cccccc">Question used in 4 tests</small>
+          <span class="glyphicon glyphicon-chevron-down" ng-show="item.show == false" ng-click="item.show = !item.show"></span>
+          <span class="glyphicon glyphicon-chevron-up" ng-show="item.show == true" ng-click="item.show = !item.show"></span>
+        </span>
+        <span><small style="color: #cccccc">Checkbox question</small></span>
+        <div class="input-group" ng-init="item.show = true" >
+          <input type="text" class="form-control" ng-model="item.question">
+          <div class="input-group-btn">
+            <button type="button" ng-disabled="item.show != true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Copy and edit question</a></li>
+              <li><a ng-click="item.addNewOption()" href="">Add option</a></li>
+              <li><a href="">Something else here</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="test.removeQuestion(item)" href="">Remove question from test</a></li>
+            </ul>
+          </div>
+        </div>
+        <div ng-repeat="option in item.options" ng-show="item.show == true">
+          <div class="input-group" style="margin: 2px;">
+            <input type="text" class="form-control" style="margin-left: 15px;" ng-model="option.option">
+            <span class="input-group-btn">
+              <button class="btn btn-default glyphicon glyphicon-remove" ng-click="option.removeOption(option)" aria-hidden="true" type="button"></button>
+              <button ng-click="item.addNewOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" aria-hidden="true" type="button"></button>
+              <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            </span>
+          </div>
+        </div>
+        <hr>
+      </div>
+
+      <div ng-if="item.type == 'text'"><!-- Form to create text question -->
+        <span class="my-right">
+          <small style="color: #cccccc">Question used in 3 tests</small>
+        </span>
+        <span><small style="color: #cccccc">Text question</small></span>
+        <div class="input-group" >
+          <input type="text" class="form-control" ng-model="item.question">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li><a href="">Copy and edit question</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a ng-click="test.removeQuestion(item)" href="">Remove question from test</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div ng-if="item.type == 'code'"><!-- Form to create check code question-->
+        <span class="my-right">
+          <small style="color: #cccccc">Question used in 2 tests</small>
+          <span class="glyphicon glyphicon-chevron-down" ng-show="item.show == false" ng-click="item.show = !item.show"></span>
+          <span class="glyphicon glyphicon-chevron-up" ng-show="item.show == true" ng-click="item.show = !item.show"></span>
+        </span>
+        <span><small style="color: #cccccc">Code question</small></span>
+        <div class="form-group">
+          <div class="input-group" ng-init="item.show = true">
+            <input type="text" class="form-control" ng-model="item.question">
+            <div class="input-group-btn">
+              <button type="button" ng-disabled="item.show != true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="">Copy and edit question</a></li>
+                <li><a ng-click="item.addOption()" href="">Add option</a></li>
+                <li><a href="">Something else here</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a ng-click="test.removeQuestion(item)" href="">Remove question from test</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="dropdown">
+            <label>Technology: </label><br>
+            <button class="btn btn-default dropdown-toggle" ng-disabled="item.show != true" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              {{item.lang}}
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <li ng-click="item.language = ''"> <a ng-click="item.language = ''; item.modeChanged()">Editor disabled</a></li>
+              <li ng-click="item.language = language.id" ng-repeat="language in languages"><a ng-click="question.language = language.id; item.lang = language.name; item.modeChanged(language.id);">{{language.name}}</a></li>
+            </ul>
+          </div>
+          <label >Code:</label>
+          <textarea ui-codemirror="item.cmOption" ng-model="item.code"></textarea>
+        </div>
+        <hr>
+      </div>
+    </div>
+
+
+    <hr>
+    <button type="button" class="btn btn-primary btn-block" ng-click="saveTest()">Save test</button>
+    <br>
+
+  </div>
+  <div class="col-md-6" ng-show="showRightBar == true" ng-init="showRightBar = true" style=" border-left: 2px solid #cccccc; margin-top: 13px; margin-bottom: 13px;">
+    <button type="button"  ng-click="showRightBar = false" class="btn btn-link my-right">
+      Hide <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </button>
+    <h5><b>Add new question</b></h5>
+    <div class="btn-group"  role="group" aria-label="...">
+      <button type="button" class="btn btn-default" ng-click="test.addNewQuestion('checkbox')">Checkbox question</button>
+      <button type="button" class="btn btn-default" ng-click="test.addNewQuestion('combobox')">Combobox question</button>
+      <button type="button" class="btn btn-default" ng-click="test.addNewQuestion('text')">Text question</button>
+      <button type="button" class="btn btn-default" ng-click="initCodeQuestion()">Code question</button>
+    </div>
+    <hr>
+    <label for="questionCategory">Add question from list</label>
+    <select id="questionCategory" class="form-control input" ng-model="selectedCategory" ng-options="category as category.category_name for category in categories"
+      ng-change="changeCategory()">
+      <option></option>
+    </select>
+
+    <br>
+    <label for="questionSelect">Question</label>
+    <input type="text" class="form-control input-sm" placeholder="Search" style="margin-bottom: 5px;">
+    <select multiple id="questionSelect" class="form-control" ng-model="selectedQuestion" ng-options="question as question.question for question in categoryQuestions"
+             style="height: 500px">
+    </select>
+    <br>
+    <button type="button" ng-click="questionSelected()" class="btn btn-primary btn-block">Add question to my test</button>
+  </div>
+</div>
+

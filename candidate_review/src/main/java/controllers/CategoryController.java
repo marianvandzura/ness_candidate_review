@@ -36,7 +36,7 @@ public class CategoryController {
      *
      * @return List of categories
      */
-    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
     @ResponseBody
     public List<CategoryDto> getAllCategories() {
         List<CategoryDto> result = categoryService.getAllCategories();
