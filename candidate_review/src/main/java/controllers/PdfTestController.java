@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pdf.ITextPdf;
 import service.CandidateReportService;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class PdfTestController {
 
     @RequestMapping(value = "/pdf/test", method = RequestMethod.GET)
     @ResponseBody
-    public String createPdf(){
+    public String createPdfTest(){
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         CandidateDto candidate = new CandidateDto ();
@@ -68,61 +65,44 @@ public class PdfTestController {
     @RequestMapping(value = "/report", method = RequestMethod.POST)
     public ResponseEntity saveReport(@RequestBody CandidateDto report) {
 
-
-        report.setPdf(createBytePdf());
         CandidateDto savedReport = candidateReportService.saveOrUpdateReport(report);
-        try {
-
-            File file = new File("E:\\testovanie.pdf");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileOutputStream fos = new FileOutputStream(file);
-
-            fos.write(savedReport.getPdf());
-            fos.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return new ResponseEntity<>(savedReport, HttpStatus.OK);
     }
-    private byte[] createBytePdf() {
-        CandidateDto candidate = new CandidateDto ();
-        candidate.setFirstName("Karol");
-        candidate.setLastName("Papagaj");
-        candidate.setEmail("somPan@barofrajer.is");
-//        candidate.setDate(dateFormat.format(new Date()));
-        candidate.setTestName("Test for Java junior developer.");
-        candidate.setTotalTime(40);
-
-        byte[] byteFile = null;
-        try {
-            ITextPdf IText = new ITextPdf();
-            byteFile = IText.createPdf(candidate,IText.initDto());
-            File file = new File("E:\\sompan.pdf");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileOutputStream fos = new FileOutputStream(file);
-
-            fos.write(byteFile);
-            fos.close();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-        InputStream inputStream = null;
-
-        return byteFile;
-    }
+//    private byte[] createBytePdf() {
+//        CandidateDto candidate = new CandidateDto ();
+//        candidate.setFirstName("Karol");
+//        candidate.setLastName("Papagaj");
+//        candidate.setEmail("somPan@barofrajer.is");
+////        candidate.setDate(dateFormat.format(new Date()));
+//        candidate.setTestName("Test for Java junior developer.");
+//        candidate.setTotalTime(40);
+//
+//        byte[] byteFile = null;
+//        try {
+//            ITextPdf IText = new ITextPdf();
+//            byteFile = IText.createPdf(candidate,IText.initDto());
+//            File file = new File("E:\\sompan.pdf");
+//            if (!file.exists()) {
+//                file.createNewFile();
+//            }
+//
+//            FileOutputStream fos = new FileOutputStream(file);
+//
+//            fos.write(byteFile);
+//            fos.close();
+//        } catch (DocumentException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//        InputStream inputStream = null;
+//
+//        return byteFile;
+//    }
 
     /**
      * update report
