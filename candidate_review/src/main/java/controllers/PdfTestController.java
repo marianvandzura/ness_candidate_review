@@ -197,6 +197,8 @@ public class PdfTestController {
 
         CandidateDto savedReport = candidateReportService.saveAndGeneratePdf(test.getCadidate(), test);
 
+        savedReport.setPdf(new byte[0]);
+
         return new ResponseEntity<>(savedReport, HttpStatus.OK);
     }
 
