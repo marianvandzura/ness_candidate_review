@@ -110,7 +110,7 @@ public class PdfTestController {
 
     }
 
-    @RequestMapping(value = "/report/generate/download/",method = RequestMethod.GET)
+    @RequestMapping(value = "/report/save/download/",method = RequestMethod.GET)
     public void saveAndDownload(HttpServletRequest request,
                                   HttpServletResponse response, @RequestBody PdfTestDto test) throws IOException {
         String mimeType = "application/octet-stream";
@@ -169,16 +169,33 @@ public class PdfTestController {
         return candidateReportService.geResultById(reportId);
     }
 
+    @RequestMapping(value = "/report/getreports", method = RequestMethod.GET)
+    public ResponseEntity getAllReports(){
+
+        List<CandidateDto> reports = candidateReportService.getAll();
+        for(CandidateDto report : reports) {
+            if(report != null) {
+                report.setPdf(new byte[0]);
+            }
+        }
+        if(reports != null) {
+            return new ResponseEntity<> (reports,HttpStatus.OK);
+        } else {
+            return new ResponseEntity("NOT FOUND", HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     /**
      * Save report
      *
-     * @param report
+     * @param test
      * @return HTTP response
      */
     @RequestMapping(value = "/report", method = RequestMethod.POST)
-    public ResponseEntity saveReport(@RequestBody CandidateDto report) {
+    public ResponseEntity saveReport(@RequestBody PdfTestDto test) {
 
-        CandidateDto savedReport = candidateReportService.saveOrUpdateReport(report);
+        CandidateDto savedReport = candidateReportService.saveAndGeneratePdf(test.getCadidate(), test);
 
         return new ResponseEntity<>(savedReport, HttpStatus.OK);
     }
@@ -197,7 +214,7 @@ public class PdfTestController {
         return new ResponseEntity<>(updatedReport, HttpStatus.OK);
     }
 
-
+    @Deprecated
     @RequestMapping(value = "/report/{frstName}/{lastName}", method = RequestMethod.GET)
     public ResponseEntity findByName(@PathVariable(value = "frstName") String frstName,
                                      @PathVariable(value = "lastName") String lastName) {
@@ -212,6 +229,7 @@ public class PdfTestController {
 
     }
 
+    @Deprecated
     @RequestMapping(value = "/report/createPdf", method = RequestMethod.GET)
     public ResponseEntity generatePdf(@RequestBody CandidateDto report,@RequestBody PdfTestDto test){
 
@@ -223,17 +241,4 @@ public class PdfTestController {
         }
 
     }
-
-    @RequestMapping(value = "/report/saveGen", method = RequestMethod.PUT)
-    public ResponseEntity saveAndGeneratePdf(@RequestBody PdfTestDto test){
-
-        CandidateDto savedDto = candidateReportService.saveAndGeneratePdf(test.getCadidate(),test);
-        if(savedDto != null) {
-            return new ResponseEntity<> (savedDto,HttpStatus.OK);
-        } else {
-            return new ResponseEntity("NOT FOUND", HttpStatus.NOT_FOUND);
-        }
-
-    }
-
 }

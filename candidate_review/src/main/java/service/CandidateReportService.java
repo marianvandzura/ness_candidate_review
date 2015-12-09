@@ -66,6 +66,10 @@ public class CandidateReportService {
         return reportAssembler.extractDtoFromDomain(candidatesReportsDao.findByFullName(firstName, lastName));
     }
 
+    public List<CandidateDto> getAll() {
+        return reportAssembler.extractDtoFromDomain(candidatesReportsDao.getAllCandidatesReports());
+    }
+
 
 }
 
