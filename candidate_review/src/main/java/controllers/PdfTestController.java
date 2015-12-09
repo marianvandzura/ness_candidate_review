@@ -91,7 +91,7 @@ public class PdfTestController {
         CandidateDto report = candidateReportService.geResultById(reportId);
         byte[] buffer = report.getPdf();
 
-        if(buffer == null) {
+        if(buffer != null) {
             response.setContentType(mimeType);
             response.setContentLength(buffer.length);
 
@@ -118,7 +118,7 @@ public class PdfTestController {
 
         byte[] buffer = report.getPdf();
 
-        if(buffer == null) {
+        if(buffer != null) {
             response.setContentType(mimeType);
             response.setContentLength(buffer.length);
 
@@ -146,7 +146,7 @@ public class PdfTestController {
 
         byte[] buffer = candidateReportService.createPdf(null, test);
 
-        if(buffer == null) {
+        if(buffer != null) {
             response.setContentType(mimeType);
             response.setContentLength(buffer.length);
 
