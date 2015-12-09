@@ -1,6 +1,5 @@
 package controllers;
 
-import com.itextpdf.text.DocumentException;
 import dto.CandidateDto;
 import dto.PdfTestDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pdf.ITextPdf;
 import service.CandidateReportService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -23,52 +23,32 @@ public class PdfTestController {
 
     @Autowired
     CandidateReportService candidateReportService;
-
-    @RequestMapping(value = "/pdf/test", method = RequestMethod.GET)
-    @ResponseBody
-    public String createPdfTest(){
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        CandidateDto candidate = new CandidateDto ();
-        candidate.setFirstName("Karol");
-        candidate.setLastName("Papagaj");
-        candidate.setEmail("somPan@barofrajer.is");
-//        candidate.setDate(dateFormat.format(new Date()));
-        candidate.setTestName("Test for Java junior developer.");
-        candidate.setTotalTime(40);
-
-        String filePath = null;
-        try {
-            ITextPdf IText = new ITextPdf();
-            //filePath = IText.createPdf(candidate,IText.initDto());
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return filePath;
-    }
-
-    @RequestMapping(value = "/report/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public CandidateDto getReportById(@PathVariable(value = "id") Integer reportId) {
-        //init arrayList because of performance
-        return candidateReportService.geResultById(reportId);
-    }
-
-    /**
-     * Save report
-     *
-     * @param report
-     * @return HTTP response
-     */
-    @RequestMapping(value = "/report", method = RequestMethod.POST)
-    public ResponseEntity saveReport(@RequestBody CandidateDto report) {
-
-        CandidateDto savedReport = candidateReportService.saveOrUpdateReport(report);
-
-        return new ResponseEntity<>(savedReport, HttpStatus.OK);
-    }
+//
+//    @RequestMapping(value = "/pdf/test", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String createPdfTest(){
+//
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//        CandidateDto candidate = new CandidateDto ();
+//        candidate.setFirstName("Karol");
+//        candidate.setLastName("Papagaj");
+//        candidate.setEmail("somPan@barofrajer.is");
+////        candidate.setDate(dateFormat.format(new Date()));
+//        candidate.setTestName("Test for Java junior developer.");
+//        candidate.setTotalTime(40);
+//
+//        String filePath = null;
+//        try {
+//            ITextPdf IText = new ITextPdf();
+//            //filePath = IText.createPdf(candidate,IText.initDto());
+//        } catch (DocumentException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return filePath;
+//    }
+//
 //    private byte[] createBytePdf() {
 //        CandidateDto candidate = new CandidateDto ();
 //        candidate.setFirstName("Karol");
@@ -82,7 +62,7 @@ public class PdfTestController {
 //        try {
 //            ITextPdf IText = new ITextPdf();
 //            byteFile = IText.createPdf(candidate,IText.initDto());
-//            File file = new File("E:\\sompan.pdf");
+//            File file = new File("E:\\sompanssss.pdf");
 //            if (!file.exists()) {
 //                file.createNewFile();
 //            }
@@ -103,6 +83,58 @@ public class PdfTestController {
 //
 //        return byteFile;
 //    }
+
+    @RequestMapping(value = "/report/download/{id}",method = RequestMethod.GET)
+    public void doDownload(HttpServletRequest request,
+                           HttpServletResponse response, @PathVariable(value = "id") Integer reportId) throws IOException {
+
+        String mimeType = "application/octet-stream";
+        CandidateDto report = candidateReportService.geResultById(reportId);
+        byte[] buffer = report.getPdf();
+
+        // set content attributes for the response
+        response.setContentType(mimeType);
+        response.setContentLength(buffer.length);
+
+        String fileName = report.getFirstName() + " " + report.getLastName() +
+                report.getPosition() != null ?  " " + report.getPosition() : "" + ".pdf";
+        // set headers for the response
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                fileName);
+        response.setHeader(headerKey, headerValue);
+
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+
+
+        outStream.write(buffer, 0,buffer.length);
+
+    }
+
+    @RequestMapping(value = "/report/full/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public CandidateDto getFullReportById(@PathVariable(value = "id") Integer reportId) {
+        CandidateDto report = candidateReportService.geResultById(reportId);
+
+        report.setPdf(new byte[0]);
+
+        return candidateReportService.geResultById(reportId);
+    }
+
+    /**
+     * Save report
+     *
+     * @param report
+     * @return HTTP response
+     */
+    @RequestMapping(value = "/report", method = RequestMethod.POST)
+    public ResponseEntity saveReport(@RequestBody CandidateDto report) {
+
+        CandidateDto savedReport = candidateReportService.saveOrUpdateReport(report);
+
+        return new ResponseEntity<>(savedReport, HttpStatus.OK);
+    }
 
     /**
      * update report

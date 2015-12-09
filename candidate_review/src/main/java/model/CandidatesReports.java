@@ -35,6 +35,8 @@ public class CandidatesReports {
     private String testResult;
     @Lob
     private byte[] pdfResult;
+    @Column(name = "position")
+    private String position;
 
     public CandidatesReports() {
         //default
@@ -118,5 +120,13 @@ public class CandidatesReports {
 
     public void setPdfResult(final byte[] pdfResult) {
         this.pdfResult = pdfResult;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 }

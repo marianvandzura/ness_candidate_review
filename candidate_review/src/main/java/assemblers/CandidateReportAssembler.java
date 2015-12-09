@@ -31,6 +31,7 @@ public class CandidateReportAssembler {
         dto.setNumberOfQuestions(domain.getNumberOfQuestions());
         dto.setPdf(domain.getPdfResult());
         dto.setTestResult(domain.getTestResult());
+        dto.setPosition(domain.getPosition());
         return dto;
     }
 
@@ -66,6 +67,7 @@ public class CandidateReportAssembler {
         domain.setNumberOfQuestions(dto.getNumberOfQuestions());
         domain.setPdfResult(dto.getPdf());
         domain.setTestResult(dto.getTestResult());
+        domain.setPosition(dto.getPosition());
         return domain;
     }
 

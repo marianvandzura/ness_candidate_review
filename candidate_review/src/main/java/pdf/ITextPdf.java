@@ -113,9 +113,6 @@ public class ITextPdf {
     public byte[] createPdf(final CandidateDto candidate, final PdfTestDto test)
             throws DocumentException, IOException {
 
-
-        String documentPath = System.getProperty("user.home") + "\\" + candidate.getFirstName() + "_" +
-                candidate.getLastName() + "_"+test.getPosition()+".pdf";
         PdfWriter writer = PdfWriter.getInstance(document,byteArrayOutputStream);
 
         document.open();
@@ -396,6 +393,7 @@ public class ITextPdf {
 
         return chart;
     }
+
     public PdfTestDto initDto(){
         PdfTestDto test = new PdfTestDto();
         QuestionDto quest1 = new QuestionDto();

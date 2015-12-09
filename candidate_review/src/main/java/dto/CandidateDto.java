@@ -17,6 +17,8 @@ public class CandidateDto {
 
     private String testName;
 
+    private String position;
+
     private Timestamp date;
 
     private Integer totalTime;
@@ -24,8 +26,6 @@ public class CandidateDto {
     private Integer numberOfQuestions;
 
     private String testResult;
-
-    private String testPath;
 
     private byte[] pdf;
 
@@ -77,14 +77,6 @@ public class CandidateDto {
         this.testResult = testResult;
     }
 
-    public String getTestPath() {
-        return testPath;
-    }
-
-    public void setTestPath(String testPath) {
-        this.testPath = testPath;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -117,4 +109,11 @@ public class CandidateDto {
         this.pdf = pdf;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
 }
