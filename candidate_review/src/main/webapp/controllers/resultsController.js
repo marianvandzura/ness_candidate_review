@@ -1,8 +1,18 @@
 /**
  * Created by sajaj on 05.12.2015.
  */
-angular.module('NESS-TCFA').controller('resultsController',['$scope', function ($scope) {
-  $scope.results = [{
+angular.module('NESS-TCFA').controller('resultsController',['$scope','$http','$rootScope', function ($scope, $http, $rootScope) {
+  $http.get($rootScope.serverUrl+'admin/reports?access_token='+$rootScope.settings.auth.access_token).then(
+      function(response){
+        $scope.results = response.data;
+        console.log(results);
+      },
+      function(){
+        console.log("Connecting problem!");
+        $rootScope.connProblem.problem = true;
+      }
+  );
+  /*$scope.results = [{
     name: "Alfred",
     surname: "Stan",
     email: "alfred.stan@hotmail.com",
@@ -42,10 +52,21 @@ angular.module('NESS-TCFA').controller('resultsController',['$scope', function (
 
     }
   }
-  ];
+  ];*/
 
   $scope.hideModal = function(){
     $('#detailModal').modal('hide');
   };
-  $scope.exportToPDF = function(){}; //TODO: result to PDF
+  $scope.getPdf = function(id){
+    $http.get($rootScope.serverUrl+'admin/getPdf/'+ id +'?access_token='+$rootScope.settings.auth.access_token).then(
+        function(response){
+          $scope.results = response.data;
+          console.log(results);
+        },
+        function(){
+          console.log("Connecting problem!");
+          $rootScope.connProblem.problem = true;
+        }
+    );
+  };
 }]);
