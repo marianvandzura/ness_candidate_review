@@ -91,8 +91,13 @@ public class PdfTestController {
         CandidateDto report = candidateReportService.geResultById(reportId);
         byte[] buffer = report.getPdf();
 
+        if(buffer == null) {
+            buffer = new byte[0];
+        }
         response.setContentType(mimeType);
         response.setContentLength(buffer.length);
+
+
 
         String fileName = report.getFirstName() + " " + report.getLastName() +
                 (report.getPosition() != null ?  " " + report.getPosition() : "") + ".pdf";
@@ -117,6 +122,10 @@ public class PdfTestController {
         CandidateDto report = candidateReportService.saveAndGeneratePdf(test.getCandidate(), test);
 
         byte[] buffer = report.getPdf();
+
+        if(buffer == null) {
+            buffer = new byte[0];
+        }
 
         response.setContentType(mimeType);
         response.setContentLength(buffer.length);

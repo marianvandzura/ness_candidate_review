@@ -199,7 +199,8 @@ public class ITextPdf {
         titleParagraph.setAlignment(Element.ALIGN_CENTER);
         document.add(titleParagraph);
 
-        Paragraph nameParagraph = new Paragraph(candidate.getFirstName() + " " + candidate.getLastName(), arialFont12);
+        Paragraph nameParagraph = new Paragraph(candidate.getFirstName() + " " + candidate.getLastName() + ", " +
+                (candidate.getEmail() != null ? candidate.getEmail() : ""), arialFont12);
         nameParagraph.setAlignment(Element.ALIGN_CENTER);
         document.add(nameParagraph);
 
@@ -265,7 +266,6 @@ public class ITextPdf {
         document.add(resultParagraph);
 
     }
-
 
     private int countQuestionsByState(final QuestionState state, final List<QuestionDto> questions,
                                                 final Map<Integer, List<Integer>> markedAnswers){
