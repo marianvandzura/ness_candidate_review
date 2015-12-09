@@ -92,27 +92,22 @@ public class PdfTestController {
         byte[] buffer = report.getPdf();
 
         if(buffer == null) {
-            buffer = new byte[0];
-        }
-        response.setContentType(mimeType);
-        response.setContentLength(buffer.length);
+            response.setContentType(mimeType);
+            response.setContentLength(buffer.length);
 
-
-
-        String fileName = report.getFirstName() + " " + report.getLastName() +
+            String fileName = report.getFirstName() + " " + report.getLastName() +
                 (report.getPosition() != null ?  " " + report.getPosition() : "") + ".pdf";
 
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"",
+            String headerKey = "Content-Disposition";
+            String headerValue = String.format("attachment; filename=\"%s\"",
                 fileName);
-        response.setHeader(headerKey, headerValue);
+            response.setHeader(headerKey, headerValue);
 
-        // get output stream of the response
-        OutputStream outStream = response.getOutputStream();
+            // get output stream of the response
+            OutputStream outStream = response.getOutputStream();
 
-
-        outStream.write(buffer, 0,buffer.length);
-
+            outStream.write(buffer, 0,buffer.length);
+        }
     }
 
     @RequestMapping(value = "/report/save/download/",method = RequestMethod.GET)
@@ -124,24 +119,23 @@ public class PdfTestController {
         byte[] buffer = report.getPdf();
 
         if(buffer == null) {
-            buffer = new byte[0];
-        }
+            response.setContentType(mimeType);
+            response.setContentLength(buffer.length);
 
-        response.setContentType(mimeType);
-        response.setContentLength(buffer.length);
-
-        String fileName = report.getFirstName() + " " + report.getLastName() +
+            String fileName = report.getFirstName() + " " + report.getLastName() +
                 (report.getPosition() != null ?  " " + report.getPosition() : "") + ".pdf";
 
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"",
+            String headerKey = "Content-Disposition";
+            String headerValue = String.format("attachment; filename=\"%s\"",
                 fileName);
-        response.setHeader(headerKey, headerValue);
+            response.setHeader(headerKey, headerValue);
 
-        // get output stream of the response
-        OutputStream outStream = response.getOutputStream();
+            // get output stream of the response
+            OutputStream outStream = response.getOutputStream();
 
-        outStream.write(buffer, 0,buffer.length);
+            outStream.write(buffer, 0,buffer.length);
+
+        }
     }
 
     @RequestMapping(value = "/report/generate/plain/download/",method = RequestMethod.GET)
@@ -152,20 +146,22 @@ public class PdfTestController {
 
         byte[] buffer = candidateReportService.createPdf(null, test);
 
-        response.setContentType(mimeType);
-        response.setContentLength(buffer.length);
+        if(buffer == null) {
+            response.setContentType(mimeType);
+            response.setContentLength(buffer.length);
 
-        String fileName = test.getPosition() + " test.pdf";
+            String fileName = test.getPosition() + " test.pdf";
 
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"",
-                fileName);
-        response.setHeader(headerKey, headerValue);
+            String headerKey = "Content-Disposition";
+            String headerValue = String.format("attachment; filename=\"%s\"",
+                    fileName);
+            response.setHeader(headerKey, headerValue);
 
-        // get output stream of the response
-        OutputStream outStream = response.getOutputStream();
+            // get output stream of the response
+            OutputStream outStream = response.getOutputStream();
 
-        outStream.write(buffer, 0,buffer.length);
+            outStream.write(buffer, 0, buffer.length);
+        }
     }
 
     @RequestMapping(value = "/report/full/{id}", method = RequestMethod.GET)
