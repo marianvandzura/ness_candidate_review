@@ -87,7 +87,6 @@ public class PdfTestController {
     @RequestMapping(value = "/report/download/{id}",method = RequestMethod.GET)
     public void downloadPdfReport(HttpServletRequest request,
                            HttpServletResponse response, @PathVariable(value = "id") Integer reportId) throws IOException {
-
         String mimeType = "application/octet-stream";
         CandidateDto report = candidateReportService.geResultById(reportId);
         byte[] buffer = report.getPdf();
