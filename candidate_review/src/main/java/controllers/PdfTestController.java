@@ -65,7 +65,7 @@ public class PdfTestController {
         byte[] byteFile = null;
         try {
             ITextPdf IText = new ITextPdf();
-            byteFile = IText.createPdf(null,IText.initDto());
+            byteFile = IText.createPdf(candidate,IText.initDto());
             File file = new File("E:\\test.pdf");
             if (!file.exists()) {
                 file.createNewFile();
@@ -114,7 +114,7 @@ public class PdfTestController {
     public void saveAndDownload(HttpServletRequest request,
                                   HttpServletResponse response, @RequestBody PdfTestDto test) throws IOException {
         String mimeType = "application/octet-stream";
-        CandidateDto report = candidateReportService.saveAndGeneratePdf(test.getCadidate(), test);
+        CandidateDto report = candidateReportService.saveAndGeneratePdf(test.getCandidate(), test);
 
         byte[] buffer = report.getPdf();
 
@@ -139,7 +139,7 @@ public class PdfTestController {
     public void generatePdfWithoutCandidate(HttpServletRequest request,
                                 HttpServletResponse response, @RequestBody PdfTestDto test) throws IOException {
         String mimeType = "application/octet-stream";
-        candidateReportService.createPdf(test.getCadidate(), test);
+        candidateReportService.createPdf(test.getCandidate(), test);
 
         byte[] buffer = candidateReportService.createPdf(null, test);
 
@@ -195,7 +195,7 @@ public class PdfTestController {
     @RequestMapping(value = "/report", method = RequestMethod.POST)
     public ResponseEntity saveReport(@RequestBody PdfTestDto test) {
 
-        CandidateDto savedReport = candidateReportService.saveAndGeneratePdf(test.getCadidate(), test);
+        CandidateDto savedReport = candidateReportService.saveAndGeneratePdf(test.getCandidate(), test);
 
         savedReport.setPdf(new byte[0]);
 
@@ -221,7 +221,7 @@ public class PdfTestController {
     public ResponseEntity findByName(@PathVariable(value = "frstName") String frstName,
                                      @PathVariable(value = "lastName") String lastName) {
 
-        List<CandidateDto> reports = candidateReportService.findByName(frstName,lastName);
+        List<CandidateDto> reports = candidateReportService.findByName(frstName, lastName);
 
         if(reports != null ){
             return new ResponseEntity<>(reports, HttpStatus.OK);
@@ -235,7 +235,7 @@ public class PdfTestController {
     @RequestMapping(value = "/report/createPdf", method = RequestMethod.GET)
     public ResponseEntity generatePdf(@RequestBody CandidateDto report,@RequestBody PdfTestDto test){
 
-        byte[] bytePdf = candidateReportService.createPdf(report,test);
+        byte[] bytePdf = candidateReportService.createPdf(report, test);
         if(bytePdf != null) {
             return new ResponseEntity<> ("CORRECT",HttpStatus.OK);
         } else {

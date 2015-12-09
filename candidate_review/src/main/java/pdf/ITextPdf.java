@@ -31,12 +31,25 @@ public class ITextPdf {
     private enum QuestionType {
             RADIO, CHECK, CODE, WRITEDOWN;
 
-
     }
 
     private enum QuestionState {
         CORRECT,PARTIALY_CORRECT,INCORRECT
     }
+
+    private final static String RADIO_TYPE = "combobox";
+
+    private final static String CHECK_TYPE = "checkbox";
+
+    private final static String CODE_TYPE = "code";
+
+    private final static String WRITE_TYPE = "text";
+
+    private final static String RADIO_TEXT = "only one";
+
+    private final static String CHECK_TEXT = "one or more";
+
+    private final static String WRITE_TEXT = "write down";
 
     private final static String FONT_AR = ".\\candidate_review\\arial.ttf";
 
@@ -225,7 +238,11 @@ public class ITextPdf {
         Paragraph percentageParagraph = new Paragraph("Success rate: ", arialFont12);
         percentageParagraph.setTabSettings(new TabSettings(150f));
         percentageParagraph.add(Chunk.TABBING);
-        percentageParagraph.add(new Chunk(df.format(getSuccessRate(test.getQuestions(), test.getMarkedAnswers())) + "%"));
+        if(getSuccessRate(test.getQuestions(), test.getMarkedAnswers()) > 0) {
+            percentageParagraph.add(new Chunk(df.format(getSuccessRate(test.getQuestions(), test.getMarkedAnswers())) + "%"));
+        } else {
+            percentageParagraph.add(new Chunk("0%"));
+        }
         document.add(percentageParagraph);
 //            }
         Paragraph descParagraph = new Paragraph("Test description: ", arialFont12);
@@ -259,7 +276,7 @@ public class ITextPdf {
             if(question.getOptions() != null) {
             for (OptionDto option : question.getOptions()) {
 
-                if (marked.contains(option.getId())) {
+                if (marked != null && marked.contains(option.getId())) {
                     if (option.getTruth()) {
                         numberOfCorrectMarked++;
                     } else {
@@ -298,7 +315,8 @@ public class ITextPdf {
     private int getNumOfValidatedQuestions(final List<QuestionDto> questions) {
         int numberOfValidated = 0;
         for(QuestionDto question : questions) {
-            if(question.getCode() == null) {
+            //question.getCode() == null
+            if(!CODE_TYPE.equals(question.getType()) || !WRITE_TYPE.equals(question.getType())) {
                 numberOfValidated++;
             }
         }
@@ -315,7 +333,7 @@ public class ITextPdf {
             if(question.getOptions() != null) {
                 for (OptionDto option : question.getOptions()) {
 
-                    if (marked.contains(option.getId())) {
+                    if (marked != null && marked.contains(option.getId())) {
                         if (option.getTruth()) {
                             numberOfCorrectMarked++;
                         } else {
@@ -345,23 +363,24 @@ public class ITextPdf {
         Paragraph questionParagraph;
         Paragraph optionParagraph;
         PdfPCell questionCell;
-        List<QuestionDto> codeQuestions = new ArrayList<QuestionDto>();
+        List<QuestionDto> otherQuestions = new ArrayList<QuestionDto>();
         int questionCounter = 1;
         for(QuestionDto question : questions) {
-            if (question.getCode() != null) {
-                codeQuestions.add(question);
+            if (CODE_TYPE.equals(question.getType()) || WRITE_TYPE.equals(question.getType())) {
+                otherQuestions.add(question);
             }
             else {
                 PdfPTable table = new PdfPTable(1);
                 questionCell = new PdfPCell();
-                questionParagraph = new Paragraph(questionCounter++ + ". " + question.getQuestion() +"("+question.getType()+")", this.arialBoldFont10);
+                questionParagraph = new Paragraph(questionCounter++ + ". " + question.getQuestion() +
+                        "(" + question.getType() + ")", this.arialBoldFont10);
                 questionCell.addElement(questionParagraph);
                 questionCell.addElement(Chunk.NEWLINE);
                 List<Integer> marked = markedAnswers.get(question.getId());
                 for (OptionDto option : question.getOptions()) {
                     optionParagraph = new Paragraph();
 
-                    if (marked.contains(option.getId())) {
+                    if (marked != null && marked.contains(option.getId())) {
                         if (option.getTruth()) {
                             optionParagraph.add(new Chunk(markedCorrectImg, 0, 0, true));
                         } else {
@@ -385,11 +404,12 @@ public class ITextPdf {
         }
         PdfPCell codeQuestionCell;
 
-        for(QuestionDto question : codeQuestions) {
+        for(QuestionDto question : otherQuestions) {
             PdfPTable codeTable = new PdfPTable(1);
             codeQuestionCell = new PdfPCell();
             codeQuestionCell.setFixedHeight((PageSize.A4.getHeight() - 140));
-            Paragraph codeQuestionParagraph = new Paragraph(question.getQuestion() + "("+question.getType()+")", arialFont10);
+            Paragraph codeQuestionParagraph = new Paragraph(question.getQuestion() + "(" +
+                    question.getType() + ")", arialFont10);
             Paragraph code = new Paragraph(question.getCode(), arialFont10);
             codeQuestionCell.addElement(codeQuestionParagraph);
             codeQuestionCell.addElement(code);
@@ -415,7 +435,7 @@ public class ITextPdf {
         dataSet.setValue("Incorrect question = " + incorrect, incorrect);
 
         JFreeChart chart = ChartFactory.createPieChart(
-                "I don't know :)", dataSet, true, true, false);
+                "Test Evaluation", dataSet, true, true, false);
 
         return chart;
     }
@@ -505,7 +525,7 @@ public class ITextPdf {
         quest13.setId(13);
 
         quest1.setQuestion("Which of these lines will compile? Select the four correct answers.");
-        quest1.setType(QuestionType.CHECK.toString());
+        quest1.setType(CHECK_TYPE);
         opt11.setId(11);
         opt11.setOption("short s = 20;");
         opt11.setTruth(true);
@@ -524,7 +544,7 @@ public class ITextPdf {
 
 
         quest2.setQuestion("Objekt pozost�va z:");
-        quest2.setType(QuestionType.RADIO.toString());
+        quest2.setType(RADIO_TYPE);
         opt21.setId(21);
         opt21.setOption("Met�d a oper�ci�.");
         opt21.setTruth(false);
@@ -540,7 +560,7 @@ public class ITextPdf {
 
         quest3.setQuestion("Ka�d� program v jazyku Java m� k dispoz�cii 3 �tandardn� I/O objekty. Ktor� s� to?\n" +
                 "Vyberte aspo� jednu odpove�.");
-        quest3.setType(QuestionType.RADIO.toString());
+        quest3.setType(RADIO_TYPE);
         opt31.setId(31);
         opt31.setOption("System1.out, System2.out, System3.out");
         opt31.setTruth(false);
@@ -560,7 +580,7 @@ public class ITextPdf {
 
         quest4.setQuestion("Ktor� z nasleduj�cich tvrden� je pravdiv� o System.in?\n" +
                 "Vyberte aspo� jednu odpove�.");
-        quest4.setType(QuestionType.RADIO.toString());
+        quest4.setType(RADIO_TYPE);
         opt41.setId(41);
         opt41.setOption("Je to objekt typu InputStream predstavuj�ci �tandardn� vstup.");
         opt41.setTruth(true);
@@ -575,7 +595,7 @@ public class ITextPdf {
 
 
         quest5.setQuestion("Ktor� z nasleduj�cich tvrden� o serializ�cii objektov s� pravdiv�.");
-        quest5.setType(QuestionType.CHECK.toString());
+        quest5.setType(CHECK_TYPE);
         opt51.setId(51);
         opt51.setOption("Trieda, ktorej objekt chceme serializova� mus� implementova� rozhranie\n" +
                 "Serializable.");
@@ -596,7 +616,7 @@ public class ITextPdf {
 
 
         quest6.setQuestion("Ktor� z nasleduj�cich k���ov�ch slov programovacieho jazyka Java indikuje dedi�nos�?");
-        quest6.setType(QuestionType.RADIO.toString());
+        quest6.setType(RADIO_TYPE);
         opt61.setId(61);
         opt61.setOption("extends");
         opt61.setTruth(true);
@@ -611,7 +631,7 @@ public class ITextPdf {
 
 
         quest7.setQuestion("Ktor� z nasleduj�cich mo�nost� vytv�ra objekt triedy Boat a prirad� ho do premennej sailBoat typu Boat?");
-        quest7.setType(QuestionType.RADIO.toString());
+        quest7.setType(RADIO_TYPE);
         opt71.setId(71);
         opt71.setOption("Boat sailBoat = new Boat();");
         opt71.setTruth(true);
@@ -630,7 +650,7 @@ public class ITextPdf {
 
 
         quest8.setQuestion("Ktor� z nasleduj�cich tvrden� o abstraktn�ch triedach s� pravdiv�:");
-        quest8.setType(QuestionType.RADIO.toString());
+        quest8.setType(RADIO_TYPE);
         opt81.setId(81);
         opt81.setOption("Trieda m��e dedi� od viacer�ch abstraktn�ch tried.");
         opt81.setTruth(false);
@@ -646,7 +666,7 @@ public class ITextPdf {
 
         quest9.setQuestion("Ako je mo�n� spr�stupni� posledn� element v nasleduj�com poli?\n" +
                 "int[] autoMobile = new int[13];");
-        quest9.setType(QuestionType.RADIO.toString());
+        quest9.setType(RADIO_TYPE);
         opt91.setId(91);
         opt91.setOption("autoMobile[13]");
         opt91.setTruth(false);
@@ -674,7 +694,11 @@ public class ITextPdf {
                 "s += \"World!\";\n" +
                 "}\n" +
                 "}");
+        quest10.setType(CODE_TYPE);
 
+        quest11.setQuestion("Čo bude vypísané na štandardný výstup?");
+
+        quest11.setType(WRITE_TYPE);
 
         List<QuestionDto> questions = new LinkedList<QuestionDto>();
 
@@ -698,6 +722,7 @@ public class ITextPdf {
         questions.add(quest8);
         questions.add(quest9);
         questions.add(quest10);
+        questions.add(quest11);
 
         test.setQuestions(questions);
 

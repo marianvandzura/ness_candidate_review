@@ -13,7 +13,7 @@ public class PdfTestDto extends TestDto {
     // Map will be used for creating test in PDF format.
     private Map<Integer, List<Integer>> markedAnswers;
 
-    private CandidateDto cadidate;
+    private CandidateDto candidate;
 
     public Map<Integer, List<Integer>> getMarkedAnswers() {
         return markedAnswers;
@@ -23,11 +23,11 @@ public class PdfTestDto extends TestDto {
         this.markedAnswers = markedAnswers;
     }
 
-    public CandidateDto getCadidate() {
-        return cadidate;
+    public CandidateDto getCandidate() {
+        return candidate;
     }
 
-    public void setCadidate(CandidateDto cadidate) {
-        this.cadidate = cadidate;
+    public void setCandidate(CandidateDto candidate) {
+        this.candidate = candidate;
     }
 }
