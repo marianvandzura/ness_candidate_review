@@ -1,5 +1,6 @@
 package controllers;
 
+import com.itextpdf.text.DocumentException;
 import dto.CandidateDto;
 import dto.PdfTestDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pdf.ITextPdf;
 import service.CandidateReportService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -49,56 +53,51 @@ public class PdfTestController {
 //        return filePath;
 //    }
 //
-//    private byte[] createBytePdf() {
-//        CandidateDto candidate = new CandidateDto ();
-//        candidate.setFirstName("Karol");
-//        candidate.setLastName("Papagaj");
-//        candidate.setEmail("somPan@barofrajer.is");
-////        candidate.setDate(dateFormat.format(new Date()));
-//        candidate.setTestName("Test for Java junior developer.");
-//        candidate.setTotalTime(40);
-//
-//        byte[] byteFile = null;
-//        try {
-//            ITextPdf IText = new ITextPdf();
-//            byteFile = IText.createPdf(candidate,IText.initDto());
-//            File file = new File("E:\\sompanssss.pdf");
-//            if (!file.exists()) {
-//                file.createNewFile();
-//            }
-//
-//            FileOutputStream fos = new FileOutputStream(file);
-//
-//            fos.write(byteFile);
-//            fos.close();
-//        } catch (DocumentException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//
-//        InputStream inputStream = null;
-//
-//        return byteFile;
-//    }
+    private byte[] createBytePdf() {
+        CandidateDto candidate = new CandidateDto ();
+        candidate.setFirstName("Karol");
+        candidate.setLastName("Papagaj");
+        candidate.setEmail("somPan@barofrajer.is");
+//        candidate.setDate(dateFormat.format(new Date()));
+        candidate.setTestName("Test for Java junior developer.");
+        candidate.setTotalTime(40);
+
+        byte[] byteFile = null;
+        try {
+            ITextPdf IText = new ITextPdf();
+            byteFile = IText.createPdf(null,IText.initDto());
+            File file = new File("E:\\test.pdf");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            FileOutputStream fos = new FileOutputStream(file);
+
+            fos.write(byteFile);
+            fos.close();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return byteFile;
+    }
 
     @RequestMapping(value = "/report/download/{id}",method = RequestMethod.GET)
-    public void doDownload(HttpServletRequest request,
+    public void downloadPdfReport(HttpServletRequest request,
                            HttpServletResponse response, @PathVariable(value = "id") Integer reportId) throws IOException {
 
         String mimeType = "application/octet-stream";
         CandidateDto report = candidateReportService.geResultById(reportId);
         byte[] buffer = report.getPdf();
 
-        // set content attributes for the response
         response.setContentType(mimeType);
         response.setContentLength(buffer.length);
 
         String fileName = report.getFirstName() + " " + report.getLastName() +
                 (report.getPosition() != null ?  " " + report.getPosition() : "") + ".pdf";
-        // set headers for the response
+
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"",
                 fileName);
@@ -110,6 +109,55 @@ public class PdfTestController {
 
         outStream.write(buffer, 0,buffer.length);
 
+    }
+
+    @RequestMapping(value = "/report/generate/download/",method = RequestMethod.GET)
+    public void saveAndDownload(HttpServletRequest request,
+                                  HttpServletResponse response, @RequestBody PdfTestDto test) throws IOException {
+        String mimeType = "application/octet-stream";
+        CandidateDto report = candidateReportService.saveAndGeneratePdf(test.getCadidate(), test);
+
+        byte[] buffer = report.getPdf();
+
+        response.setContentType(mimeType);
+        response.setContentLength(buffer.length);
+
+        String fileName = report.getFirstName() + " " + report.getLastName() +
+                (report.getPosition() != null ?  " " + report.getPosition() : "") + ".pdf";
+
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                fileName);
+        response.setHeader(headerKey, headerValue);
+
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+
+        outStream.write(buffer, 0,buffer.length);
+    }
+
+    @RequestMapping(value = "/report/generate/plain/download/",method = RequestMethod.GET)
+    public void generatePdfWithoutCandidate(HttpServletRequest request,
+                                HttpServletResponse response, @RequestBody PdfTestDto test) throws IOException {
+        String mimeType = "application/octet-stream";
+        candidateReportService.createPdf(test.getCadidate(), test);
+
+        byte[] buffer = candidateReportService.createPdf(null, test);
+
+        response.setContentType(mimeType);
+        response.setContentLength(buffer.length);
+
+        String fileName = test.getPosition() + " test.pdf";
+
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                fileName);
+        response.setHeader(headerKey, headerValue);
+
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+
+        outStream.write(buffer, 0,buffer.length);
     }
 
     @RequestMapping(value = "/report/full/{id}", method = RequestMethod.GET)
@@ -170,7 +218,7 @@ public class PdfTestController {
 
         byte[] bytePdf = candidateReportService.createPdf(report,test);
         if(bytePdf != null) {
-            return new ResponseEntity<byte[]> (bytePdf,HttpStatus.OK);
+            return new ResponseEntity<> ("CORRECT",HttpStatus.OK);
         } else {
             return new ResponseEntity("NOT FOUND", HttpStatus.NOT_FOUND);
         }
@@ -178,9 +226,9 @@ public class PdfTestController {
     }
 
     @RequestMapping(value = "/report/saveGen", method = RequestMethod.PUT)
-    public ResponseEntity saveAndGeneratePdf(@RequestBody CandidateDto report,@RequestBody PdfTestDto test){
+    public ResponseEntity saveAndGeneratePdf(@RequestBody PdfTestDto test){
 
-        CandidateDto savedDto = candidateReportService.saveAndGeneratePdf(report,test);
+        CandidateDto savedDto = candidateReportService.saveAndGeneratePdf(test.getCadidate(),test);
         if(savedDto != null) {
             return new ResponseEntity<> (savedDto,HttpStatus.OK);
         } else {

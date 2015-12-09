@@ -117,17 +117,22 @@ public class ITextPdf {
 
         document.open();
         drawHeader();
-        PdfContentByte cbPie = writer.getDirectContent();
-        PdfTemplate pie = cbPie.createTemplate(PageSize.A4.getWidth(), 300);
-        Graphics2D pieChartG2D = new PdfGraphics2D(pie, PageSize.A4.getWidth(), 300);
-        Rectangle2D pieChartR2D = new Rectangle2D.Double(0, 0, PageSize.A4.getWidth(), 300);
-        JFreeChart pieChart= generatePieChart(test);
-        pieChart.draw(pieChartG2D, pieChartR2D);
-        pieChart.setBackgroundPaint(Color.WHITE);
-        pieChartG2D.dispose();
-        cbPie.addTemplate(pie, 0, 0);
 
-        drawCandidateInfos(candidate, test);
+        if(candidate != null) {
+            PdfContentByte cbPie = writer.getDirectContent();
+            PdfTemplate pie = cbPie.createTemplate(PageSize.A4.getWidth(), 300);
+            Graphics2D pieChartG2D = new PdfGraphics2D(pie, PageSize.A4.getWidth(), 300);
+            Rectangle2D pieChartR2D = new Rectangle2D.Double(0, 0, PageSize.A4.getWidth(), 300);
+            JFreeChart pieChart= generatePieChart(test);
+            pieChart.draw(pieChartG2D, pieChartR2D);
+            pieChart.setBackgroundPaint(Color.WHITE);
+            pieChartG2D.dispose();
+            cbPie.addTemplate(pie, 0, 0);
+
+            drawCandidateInfos(candidate, test);
+        } else {
+            drawPlainFistPage(test);
+        }
 
         printQuestions(test.getQuestions(),test.getMarkedAnswers());
 
@@ -152,6 +157,27 @@ public class ITextPdf {
         table.setHorizontalAlignment(Element.ALIGN_LEFT);
         table.setWidthPercentage(100f);
         document.add(table);
+    }
+
+    private void drawPlainFistPage(final PdfTestDto test) throws DocumentException {
+        Paragraph titleParagraph = new Paragraph("Skills Evaluation", arialBoldFont12);
+        titleParagraph.setAlignment(Element.ALIGN_CENTER);
+        document.add(titleParagraph);
+
+        Paragraph numberOfQuestParagraph = new Paragraph("Number of questions: ",
+                arialFont12);
+        numberOfQuestParagraph.setTabSettings(new TabSettings(150f));
+        numberOfQuestParagraph.add(Chunk.TABBING);
+        numberOfQuestParagraph.add(new Chunk(Integer.toString(test.getQuestions().size())));
+        document.add(numberOfQuestParagraph);
+
+        if(test.getPosition() != null) {
+            Paragraph descParagraph = new Paragraph("Position: ", arialFont12);
+            descParagraph.setTabSettings(new TabSettings(150f));
+            descParagraph.add(Chunk.TABBING);
+            descParagraph.add(new Chunk(test.getPosition()));
+            document.add(descParagraph);
+        }
     }
 
     private void drawCandidateInfos(final CandidateDto candidate, final PdfTestDto test) throws DocumentException {
