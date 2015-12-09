@@ -20,6 +20,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -45,11 +46,11 @@ public class ITextPdf {
 
     private final static String WRITE_TYPE = "text";
 
-    private final static String RADIO_TEXT = "only one";
+    private final static String RADIO_TEXT = "only one correct";
 
-    private final static String CHECK_TEXT = "one or more";
+    private final static String CHECK_TEXT = "one or more correct";
 
-    private final static String WRITE_TEXT = "write down";
+    private final static String WRITE_TEXT = "write down answer";
 
     private final static String FONT_AR = ".\\candidate_review\\arial.ttf";
 
@@ -206,7 +207,8 @@ public class ITextPdf {
         dateParagraph.setTabSettings(new TabSettings(150f));
         dateParagraph.add(Chunk.TABBING);
         if (candidate.getDate() != null) {
-            dateParagraph.add(new Chunk(candidate.getDate().toString()));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            dateParagraph.add(new Chunk(dateFormat.format(candidate.getDate())));
         } else {
             dateParagraph.add(new Chunk("NA"));
         }
@@ -359,6 +361,8 @@ public class ITextPdf {
 
     private void printQuestions(final List<QuestionDto> questions, final Map<Integer, List<Integer>> markedAnswers)
             throws DocumentException, IOException {
+        String type = null;
+
         document.newPage();
         Paragraph questionParagraph;
         Paragraph optionParagraph;
@@ -370,10 +374,16 @@ public class ITextPdf {
                 otherQuestions.add(question);
             }
             else {
+                if (RADIO_TYPE.equals(question.getType())) {
+                    type = RADIO_TEXT;
+                } else {
+                    type = CHECK_TEXT;
+                }
+
                 PdfPTable table = new PdfPTable(1);
                 questionCell = new PdfPCell();
                 questionParagraph = new Paragraph(questionCounter++ + ". " + question.getQuestion() +
-                        "(" + question.getType() + ")", this.arialBoldFont10);
+                        "(" + type + ")", this.arialBoldFont10);
                 questionCell.addElement(questionParagraph);
                 questionCell.addElement(Chunk.NEWLINE);
                 List<Integer> marked = markedAnswers.get(question.getId());
@@ -405,11 +415,17 @@ public class ITextPdf {
         PdfPCell codeQuestionCell;
 
         for(QuestionDto question : otherQuestions) {
+
+            if (WRITE_TYPE.equals(question.getType())) {
+                type = WRITE_TEXT;
+            } else {
+                type = CODE_TYPE;
+            }
             PdfPTable codeTable = new PdfPTable(1);
             codeQuestionCell = new PdfPCell();
             codeQuestionCell.setFixedHeight((PageSize.A4.getHeight() - 140));
             Paragraph codeQuestionParagraph = new Paragraph(question.getQuestion() + "(" +
-                    question.getType() + ")", arialFont10);
+                    type + ")", arialFont10);
             Paragraph code = new Paragraph(question.getCode(), arialFont10);
             codeQuestionCell.addElement(codeQuestionParagraph);
             codeQuestionCell.addElement(code);
