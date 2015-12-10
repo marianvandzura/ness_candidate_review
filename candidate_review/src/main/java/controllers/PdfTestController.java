@@ -199,9 +199,7 @@ public class PdfTestController {
      */
     @RequestMapping(value = "/report", method = RequestMethod.POST)
     public ResponseEntity saveReport(@RequestBody PdfTestDto test) {
-
         CandidateDto savedReport = candidateReportService.saveAndGeneratePdf(test.getCandidate(), test);
-
         savedReport.setPdf(new byte[0]);
 
         return new ResponseEntity<>(savedReport, HttpStatus.OK);

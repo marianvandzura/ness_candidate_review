@@ -154,6 +154,7 @@ public class ITextPdf {
             cbPie.addTemplate(pie, 0, 0);
 
             drawCandidateInfos(candidate, test);
+            drawLegend();
             isPlain = false;
         } else {
             drawPlainFistPage(test);
@@ -161,7 +162,7 @@ public class ITextPdf {
         }
 
         printQuestions(loadAllQuestions(test.getQuestions()),test.getMarkedAnswers());
-
+//        printQuestions(test.getQuestions(),test.getMarkedAnswers());
         document.close();
         return byteArrayOutputStream.toByteArray();
     }
@@ -198,6 +199,34 @@ public class ITextPdf {
         document.add(table);
     }
 
+    private void drawLegend() throws DocumentException {
+
+        Paragraph legendParagraph = new Paragraph("Legend:",arialBoldFont12);
+        document.add(legendParagraph);
+        Paragraph correctMarkedInfoPar = new Paragraph();
+        correctMarkedInfoPar.add(new Chunk(markedCorrectImg, 0, 0, true));
+
+        correctMarkedInfoPar.setTabSettings(new TabSettings(25f));
+        correctMarkedInfoPar.add(Chunk.TABBING);
+        correctMarkedInfoPar.add(new Chunk(": If option is correct and marked.", this.arialFont12));
+        document.add(correctMarkedInfoPar);
+
+        Paragraph incorectInfoPar = new Paragraph();
+        incorectInfoPar.add(new Chunk(markedIncorrectImg, 0, 0, true));
+
+        incorectInfoPar.setTabSettings(new TabSettings(25f));
+        incorectInfoPar.add(Chunk.TABBING);
+        incorectInfoPar.add(new Chunk(": If option is incorrect and marked.", this.arialFont12));
+        document.add(incorectInfoPar);
+        Paragraph correctUnmarkedInfoPar = new Paragraph();
+        correctUnmarkedInfoPar.add(new Chunk(correctImg, 0, 0, true));
+
+        correctUnmarkedInfoPar.setTabSettings(new TabSettings(25f));
+        correctUnmarkedInfoPar.add(Chunk.TABBING);
+        correctUnmarkedInfoPar.add(new Chunk(": If option is correct, but not marked.", this.arialFont12));
+        document.add(correctUnmarkedInfoPar);
+
+    }
     private void drawPlainFistPage(final PdfTestDto test) throws DocumentException {
         Paragraph titleParagraph = new Paragraph("Skills Evaluation", arialBoldFont12);
         titleParagraph.setAlignment(Element.ALIGN_CENTER);
