@@ -25,6 +25,9 @@ public class CandidateReportService {
     @Autowired
     private CandidatesReportsDao candidatesReportsDao;
 
+    @Autowired
+    private ITextPdf pdfCreator;
+
     public CandidateDto geResultById(final Integer id){
         return reportAssembler.extractDtoFromDomain(candidatesReportsDao.findReportById(id));
     }
@@ -37,8 +40,8 @@ public class CandidateReportService {
     public byte[] createPdf(final CandidateDto report,final PdfTestDto test) {
         byte[] bytePdf = null;
         try {
-            ITextPdf prdfCreator = new ITextPdf();
-            bytePdf =  prdfCreator.createPdf(report,test);
+//            ITextPdf pdfCreator = new ITextPdf();
+            bytePdf =  pdfCreator.createPdf(report,test);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DocumentException e) {
@@ -50,7 +53,7 @@ public class CandidateReportService {
     public CandidateDto saveAndGeneratePdf(final CandidateDto report,final PdfTestDto test) {
         byte[] bytePdf = null;
         try {
-            ITextPdf pdfCreator = new ITextPdf();
+//            ITextPdf pdfCreator = new ITextPdf();
             bytePdf =  pdfCreator.createPdf(report,test);
             report.setPdf(bytePdf);
             report.setSuccesRate(pdfCreator.getSuccessRate(test.getQuestions(),test.getMarkedAnswers()));

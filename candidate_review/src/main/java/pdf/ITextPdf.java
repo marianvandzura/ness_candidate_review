@@ -18,6 +18,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import service.QuestionService;
 
 import java.awt.*;
@@ -32,6 +33,7 @@ import java.util.List;
 /**
  * Created by Peter on 8.11.2015.
  */
+@Service
 public class ITextPdf {
 
     @Autowired
@@ -101,10 +103,6 @@ public class ITextPdf {
     private Document document;
 
     private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-    private Integer numOfCorrect;
-    private Integer numOfPartiallyCorr;
-    private Integer numOfIncorrect;
 
     public ITextPdf() throws IOException, DocumentException {
         this.baseArial=  BaseFont.createFont(FONT_AR, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
