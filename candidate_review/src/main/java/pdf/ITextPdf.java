@@ -17,6 +17,8 @@ import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
+import org.springframework.beans.factory.annotation.Autowired;
+import service.QuestionService;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -31,6 +33,9 @@ import java.util.List;
  * Created by Peter on 8.11.2015.
  */
 public class ITextPdf {
+
+    @Autowired
+    QuestionService questionService;
 
     private enum QuestionType {
             RADIO, CHECK, CODE, WRITEDOWN;
@@ -68,6 +73,8 @@ public class ITextPdf {
     private final static String MARKED_INCORRECT_PATH = ".\\candidate_review\\marked-incorrect.png";
 
     private final static Integer TAB_DISTANCE = 25;
+
+    private boolean isPlain;
 
     private BaseFont baseArial;
 
@@ -147,14 +154,29 @@ public class ITextPdf {
             cbPie.addTemplate(pie, 0, 0);
 
             drawCandidateInfos(candidate, test);
+            isPlain = false;
         } else {
             drawPlainFistPage(test);
+            isPlain = true;
         }
 
-        printQuestions(test.getQuestions(),test.getMarkedAnswers());
+        printQuestions(loadAllQuestions(test.getQuestions()),test.getMarkedAnswers());
 
         document.close();
         return byteArrayOutputStream.toByteArray();
+    }
+
+    private List<QuestionDto> loadAllQuestions(final List<QuestionDto> questionsFromTest) {
+        List<QuestionDto> questionsFromDb = new ArrayList<QuestionDto>();
+
+        for(QuestionDto questionFromTest : questionsFromTest) {
+            QuestionDto question = questionService.getQuestionById(questionFromTest.getId());
+            if(question != null) {
+                questionsFromDb.add(question);
+            }
+        }
+
+        return questionsFromDb;
     }
 
     private void drawHeader() throws DocumentException, IOException {
@@ -392,15 +414,16 @@ public class ITextPdf {
                 List<Integer> marked = markedAnswers.get(question.getId());
                 for (OptionDto option : question.getOptions()) {
                     optionParagraph = new Paragraph();
-
-                    if (marked != null && marked.contains(option.getId())) {
-                        if (option.getTruth()) {
-                            optionParagraph.add(new Chunk(markedCorrectImg, 0, 0, true));
-                        } else {
-                            optionParagraph.add(new Chunk(markedIncorrectImg, 0, 0, true));
+                    if(!isPlain) {
+                        if (marked != null && marked.contains(option.getId())) {
+                            if (option.getTruth()) {
+                                optionParagraph.add(new Chunk(markedCorrectImg, 0, 0, true));
+                            } else {
+                                optionParagraph.add(new Chunk(markedIncorrectImg, 0, 0, true));
+                            }
+                        } else if (option.getTruth()) {
+                            optionParagraph.add(new Chunk(correctImg, 0, 0, true));
                         }
-                    } else if (option.getTruth()) {
-                        optionParagraph.add(new Chunk(correctImg, 0, 0, true));
                     }
                     optionParagraph.setTabSettings(new TabSettings(25f));
                     optionParagraph.add(Chunk.TABBING);
