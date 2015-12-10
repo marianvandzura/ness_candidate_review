@@ -377,10 +377,11 @@ Question.prototype.addNewOption = function(){
   newOption.collection = this.options;
   this.options.push(newOption);
 };
-Question.prototype.changeCheck = function(){
-  if(this.type == 'checkbox')
-    for(var x = 0; x < this.options.length; x++){
-      this.options[x].truly = false;
+Question.prototype.changeCheck = function(option){
+  console.log(option);
+  if(this.type == 'combobox')
+    for(x in this.options){
+      if(this.options[x].id != option.id) this.options[x].truly = false;
     }
 };
 

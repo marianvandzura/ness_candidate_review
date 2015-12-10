@@ -36,9 +36,8 @@
           <div class="input-group-btn">
             <button type="button" ng-disabled="item.show != true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a href="">Copy and edit question</a></li>
+              <!--li><a href="">Copy and edit question</a></li-->
               <li><a ng-click="item.addNewOption()" href="">Add option</a></li>
-              <li><a href="">Something else here</a></li>
               <li role="separator" class="divider"></li>
               <li><a ng-click="test.removeQuestion(item)" href="">Remove question from this test</a></li>
             </ul>
@@ -50,8 +49,8 @@
           <span class="input-group-btn">
             <button class="btn btn-default glyphicon glyphicon-remove" ng-click="option.removeOption(option)" aria-hidden="true" type="button"></button>
             <button ng-click="item.addNewOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" aria-hidden="true" type="button"></button>
-            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="question.changeCheck(); option.truly = !option.truly" aria-hidden="true" type="button"></button>
-            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly; item.changeCheck(option)" aria-hidden="true" type="button"></button>
           </span>
           </div>
         </div>
@@ -69,9 +68,8 @@
           <div class="input-group-btn">
             <button type="button" ng-disabled="item.show != true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a href="">Copy and edit question</a></li>
+              <!--li><a href="">Copy and edit question</a></li-->
               <li><a ng-click="item.addNewOption()" href="">Add option</a></li>
-              <li><a href="">Something else here</a></li>
               <li role="separator" class="divider"></li>
               <li><a ng-click="test.removeQuestion(item)" href="">Remove question from test</a></li>
             </ul>
@@ -83,7 +81,7 @@
             <span class="input-group-btn">
               <button class="btn btn-default glyphicon glyphicon-remove" ng-click="option.removeOption(option)" aria-hidden="true" type="button"></button>
               <button ng-click="item.addNewOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" aria-hidden="true" type="button"></button>
-              <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+              <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="option.truly = !option.truly;" aria-hidden="true" type="button"></button>
             <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
             </span>
           </div>
@@ -101,7 +99,7 @@
           <div class="input-group-btn">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
             <ul class="dropdown-menu dropdown-menu-right">
-              <li><a href="">Copy and edit question</a></li>
+              <!--li><a href="">Copy and edit question</a></li-->
               <li role="separator" class="divider"></li>
               <li><a ng-click="test.removeQuestion(item)" href="">Remove question from test</a></li>
             </ul>
@@ -122,9 +120,8 @@
             <div class="input-group-btn">
               <button type="button" ng-disabled="item.show != true" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
               <ul class="dropdown-menu dropdown-menu-right">
-                <li><a href="">Copy and edit question</a></li>
+                <!--li><a href="">Copy and edit question</a></li-->
                 <li><a ng-click="item.addOption()" href="">Add option</a></li>
-                <li><a href="">Something else here</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a ng-click="test.removeQuestion(item)" href="">Remove question from test</a></li>
               </ul>

@@ -31,6 +31,25 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
     $scope.question.googleTime += $scope.googleTime;
     $(document).unbind( "mouseenter" );
     $(document).unbind( "mouseleave" );
+      console.log("tu som");
+      if($scope.question.type == 'combobox'){
+          console.log("tam som");
+          for(x in $scope.question.options){
+              if($scope.question.options[x].id != $scope.question.truly){
+                  console.log("nasiel som zly");
+                  $scope.question.options[x].truly = false;
+              }
+              else if($scope.question.options[x].id == $scope.question.truly){
+                  console.log("nasiel som spravnu");
+                  $scope.question.options[x].truly = true;
+              }
+
+          }
+      delete $scope.question.truly;
+
+
+
+      }
   });
 
   $(document)
@@ -56,7 +75,5 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
     console.log($scope);
     console.log($rootScope);
   };
-
-
 
 }]);

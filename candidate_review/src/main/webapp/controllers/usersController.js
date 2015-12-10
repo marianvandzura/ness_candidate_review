@@ -23,9 +23,9 @@ angular.module('NESS-TCFA').controller('usersController',['$scope','$rootScope',
     $scope.info = {
       user_id : null,
       old_password : null,
-      email: "email@email.com",
+      email: "",
       enabled: true,
-      user_name: "new user",
+      user_name: "",
       password: "",
       user_role: ["ROLE_ADMIN"]
     };

@@ -20,6 +20,7 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
     $http.get($rootScope.serverUrl+'admin/test/'+$routeParams.testId+"?access_token="+$rootScope.settings.auth.access_token).then(
       function(response){
         $scope.test = parseTestForEdit(response.data);
+        if($scope.test.visible == true) $("#visible").bootstrapSwitch('state', true);
         //code mirror
         for(x in $scope.test.questions)
           if($scope.test.questions[x].language == undefined || $scope.test.questions[x].language == null) {
@@ -94,7 +95,6 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
         function(response){
           console.log("preslo to");
           $scope.test = parseTestForEdit(response.data);
-          console.log(JSON.stringify($scope.test));
           $routeParams.testId = $scope.test.id;
           console.log($scope.test);
           console.log($routeParams);
