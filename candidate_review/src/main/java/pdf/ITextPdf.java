@@ -31,6 +31,8 @@ import java.util.*;
 import java.util.List;
 
 /**
+ * Service for test validation and PDF creating.
+ *
  * Created by Peter on 8.11.2015.
  */
 @Service
@@ -39,15 +41,11 @@ public class ITextPdf {
     @Autowired
     QuestionService questionService;
 
-    private enum QuestionType {
-            RADIO, CHECK, CODE, WRITEDOWN;
-
-    }
-
     private enum QuestionState {
         CORRECT,PARTIALY_CORRECT,INCORRECT
     }
 
+    // Types of questions applied on frontend
     private final static String RADIO_TYPE = "combobox";
 
     private final static String CHECK_TYPE = "checkbox";
@@ -56,12 +54,14 @@ public class ITextPdf {
 
     private final static String WRITE_TYPE = "text";
 
+    // Translated types for info
     private final static String RADIO_TEXT = "only one correct";
 
     private final static String CHECK_TEXT = "one or more correct";
 
     private final static String WRITE_TEXT = "write down answer";
 
+    //resources
     private final static String FONT_AR = ".\\candidate_review\\arial.ttf";
 
     private final static String FONT_AR_BD = ".\\candidate_review\\arialbd.ttf";
@@ -76,8 +76,10 @@ public class ITextPdf {
 
     private final static Integer TAB_DISTANCE = 25;
 
+    // False if generated PDF from validated test.
     private boolean isPlain;
 
+    // Fonts
     private BaseFont baseArial;
 
     private BaseFont baseArialBold;
@@ -94,16 +96,20 @@ public class ITextPdf {
 
     private Font arialBoldFont14;
 
+    // Validation images
     private Image correctImg;
 
     private Image markedCorrectImg;
 
     private Image markedIncorrectImg;
 
+    // IText Document
     private Document document;
 
+    // Byte stream for PDF store.
     private ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
+    // Initialize resources fonts and images.
     public ITextPdf() throws IOException, DocumentException {
         this.baseArial=  BaseFont.createFont(FONT_AR, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
         this.baseArialBold=  BaseFont.createFont(FONT_AR_BD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
@@ -132,6 +138,15 @@ public class ITextPdf {
         markedIncorrectImg.scaleAbsolute(new Rectangle(10,10));
     }
 
+    /**
+     * Create PDF.
+     *
+     * @param candidate Tested candidate
+     * @param test Test.
+     * @return byte[] pdf
+     * @throws DocumentException
+     * @throws IOException
+     */
     public byte[] createPdf(final CandidateDto candidate, final PdfTestDto test)
             throws DocumentException, IOException {
 
@@ -140,7 +155,14 @@ public class ITextPdf {
         document.open();
         drawHeader();
 
+        List<QuestionDto> questionsFromDb = loadAllQuestions(test.getQuestions());
+
+        test.setQuestions(new ArrayList<QuestionDto>());
+        test.setQuestions(questionsFromDb);
+        // If candidate is not null PDF will be generated
+        // with credentials and test will be validated
         if(candidate != null) {
+            // generate chart
             PdfContentByte cbPie = writer.getDirectContent();
             PdfTemplate pie = cbPie.createTemplate(PageSize.A4.getWidth(), 300);
             Graphics2D pieChartG2D = new PdfGraphics2D(pie, PageSize.A4.getWidth(), 300);
@@ -150,7 +172,7 @@ public class ITextPdf {
             pieChart.setBackgroundPaint(Color.WHITE);
             pieChartG2D.dispose();
             cbPie.addTemplate(pie, 0, 0);
-
+            // Draw candidate info (name, test time ...)
             drawCandidateInfos(candidate, test);
             drawLegend();
             isPlain = false;
@@ -158,13 +180,19 @@ public class ITextPdf {
             drawPlainFistPage(test);
             isPlain = true;
         }
-
-        printQuestions(loadAllQuestions(test.getQuestions()),test.getMarkedAnswers());
+        // Print all questions
+        printQuestions(test.getQuestions(),test.getMarkedAnswers());
 //        printQuestions(test.getQuestions(),test.getMarkedAnswers());
         document.close();
         return byteArrayOutputStream.toByteArray();
     }
 
+    /**
+     * Load test questions from DB. Required for validation.
+     *
+     * @param questionsFromTest
+     * @return
+     */
     private List<QuestionDto> loadAllQuestions(final List<QuestionDto> questionsFromTest) {
         List<QuestionDto> questionsFromDb = new ArrayList<QuestionDto>();
 
@@ -178,6 +206,12 @@ public class ITextPdf {
         return questionsFromDb;
     }
 
+    /**
+     * Draw header.
+     *
+     * @throws DocumentException
+     * @throws IOException
+     */
     private void drawHeader() throws DocumentException, IOException {
         Paragraph ph = new Paragraph(new Phrase("NESS KE s.r.o.", arialFont12));
         PdfPCell cell = new PdfPCell(ph);
@@ -197,6 +231,11 @@ public class ITextPdf {
         document.add(table);
     }
 
+    /**
+     * Draw validation legend.
+     *
+     * @throws DocumentException
+     */
     private void drawLegend() throws DocumentException {
 
         Paragraph legendParagraph = new Paragraph("Legend:",arialBoldFont12);
@@ -225,6 +264,13 @@ public class ITextPdf {
         document.add(correctUnmarkedInfoPar);
 
     }
+
+    /**
+     * Draw first page without candidate.
+     *
+     * @param test
+     * @throws DocumentException
+     */
     private void drawPlainFistPage(final PdfTestDto test) throws DocumentException {
         Paragraph titleParagraph = new Paragraph("Skills Evaluation", arialBoldFont12);
         titleParagraph.setAlignment(Element.ALIGN_CENTER);
@@ -246,6 +292,13 @@ public class ITextPdf {
         }
     }
 
+    /**
+     * Draw Candidate and test informations.
+     *
+     * @param candidate
+     * @param test
+     * @throws DocumentException
+     */
     private void drawCandidateInfos(final CandidateDto candidate, final PdfTestDto test) throws DocumentException {
         Paragraph titleParagraph = new Paragraph("Skills Evaluation", arialBoldFont12);
         titleParagraph.setAlignment(Element.ALIGN_CENTER);
@@ -319,6 +372,14 @@ public class ITextPdf {
 
     }
 
+    /**
+     * Count correct, incorrect and partially correct questions.
+     *
+     * @param state
+     * @param questions
+     * @param markedAnswers
+     * @return
+     */
     private int countQuestionsByState(final QuestionState state, final List<QuestionDto> questions,
                                                 final Map<Integer, List<Integer>> markedAnswers){
         int count = 0;
@@ -366,6 +427,12 @@ public class ITextPdf {
         return count;
     }
 
+    /**
+     * Get number of validated questions (check box and radio buttons only)
+     *
+     * @param questions
+     * @return
+     */
     private int getNumOfValidatedQuestions(final List<QuestionDto> questions) {
         int numberOfValidated = 0;
         for(QuestionDto question : questions) {
@@ -377,6 +444,13 @@ public class ITextPdf {
         return numberOfValidated;
     }
 
+    /**
+     * Calculate success rate of test.
+     *
+     * @param questions
+     * @param markedAnswers
+     * @return
+     */
     public double getSuccessRate(final List<QuestionDto> questions, final Map<Integer, List<Integer>> markedAnswers) {
         float numberOfCorrectOpt = 0;
         float numberOfCorrectMarked = 0;
@@ -409,8 +483,14 @@ public class ITextPdf {
         return (result / questions.size()) * 100;
     }
 
-
-
+    /**
+     * Print all questions.
+     *
+     * @param questions
+     * @param markedAnswers
+     * @throws DocumentException
+     * @throws IOException
+     */
     private void printQuestions(final List<QuestionDto> questions, final Map<Integer, List<Integer>> markedAnswers)
             throws DocumentException, IOException {
         String type = null;
@@ -489,6 +569,12 @@ public class ITextPdf {
 
     }
 
+    /**
+     * Generate pie chart.
+     *
+     * @param test
+     * @return
+     */
     public JFreeChart generatePieChart(final PdfTestDto test) {
 
         int correct = countQuestionsByState(
