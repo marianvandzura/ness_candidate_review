@@ -13,6 +13,9 @@ import dto.PdfTestDto;
 import dto.QuestionDto;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
 
 import java.awt.*;
@@ -155,7 +158,7 @@ public class ITextPdf {
     }
 
     private void drawHeader() throws DocumentException, IOException {
-        Paragraph ph = new Paragraph(new Phrase("NESS KE", arialFont12));
+        Paragraph ph = new Paragraph(new Phrase("NESS KE s.r.o.", arialFont12));
         PdfPCell cell = new PdfPCell(ph);
         cell.setBorder(Rectangle.BOTTOM);
         cell.setBorderColor(BaseColor.BLACK);
@@ -446,13 +449,34 @@ public class ITextPdf {
                 QuestionState.INCORRECT,test.getQuestions(),test.getMarkedAnswers());
 
         DefaultPieDataset dataSet = new DefaultPieDataset();
-        dataSet.setValue("Correct questions = " + correct, correct);
-        dataSet.setValue("Partially correct questions = " + partialyCorrect, partialyCorrect);
-        dataSet.setValue("Incorrect question = " + incorrect, incorrect);
+
+
 
         JFreeChart chart = ChartFactory.createPieChart(
                 "Test Evaluation", dataSet, true, true, false);
 
+        LegendTitle legend = chart.getLegend();
+        legend.setFrame(BlockBorder.NONE);
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+        if(correct > 0) {
+            dataSet.setValue("Correct questions = " + correct, correct);
+            plot.setSectionPaint("Correct questions = " + correct, new Color(0, 204, 0));
+        }
+        if(partialyCorrect > 0) {
+            dataSet.setValue("Partially correct questions = " + partialyCorrect, partialyCorrect);
+            plot.setSectionPaint("Partially correct questions = " + partialyCorrect, new Color(255, 204, 0));
+        }
+        if(incorrect > 0) {
+            dataSet.setValue("Incorrect question = " + incorrect, incorrect);
+            plot.setSectionPaint("Incorrect question = " + incorrect, new Color(255, 0, 0));
+        }
+
+        plot.setBackgroundPaint(new Color(255, 255, 255));
+        plot.setOutlineVisible(false);
+
+        chart.setBorderPaint(new Color(255, 255, 255));
+        chart.setBorderVisible(false);
         return chart;
     }
 
