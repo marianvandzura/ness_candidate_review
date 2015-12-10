@@ -14,7 +14,7 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
         $scope.categories.push(new Category($scope.categories,response.data[x].id,response.data[x].category_name));
     },
     function(){
-      console.log("Connecting problem!");
+      //DEBUG-console.log("Connecting problem!");
       $rootScope.connProblem.problem = true;
     }
   );
@@ -35,7 +35,7 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
                 mode: '',
                 onLoad : function(_cm){
                   $scope.questions[x].modeChanged = function(){
-                    console.log(this.language);
+                    //DEBUG-console.log(this.language);
                     _cm.setOption("mode", this.language);
                   };
                 }
@@ -49,7 +49,7 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
                 mode: $scope.questions[x].language,
                 onLoad : function(_cm){
                   $scope.questions[x].modeChanged = function(){
-                    console.log(this.language);
+                    //DEBUG-console.log(this.language);
                     _cm.setOption("mode", this.language);
                   };
                 }
@@ -57,7 +57,7 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
             }
         },
         function(){
-          console.log("Connecting problem!");
+          //DEBUG-console.log("Connecting problem!");
           $rootScope.connProblem.problem = true;
         }
       );
@@ -80,14 +80,14 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
 
     }
     newQuestion.selected = true;
-    console.log(newQuestion);
+    //DEBUG-console.log(newQuestion);
     $scope.questions.push(newQuestion);
     $rootScope.communicator.addSlowRequest(newQuestion,'admin/question/','POST');
   };
   $scope.initCodeQuestion = function(){
     $scope.addQuestion('code');
     var question = $scope.questions[$scope.questions.length-1];
-    console.log(question);
+    //DEBUG-console.log(question);
     question.cmOption = {
       lineNumbers: true,
       theme: 'dracula',
@@ -109,17 +109,17 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
 
       },
       function(){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
     );
   };
 
   $scope.removeCategory = function(){
-    console.log($rootScope.serverUrl+'admin/category/'+$scope.selectedCategory.category_id+'?access_token='+$rootScope.settings.auth.access_token);
+    //DEBUG-console.log($rootScope.serverUrl+'admin/category/'+$scope.selectedCategory.category_id+'?access_token='+$rootScope.settings.auth.access_token);
     $http.delete($rootScope.serverUrl+'admin/category/'+$scope.selectedCategory.category_id+'?access_token='+$rootScope.settings.auth.access_token).then(
       function(data){
-        console.log(data);
+        //DEBUG-console.log(data);
         $scope.selectedCategory.removeCategory();
         delete $scope.slectedCategory;
       },
@@ -127,9 +127,9 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
         //TODO: WTF, preco to vyhadzuje error ani krstny nevie
         $scope.selectedCategory.removeCategory();
         delete $scope.slectedCategory;
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
-        console.log(data);
+        //DEBUG-console.log(data);
       }
     );
   };
@@ -137,12 +137,12 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
     $scope.selectedCategory = {category_id:$scope.selectedCategory.category_id,category_name:$scope.selectedCategory.category_name};
   };
   $scope.editCategory = function(){
-    console.log($scope.selectedCategory);
+    //DEBUG-console.log($scope.selectedCategory);
     $http.put($rootScope.serverUrl+'adminúcategory?access_token='+$rootScope.settings.auth.access_token,{id:$scope.selectedCategory.category_id,category_name:$scope.selectedCategory.category_name}).then(
       function(response){
-        console.log(response.data);
+        //DEBUG-console.log(response.data);
         for(x in $scope.categories){
-          console.log($scope.categories[x].category_id +' vs '+ response.data.id)
+          //DEBUG-console.log($scope.categories[x].category_id +' vs '+ response.data.id)
           if($scope.categories[x].category_id == response.data.id){
             $scope.categories[x].category_name = response.data.category_name;
             break;
@@ -150,14 +150,14 @@ angular.module('NESS-TCFA').controller('questionsControlController',['$scope','$
         }
       },
       function(data){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
     );
   };
 
   $scope.showme = function(){
-    console.log($scope);
+    //DEBUG-console.log($scope);
   };
 
 }]);

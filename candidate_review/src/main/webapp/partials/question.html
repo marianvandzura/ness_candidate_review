@@ -6,7 +6,6 @@
         <label>
           <input type="checkbox" ng-model="item.truly">
           {{item.option}}
-          {{item.truly}}
         </label>
       </div>
     </div>
@@ -16,7 +15,6 @@
           <label >
             <input type="radio" name="radioButtons" ng-model="question.truly" ng-value="item.id">
             {{item.option}}
-            {{item.truly}}
           </label>
         </div>
       </form>
@@ -28,7 +26,7 @@
     </div>
   </form>
 </div>
-<button ng-click="showScopes()">scopes </button>
+<!--button ng-click="showScopes()">scopes </button-->
 <a ng-if="isLast()" href="#/finish/" class="btn btn-success my-right">Finish</a>
 <a ng-if="!isLast()" href="#/question/{{questionId+1}}" class="btn btn-primary my-right">Next</a>
 <a ng-if="!isFirst()" href="#/question/{{questionId-1}}" class="btn btn-primary my-right">Previous</a>

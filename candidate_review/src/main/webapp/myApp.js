@@ -378,11 +378,14 @@ Question.prototype.addNewOption = function(){
   this.options.push(newOption);
 };
 Question.prototype.changeCheck = function(option){
-  console.log(option);
+  console.log(this);
   if(this.type == 'combobox')
     for(x in this.options){
-      if(this.options[x].id != option.id) this.options[x].truly = false;
+      if(this.options[x] != option )  {
+        this.options[x].truly = false;
+      }
     }
+  //DEBUG-console.log(this);
 };
 
 function Option(id, option, truly){
@@ -448,7 +451,7 @@ function removeCircle(obj){
     for(x in obj.questions){
       removeCircle(obj.questions[x]);
     }
-    console.log(obj);
+    //DEBUG-console.log(obj);
     return obj;
   }
 }

@@ -9,7 +9,7 @@ angular.module('NESS-TCFA').controller('testsControlController',['$scope','$root
     },
     function(){
 
-      console.log("Connecting problem!");
+      //DEBUG-console.log("Connecting problem!");
       $rootScope.connProblem.problem = true;
     }
   );

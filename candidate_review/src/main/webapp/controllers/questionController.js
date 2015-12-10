@@ -21,7 +21,7 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
   if(!$scope.question.totalTime) $scope.question.totalTime = 0;
   if(!$scope.question.googleTime) $scope.question.googleTime = 0;
   if(($scope.question.type == 'combobox' || $scope.question.type == 'checkbox') && $scope.question.totalTime == 0){
-    console.log("mazem");
+    //DEBUG-console.log("mazem");
     for(x in $scope.question.options)
       $scope.question.options[x].truly = false;
   }
@@ -31,16 +31,12 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
     $scope.question.googleTime += $scope.googleTime;
     $(document).unbind( "mouseenter" );
     $(document).unbind( "mouseleave" );
-      console.log("tu som");
       if($scope.question.type == 'combobox'){
-          console.log("tam som");
           for(x in $scope.question.options){
               if($scope.question.options[x].id != $scope.question.truly){
-                  console.log("nasiel som zly");
                   $scope.question.options[x].truly = false;
               }
               else if($scope.question.options[x].id == $scope.question.truly){
-                  console.log("nasiel som spravnu");
                   $scope.question.options[x].truly = true;
               }
 
@@ -56,8 +52,8 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
     .mouseenter(function() {
       $scope.googleTime += new Date().getTime() - $scope.leaveTime;
       if($scope.googleTime > 999999999) $scope.googleTime = 0; //ked pri zacati otazky bola myska mimo obrazovky
-      console.log(new Date().getTime() - $scope.leaveTime);
-      console.log($scope.googleTime);
+      //DEBUG-console.log(new Date().getTime() - $scope.leaveTime);
+      //DEBUG-console.log($scope.googleTime);
     })
     .mouseleave(function() {
       $scope.leaveTime = new Date().getTime();
@@ -72,8 +68,8 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
 
   };
   $scope.showScopes = function(){
-    console.log($scope);
-    console.log($rootScope);
+    //DEBUG-console.log($scope);
+    //DEBUG-console.log($rootScope);
   };
 
 }]);

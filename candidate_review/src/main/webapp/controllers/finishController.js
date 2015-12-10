@@ -4,7 +4,7 @@
 angular.module('NESS-TCFA').controller('finishController',['$scope','$rootScope','$window','$http', function ($scope,$rootScope,$window,$http) {
   $rootScope.currentTest.candidate.totalTime = 0;
     // petova srandovna magia
-    console.log($rootScope.currentTest);
+    //DEBUG-console.log($rootScope.currentTest);
     $rootScope.currentTest.markedAnswers = {};
   for(x in $rootScope.currentTest.questions){
     $rootScope.currentTest.questions[x].totalTime = $rootScope.currentTest.questions[x].totalTime / 1000;
@@ -25,8 +25,8 @@ angular.module('NESS-TCFA').controller('finishController',['$scope','$rootScope'
       }
   }
 
-  console.log($rootScope.currentTest);
-  console.log(JSON.stringify($rootScope.currentTest));
+  //DEBUG-console.log($rootScope.currentTest);
+  //DEBUG-console.log(JSON.stringify($rootScope.currentTest));
   $http.post($rootScope.serverUrl+'report',$rootScope.currentTest).then(
       function(response){
         setTimeout(function(){
@@ -34,7 +34,7 @@ angular.module('NESS-TCFA').controller('finishController',['$scope','$rootScope'
         }, 5000);
       },
       function(){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
   );

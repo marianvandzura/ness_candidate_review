@@ -6,20 +6,20 @@ angular.module('NESS-TCFA').controller('resultsController',['$scope','$http','$r
   $http.get($rootScope.serverUrl+'admin/report/getreports?access_token='+$rootScope.settings.auth.access_token).then(
       function(response){
         $scope.results = response.data;
-        console.log($scope.results);
+        //DEBUG-console.log($scope.results);
         for(x in $scope.results.date)
           $scope.results.date = new Date($scope.results.date);
-        console.log($scope.results);
+        //DEBUG-console.log($scope.results);
 
       },
       function(){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
   );
   $scope.showModal = function(res){
     $scope.info = res;
-    console.log(res);
+    //DEBUG-console.log(res);
     $('#detailModal').modal('show');
   };
 
@@ -32,7 +32,7 @@ angular.module('NESS-TCFA').controller('resultsController',['$scope','$http','$r
           window.open(response.config.url);
         },
         function(){
-          console.log("Connecting problem!");
+          //DEBUG-console.log("Connecting problem!");
           $rootScope.connProblem.problem = true;
         }
     );

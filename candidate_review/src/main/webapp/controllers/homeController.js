@@ -5,10 +5,10 @@ angular.module('NESS-TCFA').controller('homeController',['$scope','$rootScope','
   $http.get($rootScope.serverUrl+'tests/').then(
     function(response){
       $scope.tests = response.data;
-      console.log(response.data);
+      //DEBUG-console.log(response.data);
     },
     function(){
-      console.log("Connecting problem!");
+      //DEBUG-console.log("Connecting problem!");
       $rootScope.connProblem.problem = true;
     }
   );
