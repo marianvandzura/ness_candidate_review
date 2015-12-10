@@ -32,6 +32,7 @@ public class CandidateReportAssembler {
         dto.setPdf(domain.getPdfResult());
         dto.setTestResult(domain.getTestResult());
         dto.setPosition(domain.getPosition());
+        dto.setSuccesRate(domain.getSuccesRate());
         return dto;
     }
 
@@ -68,6 +69,7 @@ public class CandidateReportAssembler {
         domain.setPdfResult(dto.getPdf());
         domain.setTestResult(dto.getTestResult());
         domain.setPosition(dto.getPosition());
+        domain.setSuccesRate(dto.getSuccesRate());
         return domain;
     }
 

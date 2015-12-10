@@ -29,6 +29,8 @@ public class CandidateDto {
 
     private byte[] pdf;
 
+    private Double succesRate;
+
     public Integer getId() {
         return id;
     }
@@ -115,5 +117,13 @@ public class CandidateDto {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public Double getSuccesRate() {
+        return succesRate;
+    }
+
+    public void setSuccesRate(Double succesRate) {
+        this.succesRate = succesRate;
     }
 }

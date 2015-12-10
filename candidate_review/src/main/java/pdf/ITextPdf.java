@@ -325,7 +325,7 @@ public class ITextPdf {
         return numberOfValidated;
     }
 
-    private double getSuccessRate(final List<QuestionDto> questions, final Map<Integer, List<Integer>> markedAnswers) {
+    public double getSuccessRate(final List<QuestionDto> questions, final Map<Integer, List<Integer>> markedAnswers) {
         float numberOfCorrectOpt = 0;
         float numberOfCorrectMarked = 0;
         float numberOfIncorrectMarked = 0;

@@ -50,14 +50,16 @@ public class CandidateReportService {
     public CandidateDto saveAndGeneratePdf(final CandidateDto report,final PdfTestDto test) {
         byte[] bytePdf = null;
         try {
-            ITextPdf prdfCreator = new ITextPdf();
-            bytePdf =  prdfCreator.createPdf(report,test);
+            ITextPdf pdfCreator = new ITextPdf();
+            bytePdf =  pdfCreator.createPdf(report,test);
+            report.setPdf(bytePdf);
+            report.setSuccesRate(pdfCreator.getSuccessRate(test.getQuestions(),test.getMarkedAnswers()));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DocumentException e) {
             e.printStackTrace();
         }
-        report.setPdf(bytePdf);
+
         CandidatesReports savedReport = candidatesReportsDao.addCandidateReport(reportAssembler.populateDomainFromDto(report));
         return reportAssembler.extractDtoFromDomain(savedReport);
     }

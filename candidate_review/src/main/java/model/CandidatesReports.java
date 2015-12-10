@@ -31,6 +31,8 @@ public class CandidatesReports {
     private Integer totalTime;
     @Column(name = "number_of_questions")
     private Integer numberOfQuestions;
+    @Column(name = "success_rate")
+    private Double succesRate;
     @Column(name = "test_result")
     private String testResult;
     @Lob
@@ -128,5 +130,13 @@ public class CandidatesReports {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public Double getSuccesRate() {
+        return succesRate;
+    }
+
+    public void setSuccesRate(Double succesRate) {
+        this.succesRate = succesRate;
     }
 }
