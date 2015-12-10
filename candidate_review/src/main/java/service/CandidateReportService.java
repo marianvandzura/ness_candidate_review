@@ -28,9 +28,6 @@ public class CandidateReportService {
     private CandidatesReportsDao candidatesReportsDao;
 
     @Autowired
-    private ITextPdf pdfCreator;
-
-    @Autowired
     QuestionService questionService;
 
     public CandidateDto geResultById(final Integer id){
@@ -45,7 +42,7 @@ public class CandidateReportService {
     public byte[] createPdf(final CandidateDto report,final PdfTestDto test) {
         byte[] bytePdf = null;
         try {
-//            ITextPdf pdfCreator = new ITextPdf();
+            ITextPdf pdfCreator = new ITextPdf();
             bytePdf =  pdfCreator.createPdf(report,test);
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,13 +52,14 @@ public class CandidateReportService {
         return bytePdf;
     }
 
-    public CandidateDto saveAndGeneratePdf(final CandidateDto report,final PdfTestDto test) {
+    public CandidateDto saveAndGeneratePdf(final CandidateDto report, final PdfTestDto test) {
         byte[] bytePdf = null;
         try {
-//            ITextPdf pdfCreator = new ITextPdf();
+            ITextPdf pdfCreator = new ITextPdf();
+            test.setQuestions(loadAllQuestions(test.getQuestions()));
             bytePdf =  pdfCreator.createPdf(report,test);
             report.setPdf(bytePdf);
-            report.setSuccesRate(pdfCreator.getSuccessRate(loadAllQuestions(test.getQuestions()),test.getMarkedAnswers()));
+            report.setSuccesRate(pdfCreator.getSuccessRate(test.getQuestions(), test.getMarkedAnswers()));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (DocumentException e) {
@@ -82,9 +80,13 @@ public class CandidateReportService {
         List<QuestionDto> questionsFromDb = new ArrayList<QuestionDto>();
 
         for(QuestionDto questionFromTest : questionsFromTest) {
-            QuestionDto question =  questionService.getQuestionById(questionFromTest.getId());
-            if(question != null) {
-                questionsFromDb.add(question);
+            if(questionFromTest.getResponse() != null) {
+                QuestionDto question = questionService.getQuestionById(questionFromTest.getId());
+                if (question != null) {
+                    questionsFromDb.add(question);
+                }
+            } else {
+                questionsFromDb.add(questionFromTest);
             }
         }
 

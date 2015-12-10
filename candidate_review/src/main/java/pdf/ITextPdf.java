@@ -35,11 +35,7 @@ import java.util.List;
  *
  * Created by Peter on 8.11.2015.
  */
-@Service
 public class ITextPdf {
-
-    @Autowired
-    QuestionService questionService;
 
     private enum QuestionState {
         CORRECT,PARTIALY_CORRECT,INCORRECT
@@ -155,10 +151,6 @@ public class ITextPdf {
         document.open();
         drawHeader();
 
-        List<QuestionDto> questionsFromDb = loadAllQuestions(test.getQuestions());
-
-        test.setQuestions(new ArrayList<QuestionDto>());
-        test.setQuestions(questionsFromDb);
         // If candidate is not null PDF will be generated
         // with credentials and test will be validated
         if(candidate != null) {
@@ -182,28 +174,8 @@ public class ITextPdf {
         }
         // Print all questions
         printQuestions(test.getQuestions(),test.getMarkedAnswers());
-//        printQuestions(test.getQuestions(),test.getMarkedAnswers());
         document.close();
         return byteArrayOutputStream.toByteArray();
-    }
-
-    /**
-     * Load test questions from DB. Required for validation.
-     *
-     * @param questionsFromTest
-     * @return
-     */
-    private List<QuestionDto> loadAllQuestions(final List<QuestionDto> questionsFromTest) {
-        List<QuestionDto> questionsFromDb = new ArrayList<QuestionDto>();
-
-        for(QuestionDto questionFromTest : questionsFromTest) {
-            QuestionDto question = questionService.getQuestionById(questionFromTest.getId());
-            if(question != null) {
-                questionsFromDb.add(question);
-            }
-        }
-
-        return questionsFromDb;
     }
 
     /**
@@ -558,10 +530,14 @@ public class ITextPdf {
             codeQuestionCell = new PdfPCell();
             codeQuestionCell.setFixedHeight((PageSize.A4.getHeight() - 140));
             Paragraph codeQuestionParagraph = new Paragraph(question.getQuestion() + "(" +
-                    type + ")", arialFont10);
-            Paragraph code = new Paragraph(question.getCode(), arialFont10);
+                    type + ")", arialBoldFont10);
+            Paragraph code = new Paragraph(question.getCode(), arialBoldFont10);
             codeQuestionCell.addElement(codeQuestionParagraph);
             codeQuestionCell.addElement(code);
+            if (question.getResponse() != null) {
+                Paragraph response = new Paragraph(question.getResponse(), arialFont10);
+                codeQuestionCell.addElement(response);
+            }
             codeQuestionCell.setBorder(Rectangle.NO_BORDER);
             codeTable.addCell(codeQuestionCell);
             document.add(codeTable);

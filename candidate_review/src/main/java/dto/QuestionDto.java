@@ -41,6 +41,8 @@ public class QuestionDto {
     @JsonProperty("categories")
     private CategoryDto category;
 
+    @JsonProperty("response")
+    private String response;
 
 
     @JsonProperty("options")
@@ -126,5 +128,11 @@ public class QuestionDto {
         this.options = options;
     }
 
+    public String getResponse() {
+        return response;
+    }
 
+    public void setResponse(String response) {
+        this.response = response;
+    }
 }

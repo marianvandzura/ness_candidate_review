@@ -26,7 +26,7 @@ angular.module('NESS-TCFA').controller('finishController',['$scope','$rootScope'
   }
 
   //DEBUG-console.log($rootScope.currentTest);
-  //DEBUG-console.log(JSON.stringify($rootScope.currentTest));
+  console.log(JSON.stringify($rootScope.currentTest));
   $http.post($rootScope.serverUrl+'report',$rootScope.currentTest).then(
       function(response){
         setTimeout(function(){
