@@ -377,11 +377,15 @@ Question.prototype.addNewOption = function(){
   newOption.collection = this.options;
   this.options.push(newOption);
 };
-Question.prototype.changeCheck = function(){
-  if(this.type == 'checkbox')
-    for(var x = 0; x < this.options.length; x++){
-      this.options[x].truly = false;
+Question.prototype.changeCheck = function(option){
+  console.log(this);
+  if(this.type == 'combobox')
+    for(x in this.options){
+      if(this.options[x] != option )  {
+        this.options[x].truly = false;
+      }
     }
+  //DEBUG-console.log(this);
 };
 
 function Option(id, option, truly){
@@ -447,7 +451,7 @@ function removeCircle(obj){
     for(x in obj.questions){
       removeCircle(obj.questions[x]);
     }
-    console.log(obj);
+    //DEBUG-console.log(obj);
     return obj;
   }
 }

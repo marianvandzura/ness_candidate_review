@@ -9,17 +9,17 @@
       </div>
       <div class="modal-body">
         <pre>
-          Name: {{info.name}}
-          Surname: {{info.surname}}
+          Name: {{info.firstName}}
+          Surname: {{info.lastName}}
           Email: {{info.email}}
           Test: {{info.testName}}
           Time and date: {{info.date | date:'medium'}}
-          Result: {{info.result}} %
-          Total time: {{info.ttime}}
+          Result: {{info.succesRate}} %
+          Total time: {{info.totalTime}} seconds
         </pre>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="exportToPDF()">Export to PDF</button>
+        <button type="button" class="btn btn-default" ng-click="getPdf(info.id)">Export to PDF</button>
         <button type="button" class="btn btn-default" ng-click="hideModal()">Close</button>
       </div>
     </div>
@@ -60,14 +60,14 @@
   </thead>
   <tbody>
   <tr ng-repeat="result in results | filter: search | orderBy: order: reverse">
-    <td>{{result.name}}</td>
-    <td>{{result.surname}}</td>
+    <td>{{result.firstName}}</td>
+    <td>{{result.lastName}}</td>
     <td>{{result.email}}</td>
     <td>{{result.testName}}</td>
-    <td>{{result.result}} %</td>
+    <td>{{result.succesRate}} %</td>
     <td>
-      <span ng-click="result.showModal()" class="glyphicon glyphicon-info-sign"></span>
-      <span ng-click="result.showModal()" class="glyphicon glyphicon-arrow-down"></span>
+      <span ng-click="showModal(result);" class="glyphicon glyphicon-info-sign"></span>
+      <span ng-click="getPdf(result.id)" class="glyphicon glyphicon-arrow-down"></span>
     </td>
   </tr>
 

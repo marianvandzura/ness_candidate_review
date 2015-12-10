@@ -9,7 +9,7 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
       $scope.categories = response.data;
     },
     function(){
-      console.log("Connecting problem!");
+      //DEBUG-console.log("Connecting problem!");
       $rootScope.connProblem.problem = true;
     }
   );
@@ -20,6 +20,7 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
     $http.get($rootScope.serverUrl+'admin/test/'+$routeParams.testId+"?access_token="+$rootScope.settings.auth.access_token).then(
       function(response){
         $scope.test = parseTestForEdit(response.data);
+        if($scope.test.visible == true) $("#visible").bootstrapSwitch('state', true);
         //code mirror
         for(x in $scope.test.questions)
           if($scope.test.questions[x].language == undefined || $scope.test.questions[x].language == null) {
@@ -30,7 +31,7 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
               mode: '',
               onLoad : function(_cm){
                 $scope.test.questions[x].modeChanged = function(){
-                  console.log(this.language);
+                  //DEBUG-console.log(this.language);
                   _cm.setOption("mode", this.language);
                 };
               }
@@ -44,7 +45,7 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
               mode: $scope.test.questions[x].language,
               onLoad : function(_cm){
                 $scope.test.questions[x].modeChanged = function(){
-                  console.log(this.language);
+                  //DEBUG-console.log(this.language);
                   _cm.setOption("mode", this.language);
                 };
               }
@@ -52,7 +53,7 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
           }
       },
       function(){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
     );
@@ -63,10 +64,10 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
       $http.get($rootScope.serverUrl+'admin/questions/category/' + $scope.selectedCategory.id+"?access_token="+$rootScope.settings.auth.access_token).then(
         function(response){
           $scope.categoryQuestions = response.data;
-          console.log(response.data);
+          //DEBUG-console.log(response.data);
         },
         function(){
-          console.log("Connecting problem!");
+          //DEBUG-console.log("Connecting problem!");
           $rootScope.connProblem.problem = true;
         }
       );
@@ -87,20 +88,48 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
     $scope.test.questions.push(temp);
   };
   $scope.saveTest = function () {
-    console.log($scope.test);
+    //DEBUG-console.log($scope.test);
     if($routeParams.testId == 0){
       //create
       $http.post($rootScope.serverUrl+'admin/test?access_token='+$rootScope.settings.auth.access_token,removeCircle($scope.test)).then(
         function(response){
-          console.log("preslo to");
+          //DEBUG-console.log("preslo to");
           $scope.test = parseTestForEdit(response.data);
-          console.log(JSON.stringify($scope.test));
           $routeParams.testId = $scope.test.id;
-          console.log($scope.test);
-          console.log($routeParams);
+          for(x in $scope.test.questions)
+            if($scope.test.questions[x].language == undefined || $scope.test.questions[x].language == null) {
+              $scope.test.questions[x].cmOption = {
+                lineNumbers: true,
+                theme:'dracula',
+                indentWithTabs: true,
+                mode: '',
+                onLoad : function(_cm){
+                  $scope.test.questions[x].modeChanged = function(){
+                    //DEBUG-console.log(this.language);
+                    _cm.setOption("mode", this.language);
+                  };
+                }
+              };
+            }
+            else{
+              $scope.test.questions[x].cmOption = {
+                lineNumbers: true,
+                theme:'dracula',
+                indentWithTabs: true,
+                mode: $scope.test.questions[x].language,
+                onLoad : function(_cm){
+                  $scope.test.questions[x].modeChanged = function(){
+                    //DEBUG-console.log(this.language);
+                    _cm.setOption("mode", this.language);
+                  };
+                }
+              };
+            }
+          //DEBUG-console.log($scope.test);
+          //DEBUG-console.log($routeParams);
         },
         function(){
-          console.log("Connecting problem!");
+          //DEBUG-console.log("Connecting problem!");
           $rootScope.connProblem.problem = true;
         }
       );
@@ -108,13 +137,13 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
     else{
       //update
       removeCircle($scope.test);
-      console.log($scope.test);
+      //DEBUG-console.log($scope.test);
       $http.put($rootScope.serverUrl+'admin/test?access_token='+$rootScope.settings.auth.access_token,removeCircle($scope.test)).then(
         function(response){
           $scope.test = parseTestForEdit(response.data);
         },
         function(){
-          console.log("Connecting problem!");
+          //DEBUG-console.log("Connecting problem!");
           $rootScope.connProblem.problem = true;
         }
       );
@@ -124,7 +153,6 @@ angular.module('NESS-TCFA').controller('editTestController',['$scope','$rootScop
   $("#visible").on('switchChange.bootstrapSwitch', function(event, state) {
     $scope.test.visible = state;
   });
-  $scope.temporary = function(){ console.log($scope.test);};
   //codemirror
   $scope.initCodeQuestion = function(){
     $scope.test.addNewQuestion('code');

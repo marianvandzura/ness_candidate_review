@@ -61,7 +61,6 @@
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li><a ng-click="setEditTag(question); question.addNewOption()" href="">Add option</a></li>
-              <li><a href="">Something else here</a></li>
               <li role="separator" class="divider"></li>
               <li><a ng-click="question.removeQuestion(question, communicator);" href="">Remove question database</a></li>
             </ul>
@@ -73,8 +72,8 @@
           <span class="input-group-btn">
             <button class="btn btn-default glyphicon glyphicon-remove" ng-click="option.removeOption(option); setEditTag(question);" aria-hidden="true" type="button"></button>
             <button ng-click="question.addNewOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus"  aria-hidden="true" type="button"></button>
-            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="question.changeCheck(); option.truly = !option.truly" aria-hidden="true" type="button"></button>
-            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="setEditTag(question);  option.truly = !option.truly; " aria-hidden="true" type="button"></button>
+            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="setEditTag(question); question.changeCheck(option); option.truly = !option.truly; " aria-hidden="true" type="button"></button>
           </span>
           </div>
         </div>
@@ -90,8 +89,6 @@
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
             <ul class="dropdown-menu dropdown-menu-right">
               <li><a ng-click="setEditTag(question); question.addNewOption()" href="">Add option</a></li>
-              <li><a ng-click="setEditTag(question); question.addNewOption()" href="">Add option</a></li>
-              <li><a href="">Something else here</a></li>
               <li role="separator" class="divider"></li>
               <li><a ng-click="question.removeQuestion(question, communicator)" href="">Remove question from database</a></li>
             </ul>
@@ -103,8 +100,8 @@
           <span class="input-group-btn">
             <button class="btn btn-default glyphicon glyphicon-remove" ng-click="option.removeOption(option); setEditTag(question);" aria-hidden="true" type="button"></button>
             <button ng-click="question.addNewOption()" ng-if="$last" class="btn btn-success btn-default glyphicon glyphicon-plus" aria-hidden="true" type="button"></button>
-            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
-            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly" aria-hidden="true" type="button"></button>
+            <button ng-show="option.truly" class="btn btn-default glyphicon glyphicon-ok-circle" ng-click="option.truly = !option.truly; setEditTag(question); " aria-hidden="true" type="button"></button>
+            <button ng-show="!option.truly" class="btn btn-default glyphicon glyphicon-remove-circle" ng-click="option.truly = !option.truly; setEditTag(question);" aria-hidden="true" type="button"></button>
           </span>
           </div>
         </div>
@@ -151,7 +148,6 @@
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
               <ul class="dropdown-menu dropdown-menu-right">
                 <li><a href="">Copy and edit question</a></li>
-                <li><a href="">Something else here</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a ng-click="question.removeQuestion(question, communicator)" href="">Remove question from database</a></li>
               </ul>

@@ -7,7 +7,7 @@ angular.module('NESS-TCFA').controller('usersController',['$scope','$rootScope',
       $rootScope.users = response.data;
     },
     function(){
-      console.log("Connecting problem!");
+      //DEBUG-console.log("Connecting problem!");
       $rootScope.connProblem.problem = true;
     }
   );
@@ -23,9 +23,9 @@ angular.module('NESS-TCFA').controller('usersController',['$scope','$rootScope',
     $scope.info = {
       user_id : null,
       old_password : null,
-      email: "email@email.com",
+      email: "",
       enabled: true,
-      user_name: "new user",
+      user_name: "",
       password: "",
       user_role: ["ROLE_ADMIN"]
     };
@@ -42,39 +42,39 @@ angular.module('NESS-TCFA').controller('usersController',['$scope','$rootScope',
     $http.put($rootScope.serverUrl+'admin/user?access_token='+$rootScope.settings.auth.access_token,user).then(
       function(response){
         user = response.data;
-        console.log("data edited :-*");
+        //DEBUG-console.log("data edited :-*");
         $('#detailModal').modal('hide');
       },
       function(){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
     );
   };
   $scope.createUser = function(user){
-    console.log(user);
+    //DEBUG-console.log(user);
     user.password = hex_md5(user.password);
     $http.post($rootScope.serverUrl+'admin/user?access_token='+$rootScope.settings.auth.access_token,user).then(
       function(response){
-        console.log("vyšlo to");
-        console.log(response.data);
+        //DEBUG-console.log("vyšlo to");
+        //DEBUG-console.log(response.data);
         $scope.users.push(response.data);
         $('#detailModal').modal('hide');
       },
       function(){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
     );
   };
   $scope.deleteUser = function(user){
-    console.log($rootScope.serverUrl+'admin/user/'+user.user_id+'?access_token='+$rootScope.settings.auth.access_token);
+    //DEBUG-console.log($rootScope.serverUrl+'admin/user/'+user.user_id+'?access_token='+$rootScope.settings.auth.access_token);
     $http.delete($rootScope.serverUrl+'admin/user/'+user.user_id+'?access_token='+$rootScope.settings.auth.access_token).then(
       function(){
         $scope.users.splice($scope.users.indexOf(user),1);
       },
       function(){
-        console.log("Connecting problem!");
+        //DEBUG-console.log("Connecting problem!");
         $rootScope.connProblem.problem = true;
       }
     );

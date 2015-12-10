@@ -6,18 +6,18 @@
         <label>
           <input type="checkbox" ng-model="item.truly">
           {{item.option}}
-          {{item.truly}}
         </label>
       </div>
     </div>
-    <div ng-show="question.type == 'combobox'" ng-repeat="item in question.options">
-      <div class="radio">
-        <label>
-          <input type="radio" name="radioButtons" ng-model="item.truly">
-          {{item.option}}
-          {{item.truly}}
-        </label>
-      </div>
+    <div ng-show="question.type == 'combobox'" >
+      <form>
+        <div class="radio" ng-repeat="item in question.options">
+          <label >
+            <input type="radio" name="radioButtons" ng-model="question.truly" ng-value="item.id">
+            {{item.option}}
+          </label>
+        </div>
+      </form>
     </div>
     <input type="text" ng-show="question.type == 'text'" class="form-control" placeholder="Here ..." ng-model="question.result">
     <div ng-show="question.type == 'code'">
@@ -26,7 +26,7 @@
     </div>
   </form>
 </div>
-<button ng-click="showScopes()">scopes </button>
+<!--button ng-click="showScopes()">scopes </button-->
 <a ng-if="isLast()" href="#/finish/" class="btn btn-success my-right">Finish</a>
 <a ng-if="!isLast()" href="#/question/{{questionId+1}}" class="btn btn-primary my-right">Next</a>
 <a ng-if="!isFirst()" href="#/question/{{questionId-1}}" class="btn btn-primary my-right">Previous</a>

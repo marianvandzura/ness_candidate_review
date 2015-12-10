@@ -84,7 +84,7 @@ public class PdfTestController {
         return byteFile;
     }
 
-    @RequestMapping(value = "/report/download/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/report/download/{id}",method = RequestMethod.GET)
     public void downloadPdfReport(HttpServletRequest request,
                            HttpServletResponse response, @PathVariable(value = "id") Integer reportId) throws IOException {
         String mimeType = "application/octet-stream";
@@ -174,7 +174,7 @@ public class PdfTestController {
         return candidateReportService.geResultById(reportId);
     }
 
-    @RequestMapping(value = "/report/getreports", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/report/getreports", method = RequestMethod.GET)
     public ResponseEntity getAllReports(){
 
         List<CandidateDto> reports = candidateReportService.getAll();

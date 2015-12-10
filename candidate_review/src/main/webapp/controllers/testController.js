@@ -8,7 +8,7 @@ angular.module('NESS-TCFA').controller('testController',['$scope','$rootScope', 
       $rootScope.currentTest = response.data;
     },
     function(){
-      console.log("Connecting problem!");
+      //DEBUG-console.log("Connecting problem!");
       $rootScope.connProblem.problem = true;
     }
   );
@@ -18,7 +18,7 @@ angular.module('NESS-TCFA').controller('testController',['$scope','$rootScope', 
       lastName: $scope.surname,
       email: $scope.email,
       testName: $rootScope.currentTest.name,
-      date: moment().format("DD-MM-YYYY"),
+      date: new Date().toISOString(),
       totalTime: 123,
       numberOfQuestions: $rootScope.currentTest.questions.length
     };
