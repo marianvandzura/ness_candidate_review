@@ -84,6 +84,14 @@ public class PdfTestController {
         return byteFile;
     }
 
+    /**
+     * Find and download PDF report by id.
+     *
+     * @param request
+     * @param response
+     * @param reportId
+     * @throws IOException
+     */
     @RequestMapping(value = "/admin/report/download/{id}",method = RequestMethod.GET)
     public void downloadPdfReport(HttpServletRequest request,
                            HttpServletResponse response, @PathVariable(value = "id") Integer reportId) throws IOException {
@@ -110,6 +118,14 @@ public class PdfTestController {
         }
     }
 
+    /**
+     * Save candidate report with PDF and download it.
+     *
+     * @param request
+     * @param response
+     * @param test
+     * @throws IOException
+     */
     @RequestMapping(value = "/report/save/download/",method = RequestMethod.GET)
     public void saveAndDownload(HttpServletRequest request,
                                   HttpServletResponse response, @RequestBody PdfTestDto test) throws IOException {
@@ -138,6 +154,14 @@ public class PdfTestController {
         }
     }
 
+    /**
+     * Generate plain pdf without candidate and without validated questions.
+     *
+     * @param request
+     * @param response
+     * @param test
+     * @throws IOException
+     */
     @RequestMapping(value = "/report/generate/plain/download/",method = RequestMethod.GET)
     public void generatePdfWithoutCandidate(HttpServletRequest request,
                                 HttpServletResponse response, @RequestBody PdfTestDto test) throws IOException {
@@ -164,6 +188,11 @@ public class PdfTestController {
         }
     }
 
+    /**
+     * Get report without PDF.
+     * @param reportId
+     * @return
+     */
     @RequestMapping(value = "/report/full/{id}", method = RequestMethod.GET)
     @ResponseBody
     public CandidateDto getFullReportById(@PathVariable(value = "id") Integer reportId) {
@@ -174,6 +203,11 @@ public class PdfTestController {
         return candidateReportService.geResultById(reportId);
     }
 
+    /**
+     * Get all reports.
+     *
+     * @return
+     */
     @RequestMapping(value = "/admin/report/getreports", method = RequestMethod.GET)
     public ResponseEntity getAllReports(){
 

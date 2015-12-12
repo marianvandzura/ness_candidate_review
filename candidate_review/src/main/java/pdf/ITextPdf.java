@@ -17,9 +17,6 @@ import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import service.QuestionService;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -31,7 +28,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Service for test validation and PDF creating.
+ * Test validation and PDF creating.
  *
  * Created by Peter on 8.11.2015.
  */
@@ -107,6 +104,7 @@ public class ITextPdf {
 
     // Initialize resources fonts and images.
     public ITextPdf() throws IOException, DocumentException {
+
         this.baseArial=  BaseFont.createFont(FONT_AR, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
         this.baseArialBold=  BaseFont.createFont(FONT_AR_BD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
         this.arialFont10 = new Font(baseArial, 10);
@@ -122,16 +120,16 @@ public class ITextPdf {
         this.document.setMargins(60,60,70,70);
 
         correctImg = Image.getInstance(CORRECT_PATH);
-        correctImg.setAlignment(Image.LEFT| Image.TEXTWRAP);
-        correctImg.scaleAbsolute(new Rectangle(10,10));
+        correctImg.setAlignment(Image.LEFT | Image.TEXTWRAP);
+        correctImg.scaleAbsolute(new Rectangle(10, 10));
 
         markedCorrectImg = Image.getInstance(MARKED_CORRECT_PATH);
         markedCorrectImg.setAlignment(Image.LEFT| Image.TEXTWRAP);
         markedCorrectImg.scaleAbsolute(new Rectangle(10,10));
 
         markedIncorrectImg = Image.getInstance(MARKED_INCORRECT_PATH);
-        markedIncorrectImg.setAlignment(Image.LEFT| Image.TEXTWRAP);
-        markedIncorrectImg.scaleAbsolute(new Rectangle(10,10));
+        markedIncorrectImg.setAlignment(Image.LEFT | Image.TEXTWRAP);
+        markedIncorrectImg.scaleAbsolute(new Rectangle(10, 10));
     }
 
     /**
@@ -473,10 +471,12 @@ public class ITextPdf {
         PdfPCell questionCell;
         List<QuestionDto> otherQuestions = new ArrayList<QuestionDto>();
         int questionCounter = 1;
+        //Separate writedown and code questions
         for(QuestionDto question : questions) {
             if (CODE_TYPE.equals(question.getType()) || WRITE_TYPE.equals(question.getType())) {
                 otherQuestions.add(question);
             }
+            // Process and validate questions
             else {
                 if (RADIO_TYPE.equals(question.getType())) {
                     type = RADIO_TEXT;
@@ -491,6 +491,7 @@ public class ITextPdf {
                 questionCell.addElement(questionParagraph);
                 questionCell.addElement(Chunk.NEWLINE);
                 List<Integer> marked = markedAnswers.get(question.getId());
+                // Check and validate options
                 for (OptionDto option : question.getOptions()) {
                     optionParagraph = new Paragraph();
                     if(!isPlain) {
@@ -518,7 +519,7 @@ public class ITextPdf {
             }
         }
         PdfPCell codeQuestionCell;
-
+        // Process write down and code questions.
         for(QuestionDto question : otherQuestions) {
 
             if (WRITE_TYPE.equals(question.getType())) {
@@ -534,6 +535,9 @@ public class ITextPdf {
             Paragraph code = new Paragraph(question.getCode(), arialBoldFont10);
             codeQuestionCell.addElement(codeQuestionParagraph);
             codeQuestionCell.addElement(code);
+
+            Paragraph answer = new Paragraph("Answer: \n", arialBoldFont10);
+            codeQuestionCell.addElement(answer);
             if (question.getResponse() != null) {
                 Paragraph response = new Paragraph(question.getResponse(), arialFont10);
                 codeQuestionCell.addElement(response);
