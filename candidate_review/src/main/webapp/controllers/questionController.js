@@ -10,6 +10,8 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
   //$scope.question = new Question(null,1,1,'code','toto',3,'kod',null,'javascript',[]);
   //Codemirror configuration
   if($scope.question.type == 'code')
+    if($scope.question.response == null || $scope.question.response == undefined ) $scope.question.response = $scope.question.code;
+
     $scope.cmOption = {
       lineNumbers: true,
       theme: 'dracula',
@@ -68,8 +70,8 @@ angular.module('NESS-TCFA').controller('questionController',['$scope','$rootScop
 
   };
   $scope.showScopes = function(){
-    //DEBUG-console.log($scope);
-    //DEBUG-console.log($rootScope);
+    console.log($scope);
+    console.log($rootScope);
   };
 
 }]);
