@@ -19,11 +19,13 @@
         </div>
       </form>
     </div>
-    <input type="text" ng-show="question.type == 'text'" class="form-control" placeholder="Here ..." ng-model="question.response">
-    <div ng-show="question.type == 'code'">
-      <pre>{{code.code}}</pre>
-      <textarea ui-codemirror="cmOption" ng-model="code.response"></textarea>
+    <div ng-show="question.type == 'text'" >
+      <input type="text" class="form-control" placeholder="Here ..." ng-model="question.response">
+    </div>
 
+    <div ng-show="question.type == 'code'">
+      <pre>{{question.code}}</pre>
+      <textarea ui-codemirror="cmOption" ng-model="question.response"></textarea>
     </div>
   </form>
 </div>

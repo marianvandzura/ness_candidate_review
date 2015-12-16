@@ -107,13 +107,31 @@
         </div>
       </div>
       <div ng-if="question.type == 'text'"><!-- Form to create text question -->
+        <span class="my-right">
+          <small style="color: #cccccc">Question used in 3 tests</small>
+        </span>
+        <span><small style="color: #cccccc">Text question</small></span>
+        <div class="input-group" >
+          <input type="text" class="form-control" ng-change="setEditTag(question);" ng-model="question.question">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <!--li><a href="">Copy and edit question</a></li-->
+              <!--li role="separator" class="divider"></li-->
+              <li><a ng-click="question(question, communicator)" href="">Remove question from test</a></li>
+            </ul>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <!--div ng-if="question.type == 'text'">
         <div class="form-group">
           <button class="btn btn-danger my-right btn-xs" ng-click="question(question, communicator)">Remove question</button>
           <label for="answer2">Answer 1:</label>
           <input type="text" class="form-control" ng-change="setEditTag(question);" id="answer2" ng-model="question.question">
         </div>
         <hr>
-      </div>
+      </div-->
       <!--div ng-if="question.type == 'code'">
         <div class="form-group">
           <button class="btn btn-danger my-right btn-xs" ng-click="question(question, communicator)">Remove question</button>
