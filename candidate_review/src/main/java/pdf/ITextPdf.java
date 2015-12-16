@@ -26,6 +26,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Test validation and PDF creating.
@@ -55,17 +57,17 @@ public class ITextPdf {
     private final static String WRITE_TEXT = "write down answer";
 
     //resources
-    private final static String FONT_AR = ".\\candidate_review\\arial.ttf";
+    private final static String FONT_AR = "pdf/arial.ttf";
 
-    private final static String FONT_AR_BD = ".\\candidate_review\\arialbd.ttf";
+    private final static String FONT_AR_BD = "pdf/arialbd.ttf";
 
-    private final static String LOGO_PATH = ".\\candidate_review\\ness-logo.png";
+    private final static String LOGO_PATH = "pdf/ness-logo.png";
 
-    private final static String CORRECT_PATH = ".\\candidate_review\\correct.png";
+    private final static String CORRECT_PATH = "pdf/correct.png";
 
-    private final static String MARKED_CORRECT_PATH = ".\\candidate_review\\marked-correct.png";
+    private final static String MARKED_CORRECT_PATH = "pdf/marked-correct.png";
 
-    private final static String MARKED_INCORRECT_PATH = ".\\candidate_review\\marked-incorrect.png";
+    private final static String MARKED_INCORRECT_PATH = "pdf/marked-incorrect.png";
 
     private final static Integer TAB_DISTANCE = 25;
 
@@ -105,8 +107,10 @@ public class ITextPdf {
     // Initialize resources fonts and images.
     public ITextPdf() throws IOException, DocumentException {
 
-        this.baseArial=  BaseFont.createFont(FONT_AR, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
-        this.baseArialBold=  BaseFont.createFont(FONT_AR_BD, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+        this.baseArial=  BaseFont.createFont(String.valueOf(this.getClass().getClassLoader().getResource(FONT_AR)),
+                BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
+        this.baseArialBold=  BaseFont.createFont(String.valueOf(this.getClass().getClassLoader().getResource(FONT_AR_BD)),
+                BaseFont.WINANSI, BaseFont.NOT_EMBEDDED);
         this.arialFont10 = new Font(baseArial, 10);
         this.arialBoldFont10 = new Font(baseArialBold, 10);
 
@@ -119,15 +123,15 @@ public class ITextPdf {
         this.document = new Document();
         this.document.setMargins(60,60,70,70);
 
-        correctImg = Image.getInstance(CORRECT_PATH);
+        correctImg = Image.getInstance(this.getClass().getClassLoader().getResource(CORRECT_PATH));
         correctImg.setAlignment(Image.LEFT | Image.TEXTWRAP);
         correctImg.scaleAbsolute(new Rectangle(10, 10));
 
-        markedCorrectImg = Image.getInstance(MARKED_CORRECT_PATH);
+        markedCorrectImg = Image.getInstance(this.getClass().getClassLoader().getResource(MARKED_CORRECT_PATH));
         markedCorrectImg.setAlignment(Image.LEFT| Image.TEXTWRAP);
         markedCorrectImg.scaleAbsolute(new Rectangle(10,10));
 
-        markedIncorrectImg = Image.getInstance(MARKED_INCORRECT_PATH);
+        markedIncorrectImg = Image.getInstance(this.getClass().getClassLoader().getResource(MARKED_INCORRECT_PATH));
         markedIncorrectImg.setAlignment(Image.LEFT | Image.TEXTWRAP);
         markedIncorrectImg.scaleAbsolute(new Rectangle(10, 10));
     }
@@ -188,7 +192,7 @@ public class ITextPdf {
         cell.setBorder(Rectangle.BOTTOM);
         cell.setBorderColor(BaseColor.BLACK);
         cell.setBorderWidth(1f);
-        Image logoImage = PngImage.getImage(LOGO_PATH);
+        Image logoImage = PngImage.getImage(this.getClass().getClassLoader().getResource(LOGO_PATH));
         logoImage.scaleAbsolute(new Rectangle(50,50));
         logoImage.setAbsolutePosition(document.getPageSize().getWidth()-110
                 ,document.getPageSize().getHeight()- 84);
@@ -358,7 +362,7 @@ public class ITextPdf {
         int numberOfIncorrectMarked = 0;
         for(QuestionDto question : questions) {
             List<Integer> marked = markedAnswers.get(question.getId());
-            if(question.getOptions() != null) {
+            if(CHECK_TYPE.equals(question.getType()) || RADIO_TYPE.equals(question.getType())) {
             for (OptionDto option : question.getOptions()) {
 
                 if (marked != null && marked.contains(option.getId())) {
@@ -372,24 +376,25 @@ public class ITextPdf {
                     numberOfCorrectOpt++;
                 }
             }
+                switch (state){
+                    case CORRECT:
+                        if(numberOfCorrectOpt == numberOfCorrectMarked && numberOfIncorrectMarked == 0) {
+                            count++;
+                        }
+                        break;
+                    case PARTIALY_CORRECT:
+                        if(numberOfIncorrectMarked < numberOfCorrectMarked && numberOfIncorrectMarked != 0) {
+                            count++;
+                        }
+                        break;
+                    case INCORRECT:
+                        if(numberOfIncorrectMarked >= numberOfCorrectMarked || numberOfCorrectMarked == 0) {
+                            count++;
+                        }
+                        break;
+                }
         }
-            switch (state){
-                case CORRECT:
-                    if(numberOfCorrectOpt == numberOfCorrectMarked && numberOfIncorrectMarked == 0) {
-                        count++;
-                    }
-                    break;
-                case PARTIALY_CORRECT:
-                    if(numberOfIncorrectMarked < numberOfCorrectMarked && numberOfIncorrectMarked != 0) {
-                        count++;
-                    }
-                    break;
-                case INCORRECT:
-                    if(numberOfIncorrectMarked >= numberOfCorrectMarked || numberOfCorrectMarked == 0) {
-                        count++;
-                    }
-                    break;
-            }
+
             numberOfCorrectOpt = 0;
             numberOfCorrectMarked = 0;
             numberOfIncorrectMarked = 0;
@@ -407,7 +412,7 @@ public class ITextPdf {
         int numberOfValidated = 0;
         for(QuestionDto question : questions) {
             //question.getCode() == null
-            if(!CODE_TYPE.equals(question.getType()) || !WRITE_TYPE.equals(question.getType())) {
+            if(CHECK_TYPE.equals(question.getType()) || RADIO_TYPE.equals(question.getType())) {
                 numberOfValidated++;
             }
         }
@@ -428,7 +433,7 @@ public class ITextPdf {
         double result = 0;
         for(QuestionDto question : questions) {
             List<Integer> marked = markedAnswers.get(question.getId());
-            if(question.getOptions() != null) {
+            if(question.getOptions() != null && !question.getOptions().isEmpty()) {
                 for (OptionDto option : question.getOptions()) {
 
                     if (marked != null && marked.contains(option.getId())) {
@@ -450,7 +455,7 @@ public class ITextPdf {
             numberOfCorrectMarked = 0;
             numberOfIncorrectMarked = 0;
         }
-        return (result / questions.size()) * 100;
+        return (result / getNumOfValidatedQuestions(questions) * 100);
     }
 
     /**
@@ -527,19 +532,29 @@ public class ITextPdf {
             } else {
                 type = CODE_TYPE;
             }
+            Pattern p = Pattern.compile("\\t");
+
             PdfPTable codeTable = new PdfPTable(1);
             codeQuestionCell = new PdfPCell();
             codeQuestionCell.setFixedHeight((PageSize.A4.getHeight() - 140));
             Paragraph codeQuestionParagraph = new Paragraph(question.getQuestion() + "(" +
                     type + ")", arialBoldFont10);
-            Paragraph code = new Paragraph(question.getCode(), arialBoldFont10);
             codeQuestionCell.addElement(codeQuestionParagraph);
-            codeQuestionCell.addElement(code);
+
+            if (question.getCode() != null){
+                Matcher matcherQ = p.matcher(question.getCode());
+                String QuestWithoutTabs = matcherQ.replaceAll("    ");
+                Paragraph code = new Paragraph(QuestWithoutTabs, arialBoldFont10);
+                codeQuestionCell.addElement(code);
+            }
 
             Paragraph answer = new Paragraph("Answer: \n", arialBoldFont10);
             codeQuestionCell.addElement(answer);
             if (question.getResponse() != null) {
-                Paragraph response = new Paragraph(question.getResponse(), arialFont10);
+
+                Matcher matcherA = p.matcher(question.getResponse());
+                String answWithoutTabs = matcherA.replaceAll("    ");
+                Paragraph response = new Paragraph(answWithoutTabs, arialFont10);
                 codeQuestionCell.addElement(response);
             }
             codeQuestionCell.setBorder(Rectangle.NO_BORDER);

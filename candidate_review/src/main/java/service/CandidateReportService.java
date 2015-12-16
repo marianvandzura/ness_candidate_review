@@ -30,15 +30,31 @@ public class CandidateReportService {
     @Autowired
     QuestionService questionService;
 
+    /**
+     * Get result by ID.
+     * @param id
+     * @return
+     */
     public CandidateDto geResultById(final Integer id){
         return reportAssembler.extractDtoFromDomain(candidatesReportsDao.findReportById(id));
     }
 
+    /**
+     * Save or update report.
+     * @param report
+     * @return
+     */
     public CandidateDto saveOrUpdateReport(final CandidateDto report) {
         CandidatesReports savedReport = candidatesReportsDao.addCandidateReport(reportAssembler.populateDomainFromDto(report));
         return reportAssembler.extractDtoFromDomain(savedReport);
     }
 
+    /**
+     * Create PDF.
+     * @param report
+     * @param test
+     * @return
+     */
     public byte[] createPdf(final CandidateDto report,final PdfTestDto test) {
         byte[] bytePdf = null;
         try {
@@ -52,6 +68,12 @@ public class CandidateReportService {
         return bytePdf;
     }
 
+    /**
+     * Save report and generate pdf.
+     * @param report
+     * @param test
+     * @return
+     */
     public CandidateDto saveAndGeneratePdf(final CandidateDto report, final PdfTestDto test) {
         byte[] bytePdf = null;
         try {
@@ -80,7 +102,7 @@ public class CandidateReportService {
         List<QuestionDto> questionsFromDb = new ArrayList<QuestionDto>();
 
         for(QuestionDto questionFromTest : questionsFromTest) {
-            if(questionFromTest.getResponse() != null) {
+            if(questionFromTest.getResponse() == null) {
                 QuestionDto question = questionService.getQuestionById(questionFromTest.getId());
                 if (question != null) {
                     questionsFromDb.add(question);
@@ -93,10 +115,20 @@ public class CandidateReportService {
         return questionsFromDb;
     }
 
+    /**
+     * Find report by candidate name.
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     public List<CandidateDto> findByName(final String firstName, final String lastName) {
         return reportAssembler.extractDtoFromDomain(candidatesReportsDao.findByFullName(firstName, lastName));
     }
 
+    /**
+     * Get all reports.
+     * @return
+     */
     public List<CandidateDto> getAll() {
         return reportAssembler.extractDtoFromDomain(candidatesReportsDao.getAllCandidatesReports());
     }
