@@ -383,7 +383,7 @@ public class ITextPdf {
                         }
                         break;
                     case PARTIALY_CORRECT:
-                        if(numberOfIncorrectMarked < numberOfCorrectMarked && numberOfIncorrectMarked != 0) {
+                        if(numberOfIncorrectMarked < numberOfCorrectMarked && numberOfIncorrectMarked < numberOfCorrectOpt) {
                             count++;
                         }
                         break;

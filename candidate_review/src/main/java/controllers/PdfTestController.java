@@ -103,7 +103,8 @@ public class PdfTestController {
             response.setContentType(mimeType);
             response.setContentLength(buffer.length);
 
-            String fileName = report.getFirstName() + " " + report.getLastName() +
+            String fileName = (report.getFirstName() != null ? report.getFirstName() : "") + " " +
+                    (report.getLastName() != null ? report.getLastName() : "") +
                 (report.getPosition() != null ?  " " + report.getPosition() : "") + ".pdf";
 
             String headerKey = "Content-Disposition";
