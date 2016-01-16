@@ -298,7 +298,15 @@ public class ITextPdf {
             Paragraph timeParagraph = new Paragraph("Time: ", arialFont12);
             timeParagraph.setTabSettings(new TabSettings(150f));
             timeParagraph.add(Chunk.TABBING);
-            timeParagraph.add(new Chunk(candidate.getTotalTime() + " Minutes"));
+            Integer time = null;
+            if (candidate.getTotalTime() != null) {
+                time = candidate.getTotalTime() / 60;
+                timeParagraph.add(new Chunk(
+                        time > 0 ? time + " Minutes" : candidate.getTotalTime() + " Seconds"));
+            } else {
+                timeParagraph.add(new Chunk("NA"));
+            }
+
             document.add(timeParagraph);
         }
 
@@ -383,7 +391,8 @@ public class ITextPdf {
                         }
                         break;
                     case PARTIALY_CORRECT:
-                        if(numberOfIncorrectMarked < numberOfCorrectMarked && numberOfIncorrectMarked < numberOfCorrectOpt) {
+                        if(!(numberOfIncorrectMarked >= numberOfCorrectMarked || numberOfCorrectMarked == 0) &&
+                                !(numberOfCorrectOpt == numberOfCorrectMarked && numberOfIncorrectMarked == 0)) {
                             count++;
                         }
                         break;
